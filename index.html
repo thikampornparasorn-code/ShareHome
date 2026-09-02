@@ -2,4584 +2,4605 @@
 <html lang="th">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DORMHUB — Homeshare</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#7c3aed">
+<title>DORMHUB • PSRU</title>
 
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&family=Prompt:wght@300;400;500;600;700&display=swap');
+
 :root{
- --primary:#7c3aed;
- --primary2:#a855f7;
- --accent:#ec4899;
- --bg:#f7f7fb;
- --card:#fff;
- --text:#24212b;
- --muted:#777487;
- --border:#ebe8f2;
- --sidebar:#24163a;
- --sidebar2:#362052;
- --green:#10b981;
- --orange:#f59e0b;
- --red:#ef4444;
- --blue:#3b82f6;
- --cyan:#06b6d4;
- --shadow:0 10px 30px rgba(60,35,90,.08);
- --radius:18px;
+  --primary:#7c3aed;
+  --primary2:#a855f7;
+  --pink:#ec4899;
+  --blue:#3b82f6;
+  --green:#10b981;
+  --orange:#f59e0b;
+  --red:#ef4444;
+  --bg:#f7f5ff;
+  --card:#ffffff;
+  --text:#241b35;
+  --muted:#81758f;
+  --border:#eee8f7;
+  --shadow:0 12px 35px rgba(80,50,120,.10);
+  --radius:22px;
 }
 
 *{
- box-sizing:border-box;
- font-family:Inter,Arial,"Noto Sans Thai",sans-serif
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+html{
+  scroll-behavior:smooth;
 }
 
 body{
- margin:0;
- background:linear-gradient(135deg,#faf9ff,#f7f8fc);
- color:var(--text);
+  font-family:'Prompt','Kanit',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
 }
 
-button,input,select,textarea{font:inherit}
-button{cursor:pointer;border:0}
+button,input,select,textarea{
+  font-family:inherit;
+}
+
+button{
+  cursor:pointer;
+  border:0;
+}
+
+.hidden{
+  display:none!important;
+}
+
+/* =========================
+   WELCOME / LOGIN
+========================= */
+
+.welcome-screen{
+  min-height:100vh;
+  min-height:100dvh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:20px;
+  background:
+    radial-gradient(circle at 10% 10%,rgba(236,72,153,.18),transparent 28%),
+    radial-gradient(circle at 90% 15%,rgba(124,58,237,.22),transparent 30%),
+    radial-gradient(circle at 50% 100%,rgba(168,85,247,.18),transparent 35%),
+    linear-gradient(135deg,#faf7ff,#f3edff);
+  position:relative;
+  overflow:hidden;
+}
+
+.float{
+  position:absolute;
+  font-size:35px;
+  opacity:.55;
+  animation:float 5s ease-in-out infinite;
+}
+
+.float.one{top:9%;left:8%}
+.float.two{top:18%;right:9%;animation-delay:1s}
+.float.three{bottom:14%;left:10%;animation-delay:2s}
+.float.four{bottom:8%;right:13%;animation-delay:3s}
+
+@keyframes float{
+  0%,100%{transform:translateY(0) rotate(-5deg)}
+  50%{transform:translateY(-15px) rotate(5deg)}
+}
+
+.welcome-card{
+  width:100%;
+  max-width:480px;
+  background:rgba(255,255,255,.92);
+  backdrop-filter:blur(18px);
+  border:1px solid rgba(255,255,255,.8);
+  border-radius:32px;
+  padding:30px 24px;
+  box-shadow:0 25px 70px rgba(82,45,130,.18);
+  position:relative;
+  z-index:2;
+}
+
+.logo-big{
+  width:90px;
+  height:90px;
+  margin:0 auto 18px;
+  border-radius:28px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:45px;
+  background:linear-gradient(135deg,var(--primary),var(--pink));
+  color:white;
+  box-shadow:0 15px 30px rgba(124,58,237,.3);
+}
+
+.welcome-card h1{
+  text-align:center;
+  font-size:34px;
+  font-weight:700;
+  color:var(--primary);
+  letter-spacing:.5px;
+}
+
+.welcome-card .subtitle{
+  text-align:center;
+  color:var(--muted);
+  margin-top:4px;
+  font-size:14px;
+}
+
+.welcome-badge{
+  display:block;
+  width:max-content;
+  margin:12px auto 25px;
+  padding:7px 15px;
+  border-radius:50px;
+  background:#f3e8ff;
+  color:#7c3aed;
+  font-size:12px;
+  font-weight:600;
+}
+
+.welcome-title{
+  font-size:21px;
+  text-align:center;
+  margin-bottom:6px;
+}
+
+.welcome-desc{
+  text-align:center;
+  color:var(--muted);
+  font-size:13px;
+  margin-bottom:22px;
+}
+
+.form-group{
+  margin-bottom:15px;
+}
+
+.form-group label{
+  display:block;
+  font-size:13px;
+  font-weight:600;
+  margin-bottom:7px;
+}
+
+.input-wrap{
+  position:relative;
+}
+
+.input-wrap span{
+  position:absolute;
+  left:14px;
+  top:50%;
+  transform:translateY(-50%);
+  font-size:19px;
+}
+
+.form-control{
+  width:100%;
+  padding:13px 14px 13px 45px;
+  border:1.5px solid var(--border);
+  border-radius:15px;
+  outline:none;
+  background:#faf9ff;
+  color:var(--text);
+  font-size:14px;
+  transition:.2s;
+}
+
+.form-control:focus{
+  border-color:var(--primary2);
+  background:white;
+  box-shadow:0 0 0 4px rgba(124,58,237,.08);
+}
+
+.enter-btn{
+  width:100%;
+  margin-top:5px;
+  padding:15px;
+  border-radius:17px;
+  background:linear-gradient(135deg,var(--primary),var(--pink));
+  color:white;
+  font-size:16px;
+  font-weight:600;
+  box-shadow:0 10px 25px rgba(124,58,237,.28);
+  transition:.2s;
+}
+
+.enter-btn:hover{
+  transform:translateY(-2px);
+}
+
+.enter-btn:active{
+  transform:scale(.98);
+}
+
+.demo-text{
+  text-align:center;
+  font-size:11px;
+  color:#aaa0b4;
+  margin-top:15px;
+}
+
+/* =========================
+   APP
+========================= */
 
 .app{
- display:flex;
- min-height:100vh;
+  display:none;
+  min-height:100vh;
+}
+
+.app.active{
+  display:flex;
 }
 
 .sidebar{
- position:fixed;
- left:0;
- top:0;
- bottom:0;
- width:250px;
- background:linear-gradient(180deg,var(--sidebar),var(--sidebar2));
- color:#fff;
- padding:22px 15px;
- z-index:100;
- box-shadow:8px 0 30px rgba(36,22,58,.12);
- overflow-y:auto;
+  width:250px;
+  position:fixed;
+  left:0;
+  top:0;
+  bottom:0;
+  background:linear-gradient(180deg,#4c1d95,#6d28d9);
+  color:white;
+  z-index:100;
+  padding:20px 14px;
+  overflow-y:auto;
+  transition:.3s;
 }
 
 .brand{
- display:flex;
- align-items:center;
- gap:12px;
- padding:3px 10px 22px;
- border-bottom:1px solid rgba(255,255,255,.12);
+  display:flex;
+  align-items:center;
+  gap:11px;
+  padding:7px 10px 22px;
 }
 
-.logo{
- width:45px;
- height:45px;
- border-radius:14px;
- background:linear-gradient(135deg,#c084fc,#ec4899);
- display:grid;
- place-items:center;
- font-size:23px;
- box-shadow:0 8px 22px rgba(168,85,247,.3);
+.brand-icon{
+  width:43px;
+  height:43px;
+  border-radius:14px;
+  background:rgba(255,255,255,.16);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-size:23px;
 }
 
-.brand h2{margin:0;font-size:18px}
-.brand small{color:#d8c9e8}
-
-.menu{margin-top:22px}
-.menu-title{
- font-size:10px;
- color:#b9a7cc;
- margin:18px 12px 8px;
- text-transform:uppercase;
- letter-spacing:.8px
+.brand-title{
+  font-size:20px;
+  font-weight:700;
 }
 
-.menu button{
- width:100%;
- padding:12px 14px;
- margin:3px 0;
- border-radius:12px;
- background:transparent;
- color:#e9def4;
- text-align:left;
- display:flex;
- gap:11px;
- align-items:center;
- transition:.2s;
+.brand-small{
+  font-size:10px;
+  opacity:.7;
 }
 
-.menu button:hover{
- background:rgba(255,255,255,.08);
- transform:translateX(3px)
-}
-
-.menu button.active{
- background:linear-gradient(
-  90deg,
-  rgba(192,132,252,.28),
-  rgba(236,72,153,.18)
- );
- box-shadow:inset 4px 0 #c084fc;
- color:#fff
-}
-
-.sidebar-foot{
- color:#cdbddd;
- font-size:11px;
- padding:18px 12px;
- margin-top:20px;
-}
-
-.main{
- margin-left:250px;
- width:calc(100% - 250px)
-}
-
-.topbar{
- height:72px;
- background:rgba(255,255,255,.9);
- backdrop-filter:blur(12px);
- border-bottom:1px solid var(--border);
- display:flex;
- align-items:center;
- justify-content:space-between;
- padding:0 28px;
- position:sticky;
- top:0;
- z-index:50
-}
-
-.title h1{font-size:21px;margin:0}
-.title p{
- font-size:12px;
- color:var(--muted);
- margin:4px 0 0
-}
-
-.actions{
- display:flex;
- align-items:center;
- gap:9px
-}
-
-.icon{
- width:40px;
- height:40px;
- border-radius:12px;
- background:#f5f1ff;
- color:#6d28d9;
- border:1px solid #e9ddff
-}
-
-.profile{
- display:flex;
- gap:9px;
- align-items:center;
- margin-left:5px
+.user-mini{
+  background:rgba(255,255,255,.10);
+  border-radius:17px;
+  padding:12px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-bottom:17px;
 }
 
 .avatar{
- width:40px;
- height:40px;
- border-radius:50%;
- display:grid;
- place-items:center;
- background:linear-gradient(135deg,#ede9fe,#fce7f3);
- font-size:20px
+  width:39px;
+  height:39px;
+  min-width:39px;
+  border-radius:50%;
+  background:linear-gradient(135deg,#f9a8d4,#c084fc);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  color:white;
+  font-weight:700;
 }
 
-.content{padding:27px}
-
-.page{display:none}
-.page.active{
- display:block;
- animation:fade .3s ease
+.user-mini strong{
+  display:block;
+  font-size:12px;
 }
 
-@keyframes fade{
- from{opacity:0;transform:translateY(8px)}
- to{opacity:1;transform:none}
+.user-mini small{
+  display:block;
+  font-size:9px;
+  opacity:.7;
 }
 
-.section-head{
- display:flex;
- justify-content:space-between;
- align-items:center;
- gap:15px;
- margin-bottom:18px
+.menu-title{
+  font-size:9px;
+  opacity:.55;
+  padding:9px 12px;
+  text-transform:uppercase;
 }
 
-.section-head h2,
-.section-head h3{
- margin:0
+.nav-btn{
+  width:100%;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  color:rgba(255,255,255,.78);
+  background:transparent;
+  padding:10px 12px;
+  border-radius:13px;
+  font-size:12px;
+  margin-bottom:3px;
+  text-align:left;
+  transition:.2s;
 }
 
-.section-head p{
- margin:5px 0 0;
- color:var(--muted);
- font-size:12px
+.nav-btn:hover,
+.nav-btn.active{
+  color:white;
+  background:rgba(255,255,255,.15);
 }
 
-.btn{
- padding:10px 15px;
- border-radius:12px;
- background:linear-gradient(135deg,var(--primary2),var(--primary));
- color:#fff;
- font-weight:700;
- box-shadow:0 7px 18px rgba(124,58,237,.18);
- transition:.2s
-}
-
-.btn:hover{transform:translateY(-2px)}
-.btn.light{
- background:#fff;
- color:#6d28d9;
- border:1px solid #e7ddf5;
- box-shadow:none
-}
-.btn.green{
- background:linear-gradient(135deg,#34d399,#059669)
-}
-.btn.red{
- background:linear-gradient(135deg,#fb7185,#dc2626)
-}
-.btn.blue{
- background:linear-gradient(135deg,#60a5fa,#2563eb)
-}
-.btn.orange{
- background:linear-gradient(135deg,#fbbf24,#d97706)
-}
-.btn.sm{
- padding:7px 10px;
- font-size:11px
-}
-
-.stats{
- display:grid;
- grid-template-columns:repeat(4,1fr);
- gap:16px;
- margin-bottom:20px
-}
-
-.stat{
- background:var(--card);
- border:1px solid var(--border);
- border-radius:var(--radius);
- padding:18px;
- box-shadow:var(--shadow)
-}
-
-.stat-top{
- display:flex;
- justify-content:space-between
-}
-
-.stat-icon{
- width:43px;
- height:43px;
- border-radius:13px;
- display:grid;
- place-items:center;
- font-size:20px;
- background:#f1eafe
-}
-
-.stat h4{
- margin:13px 0 5px;
- color:var(--muted);
- font-size:12px
-}
-
-.value{
- font-size:25px;
- font-weight:800
-}
-
-.change{
- font-size:11px;
- margin-top:6px;
- color:var(--green)
-}
-
-.grid2{
- display:grid;
- grid-template-columns:1.45fr 1fr;
- gap:18px;
- margin-bottom:18px
-}
-
-.grid3{
- display:grid;
- grid-template-columns:repeat(3,1fr);
- gap:18px
-}
-
-.card{
- background:var(--card);
- border:1px solid var(--border);
- border-radius:var(--radius);
- padding:19px;
- box-shadow:var(--shadow);
- margin-bottom:18px
-}
-
-.card h3{
- margin:0 0 14px;
- font-size:16px
-}
-
-.equipment-grid{
- display:grid;
- grid-template-columns:repeat(3,1fr);
- gap:15px
-}
-
-.equip{
- border:1px solid var(--border);
- border-radius:16px;
- overflow:hidden;
- background:#fff;
- transition:.2s
-}
-
-.equip:hover{
- transform:translateY(-4px);
- box-shadow:0 12px 28px rgba(60,35,90,.1)
-}
-
-.equip img{
- width:100%;
- height:150px;
- object-fit:cover;
- display:block
-}
-
-.equip-body{padding:13px}
-
-.equip-title{
- display:flex;
- justify-content:space-between;
- gap:8px
-}
-
-.equip-title strong{font-size:14px}
-
-.equip p{
- font-size:11px;
- color:var(--muted);
- margin:7px 0 11px
-}
-
-.equip-foot{
- display:flex;
- justify-content:space-between;
- align-items:center
-}
-
-.rating{
- color:#f59e0b;
- font-size:11px
+.nav-icon{
+  width:22px;
+  text-align:center;
+  font-size:16px;
 }
 
 .badge{
- display:inline-flex;
- padding:5px 9px;
- border-radius:999px;
- font-size:10px;
- font-weight:700
+  margin-left:auto;
+  background:#f43f5e;
+  color:white;
+  border-radius:50px;
+  font-size:9px;
+  padding:2px 7px;
 }
 
-.ok{background:#dcfce7;color:#15803d}
-.warn{background:#fef3c7;color:#b45309}
-.danger{background:#fee2e2;color:#b91c1c}
-.blue-badge{background:#dbeafe;color:#1d4ed8}
-.purple{background:#ede9fe;color:#6d28d9}
-.cyan{background:#cffafe;color:#0e7490}
+.logout-btn{
+  margin-top:20px;
+  width:100%;
+  padding:10px;
+  border-radius:12px;
+  background:rgba(255,255,255,.08);
+  color:white;
+  font-size:12px;
+}
 
-.table-wrap{overflow:auto}
+/* MAIN */
+
+.main{
+  margin-left:250px;
+  width:calc(100% - 250px);
+  min-height:100vh;
+}
+
+.topbar{
+  height:70px;
+  background:rgba(255,255,255,.9);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 25px;
+  position:sticky;
+  top:0;
+  z-index:50;
+}
+
+.mobile-menu{
+  display:none;
+  font-size:24px;
+  background:none;
+}
+
+.top-title{
+  font-size:19px;
+  font-weight:600;
+}
+
+.top-actions{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.icon-btn{
+  width:38px;
+  height:38px;
+  border-radius:12px;
+  background:#f5f1ff;
+  color:var(--primary);
+  font-size:17px;
+}
+
+.content{
+  padding:25px;
+  max-width:1500px;
+  margin:auto;
+}
+
+/* PAGES */
+
+.page{
+  display:none;
+}
+
+.page.active{
+  display:block;
+}
+
+.page-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:20px;
+  gap:15px;
+}
+
+.page-head h2{
+  font-size:24px;
+}
+
+.page-head p{
+  color:var(--muted);
+  font-size:12px;
+  margin-top:2px;
+}
+
+/* HERO */
+
+.hero{
+  background:linear-gradient(135deg,#6d28d9,#a855f7,#ec4899);
+  color:white;
+  border-radius:27px;
+  padding:28px;
+  position:relative;
+  overflow:hidden;
+  margin-bottom:20px;
+  box-shadow:var(--shadow);
+}
+
+.hero:after{
+  content:'';
+  position:absolute;
+  width:240px;
+  height:240px;
+  border-radius:50%;
+  right:-70px;
+  top:-100px;
+  background:rgba(255,255,255,.13);
+}
+
+.hero h1{
+  font-size:27px;
+  position:relative;
+  z-index:2;
+}
+
+.hero p{
+  margin-top:5px;
+  opacity:.85;
+  font-size:13px;
+  position:relative;
+  z-index:2;
+}
+
+.hero-user{
+  margin-top:18px;
+  font-size:12px;
+  position:relative;
+  z-index:2;
+}
+
+/* KPI */
+
+.kpi-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:15px;
+  margin-bottom:20px;
+}
+
+.kpi{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:20px;
+  padding:18px;
+  box-shadow:var(--shadow);
+}
+
+.kpi-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.kpi-icon{
+  width:42px;
+  height:42px;
+  border-radius:13px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:#f3e8ff;
+  font-size:20px;
+}
+
+.kpi-value{
+  font-size:25px;
+  font-weight:700;
+  margin-top:12px;
+}
+
+.kpi-label{
+  color:var(--muted);
+  font-size:11px;
+}
+
+/* CARD */
+
+.card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  padding:20px;
+  margin-bottom:18px;
+}
+
+.card-title{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:15px;
+}
+
+.card-title h3{
+  font-size:16px;
+}
+
+.grid-2{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:18px;
+}
+
+/* BUTTON */
+
+.btn{
+  border-radius:12px;
+  padding:10px 15px;
+  font-size:12px;
+  font-weight:500;
+  transition:.2s;
+}
+
+.btn-primary{
+  color:white;
+  background:linear-gradient(135deg,var(--primary),var(--primary2));
+}
+
+.btn-success{
+  color:white;
+  background:var(--green);
+}
+
+.btn-danger{
+  color:white;
+  background:var(--red);
+}
+
+.btn-light{
+  background:#f4f1fa;
+  color:var(--text);
+}
+
+.btn:hover{
+  transform:translateY(-1px);
+}
+
+/* TABLE */
+
+.table-wrap{
+  width:100%;
+  overflow-x:auto;
+}
 
 table{
- width:100%;
- border-collapse:collapse
-}
-
-th,td{
- padding:12px 10px;
- border-bottom:1px solid var(--border);
- font-size:12px;
- text-align:left;
- white-space:nowrap
+  width:100%;
+  border-collapse:collapse;
+  min-width:650px;
 }
 
 th{
- color:var(--muted);
- font-weight:700;
- background:#faf9fd
+  background:#faf8ff;
+  color:#7d7189;
+  font-size:11px;
+  font-weight:600;
+  text-align:left;
+  padding:12px;
 }
 
-tr:hover td{background:#fcfbff}
+td{
+  padding:12px;
+  border-bottom:1px solid var(--border);
+  font-size:11px;
+}
+
+.status{
+  display:inline-block;
+  border-radius:50px;
+  padding:5px 9px;
+  font-size:9px;
+  font-weight:600;
+}
+
+.status.green{
+  background:#dcfce7;
+  color:#15803d;
+}
+
+.status.orange{
+  background:#fef3c7;
+  color:#b45309;
+}
+
+.status.red{
+  background:#fee2e2;
+  color:#b91c1c;
+}
+
+.status.purple{
+  background:#f3e8ff;
+  color:#7e22ce;
+}
+
+.status.blue{
+  background:#dbeafe;
+  color:#1d4ed8;
+}
+
+/* EQUIPMENT */
+
+.equip-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:16px;
+}
+
+.equip-card{
+  background:white;
+  border:1px solid var(--border);
+  border-radius:20px;
+  overflow:hidden;
+  box-shadow:var(--shadow);
+}
+
+.equip-img{
+  width:100%;
+  height:165px;
+  object-fit:cover;
+  background:#eee;
+}
+
+.equip-body{
+  padding:14px;
+}
+
+.equip-category{
+  font-size:9px;
+  color:var(--primary);
+  background:#f3e8ff;
+  border-radius:50px;
+  padding:4px 8px;
+}
+
+.equip-name{
+  font-size:14px;
+  font-weight:600;
+  margin-top:8px;
+}
+
+.equip-meta{
+  display:flex;
+  justify-content:space-between;
+  margin-top:7px;
+  font-size:10px;
+  color:var(--muted);
+}
+
+.equip-price{
+  color:var(--primary);
+  font-weight:700;
+}
+
+.stockbar{
+  height:6px;
+  background:#eee;
+  border-radius:20px;
+  margin:10px 0;
+  overflow:hidden;
+}
+
+.stockbar span{
+  display:block;
+  height:100%;
+  background:linear-gradient(90deg,var(--primary),var(--pink));
+  border-radius:20px;
+}
+
+/* PAYMENT */
+
+.payment-summary{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:15px;
+  margin-bottom:18px;
+}
+
+.payment-card{
+  border-radius:20px;
+  padding:18px;
+  color:white;
+  min-height:115px;
+}
+
+.payment-card.pending{
+  background:linear-gradient(135deg,#f59e0b,#f97316);
+}
+
+.payment-card.paid{
+  background:linear-gradient(135deg,#10b981,#059669);
+}
+
+.payment-card.balance{
+  background:linear-gradient(135deg,#7c3aed,#a855f7);
+}
+
+.payment-card.transactions{
+  background:linear-gradient(135deg,#3b82f6,#6366f1);
+}
+
+.payment-card small{
+  opacity:.8;
+  font-size:11px;
+}
+
+.payment-card strong{
+  display:block;
+  font-size:25px;
+  margin-top:10px;
+}
+
+.invoice{
+  border:1px solid var(--border);
+  border-radius:17px;
+  padding:16px;
+  margin-bottom:12px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:15px;
+}
+
+.invoice-info h4{
+  font-size:14px;
+}
+
+.invoice-info p{
+  color:var(--muted);
+  font-size:10px;
+  margin-top:4px;
+}
+
+.invoice-amount{
+  text-align:right;
+}
+
+.invoice-amount strong{
+  display:block;
+  color:var(--primary);
+  font-size:17px;
+}
+
+/* SEARCH */
+
+.search-row{
+  display:flex;
+  gap:10px;
+  margin-bottom:18px;
+}
 
 .search{
- max-width:250px;
- padding:10px 12px;
- border:1px solid var(--border);
- border-radius:11px;
- outline:0;
- background:#fff
+  flex:1;
+  padding:12px 15px;
+  border:1px solid var(--border);
+  border-radius:13px;
+  outline:none;
+  background:white;
 }
 
-.search:focus,
-input:focus,
-select:focus,
-textarea:focus{
- border-color:#a78bfa;
- box-shadow:0 0 0 3px rgba(124,58,237,.1)
+/* MODAL */
+
+.modal-bg{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(20,10,30,.55);
+  backdrop-filter:blur(5px);
+  z-index:500;
+  padding:15px;
+  align-items:center;
+  justify-content:center;
 }
 
-.filter-row{
- display:flex;
- gap:10px;
- flex-wrap:wrap;
- margin-bottom:15px
-}
-
-.filter-row select{
- width:auto;
- min-width:150px
-}
-
-.progress{
- height:8px;
- background:#eeeaf4;
- border-radius:99px;
- overflow:hidden
-}
-
-.progress span{
- display:block;
- height:100%;
- background:linear-gradient(90deg,#8b5cf6,#ec4899);
- border-radius:99px
-}
-
-.activity{
- display:flex;
- gap:11px;
- padding:11px 0;
- border-bottom:1px solid var(--border)
-}
-
-.activity:last-child{border-bottom:0}
-
-.activity-icon{
- width:34px;
- height:34px;
- border-radius:10px;
- background:#f2ecff;
- display:grid;
- place-items:center
-}
-
-.activity strong{font-size:12px}
-
-.activity small{
- display:block;
- color:var(--muted);
- margin-top:3px
-}
-
-.empty{
- padding:30px;
- text-align:center;
- color:var(--muted)
-}
-
-.info-box{
- padding:15px;
- border-radius:14px;
- background:#f8f5ff;
- border:1px solid #e8ddff;
- margin-bottom:15px
-}
-
-.info-box h4{
- margin:0 0 7px;
- color:#6d28d9
-}
-
-.info-box p{
- font-size:12px;
- color:var(--muted);
- line-height:1.7;
- margin:0
-}
-
-.guide-grid{
- display:grid;
- grid-template-columns:repeat(4,1fr);
- gap:15px
-}
-
-.guide{
- border:1px solid var(--border);
- border-radius:16px;
- padding:17px;
- text-align:center;
- transition:.2s
-}
-
-.guide:hover{
- transform:translateY(-3px);
- box-shadow:var(--shadow)
-}
-
-.guide-icon{
- width:55px;
- height:55px;
- border-radius:17px;
- margin:0 auto 10px;
- display:grid;
- place-items:center;
- background:#f1eafe;
- font-size:25px
-}
-
-.guide h4{margin:5px 0;font-size:13px}
-.guide p{
- color:var(--muted);
- font-size:11px;
- line-height:1.6
-}
-
-.review{
- border:1px solid var(--border);
- border-radius:14px;
- padding:13px;
- margin-bottom:10px
-}
-
-.review-head{
- display:flex;
- justify-content:space-between;
- font-size:12px
-}
-
-.review p{
- font-size:11px;
- color:var(--muted);
- line-height:1.6
+.modal-bg.show{
+  display:flex;
 }
 
 .modal{
- position:fixed;
- inset:0;
- background:rgba(35,23,49,.52);
- backdrop-filter:blur(5px);
- display:none;
- align-items:center;
- justify-content:center;
- padding:20px;
- z-index:1000
+  width:100%;
+  max-width:500px;
+  max-height:90vh;
+  overflow-y:auto;
+  background:white;
+  border-radius:25px;
+  padding:22px;
+  animation:modalIn .2s ease;
 }
 
-.modal.show{display:flex}
-
-.modal-box{
- width:100%;
- max-width:650px;
- max-height:90vh;
- overflow:auto;
- background:#fff;
- border-radius:22px;
- padding:23px;
- box-shadow:0 25px 70px rgba(30,15,45,.25)
+@keyframes modalIn{
+  from{transform:translateY(20px);opacity:0}
+  to{transform:translateY(0);opacity:1}
 }
 
 .modal-head{
- display:flex;
- justify-content:space-between;
- align-items:center;
- margin-bottom:18px
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:18px;
 }
 
-.modal-head h2{
- margin:0;
- font-size:19px
+.modal-head h3{
+  font-size:18px;
 }
 
 .close{
- width:35px;
- height:35px;
- border-radius:10px;
- background:#f4effa;
- color:#6d28d9;
- font-size:20px
+  width:35px;
+  height:35px;
+  border-radius:50%;
+  background:#f5f1fa;
 }
 
-.form-grid{
- display:grid;
- grid-template-columns:1fr 1fr;
- gap:13px
+.form-label{
+  display:block;
+  font-size:11px;
+  margin-bottom:6px;
+  font-weight:600;
 }
 
-.form-group{margin-bottom:9px}
-
-.form-group.full{
- grid-column:1/-1
+.modal .form-control{
+  margin-bottom:13px;
+  padding-left:13px;
 }
 
-label{
- display:block;
- font-size:11px;
- font-weight:700;
- color:var(--muted);
- margin-bottom:5px
+/* PAYMENT METHODS */
+
+.payment-methods{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin:10px 0 16px;
 }
 
-input,select,textarea{
- width:100%;
- padding:10px 12px;
- border:1px solid var(--border);
- border-radius:11px;
- outline:0;
- background:#fff
+.method{
+  border:1.5px solid var(--border);
+  padding:13px;
+  border-radius:14px;
+  background:#faf9ff;
+  text-align:left;
 }
 
-textarea{
- min-height:80px;
- resize:vertical
+.method.active{
+  border-color:var(--primary);
+  background:#f5efff;
 }
+
+.method strong{
+  display:block;
+  font-size:12px;
+}
+
+.method small{
+  font-size:9px;
+  color:var(--muted);
+}
+
+.qr-box{
+  background:#fafafa;
+  border:1px solid #ddd;
+  border-radius:16px;
+  padding:15px;
+  text-align:center;
+  margin-bottom:15px;
+}
+
+.fake-qr{
+  width:170px;
+  height:170px;
+  margin:10px auto;
+  background:
+  linear-gradient(90deg,#111 8px,transparent 8px) 0 0/25px 25px,
+  linear-gradient(#111 8px,transparent 8px) 0 0/25px 25px,
+  white;
+  border:12px solid white;
+  box-shadow:0 0 0 1px #ddd;
+}
+
+.total-box{
+  padding:15px;
+  background:#f7f2ff;
+  border-radius:15px;
+  margin:10px 0 15px;
+}
+
+.total-row{
+  display:flex;
+  justify-content:space-between;
+  font-size:12px;
+  margin:6px 0;
+}
+
+.total-row.final{
+  border-top:1px dashed #d6c8e8;
+  padding-top:10px;
+  margin-top:10px;
+  font-size:16px;
+  font-weight:700;
+  color:var(--primary);
+}
+
+/* NOTIFICATION */
+
+.notification{
+  display:flex;
+  gap:12px;
+  padding:14px;
+  border-bottom:1px solid var(--border);
+}
+
+.notification-icon{
+  width:38px;
+  height:38px;
+  border-radius:12px;
+  background:#f3e8ff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.notification strong{
+  font-size:12px;
+}
+
+.notification p{
+  font-size:10px;
+  color:var(--muted);
+}
+
+/* CHART */
+
+.chart{
+  height:220px;
+  display:flex;
+  align-items:flex-end;
+  gap:13px;
+  padding:15px 5px 5px;
+}
+
+.bar-item{
+  flex:1;
+  height:100%;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-end;
+  align-items:center;
+}
+
+.bar{
+  width:75%;
+  max-width:40px;
+  background:linear-gradient(180deg,#a855f7,#7c3aed);
+  border-radius:9px 9px 3px 3px;
+  min-height:5px;
+}
+
+.bar-label{
+  font-size:9px;
+  color:var(--muted);
+  margin-top:7px;
+}
+
+/* EMPTY */
+
+.empty{
+  text-align:center;
+  padding:45px 20px;
+  color:var(--muted);
+}
+
+.empty-icon{
+  font-size:45px;
+  margin-bottom:10px;
+}
+
+/* TOAST */
 
 .toast{
- position:fixed;
- right:20px;
- bottom:20px;
- z-index:2000
+  position:fixed;
+  right:20px;
+  bottom:20px;
+  background:#241b35;
+  color:white;
+  padding:13px 17px;
+  border-radius:14px;
+  font-size:12px;
+  z-index:1000;
+  transform:translateY(100px);
+  opacity:0;
+  transition:.3s;
 }
 
-.toast-item{
- background:#fff;
- border:1px solid #e7dcf4;
- border-left:4px solid #8b5cf6;
- border-radius:13px;
- padding:12px 15px;
- box-shadow:0 12px 30px rgba(40,20,60,.14);
- margin-top:8px;
- font-size:12px;
- animation:toast .25s ease
+.toast.show{
+  transform:translateY(0);
+  opacity:1;
 }
 
-@keyframes toast{
- from{opacity:0;transform:translateX(25px)}
- to{opacity:1;transform:none}
+/* PRINT */
+
+.print-area{
+  display:none;
 }
 
-.mobile{display:none}
+@media print{
+  body *{
+    visibility:hidden;
+  }
 
-.notice{
- border-left:4px solid var(--orange);
- background:#fffaf0;
- padding:13px;
- border-radius:10px;
- font-size:12px;
- margin-bottom:15px
+  .print-area,
+  .print-area *{
+    visibility:visible;
+  }
+
+  .print-area{
+    display:block;
+    position:absolute;
+    left:0;
+    top:0;
+    width:100%;
+    padding:30px;
+    color:#000;
+  }
 }
 
-.stat-mini{
- display:flex;
- justify-content:space-between;
- align-items:center;
- padding:12px 0;
- border-bottom:1px solid var(--border)
-}
+/* =========================
+   MOBILE
+========================= */
 
-.stat-mini:last-child{border-bottom:0}
+@media(max-width:1000px){
+  .equip-grid{
+    grid-template-columns:repeat(3,1fr);
+  }
 
-.category{
- display:inline-flex;
- align-items:center;
- gap:6px;
- padding:7px 11px;
- border-radius:10px;
- background:#f7f3ff;
- color:#6d28d9;
- font-size:11px;
- font-weight:700
-}
-
-.steps{
- counter-reset:step
-}
-
-.step{
- display:flex;
- gap:13px;
- margin-bottom:18px
-}
-
-.step-num{
- min-width:38px;
- height:38px;
- border-radius:50%;
- background:linear-gradient(135deg,#a855f7,#7c3aed);
- color:#fff;
- display:grid;
- place-items:center;
- font-weight:bold
-}
-
-.step h4{margin:2px 0 5px}
-.step p{
- margin:0;
- font-size:11px;
- color:var(--muted);
- line-height:1.6
-}
-
-.dark-mode{
- --bg:#17131d;
- --card:#241d2c;
- --text:#f6f2fa;
- --muted:#bcb2c6;
- --border:#3b3147;
-}
-
-body.dark-mode{
- background:#17131d
-}
-
-body.dark-mode .topbar{
- background:rgba(36,29,44,.95)
-}
-
-body.dark-mode .equip,
-body.dark-mode input,
-body.dark-mode select,
-body.dark-mode textarea,
-body.dark-mode .modal-box{
- background:#241d2c;
- color:#fff
-}
-
-body.dark-mode th{
- background:#2d2436
-}
-
-body.dark-mode tr:hover td{
- background:#2b2333
-}
-
-@media(max-width:1100px){
- .stats{grid-template-columns:repeat(2,1fr)}
- .grid2{grid-template-columns:1fr}
- .equipment-grid{grid-template-columns:repeat(2,1fr)}
- .guide-grid{grid-template-columns:repeat(2,1fr)}
+  .kpi-grid,
+  .payment-summary{
+    grid-template-columns:repeat(2,1fr);
+  }
 }
 
 @media(max-width:760px){
- .sidebar{
-  transform:translateX(-100%);
-  transition:.25s
- }
 
- .sidebar.open{transform:none}
+  .welcome-card{
+    padding:26px 20px;
+    border-radius:27px;
+  }
 
- .main{
-  margin-left:0;
-  width:100%
- }
+  .welcome-card h1{
+    font-size:29px;
+  }
 
- .mobile{display:grid}
+  .sidebar{
+    transform:translateX(-100%);
+    width:270px;
+    box-shadow:20px 0 50px rgba(0,0,0,.15);
+  }
 
- .content{padding:17px}
+  .sidebar.open{
+    transform:translateX(0);
+  }
 
- .topbar{padding:0 15px}
+  .main{
+    margin-left:0;
+    width:100%;
+  }
 
- .profile span{display:none}
+  .mobile-menu{
+    display:block;
+  }
 
- .equipment-grid,
- .grid3,
- .guide-grid{
-  grid-template-columns:1fr
- }
+  .topbar{
+    height:62px;
+    padding:0 14px;
+  }
 
- .form-grid{
-  grid-template-columns:1fr
- }
+  .top-title{
+    font-size:16px;
+  }
 
- .form-group.full{
-  grid-column:auto
- }
+  .top-actions .icon-btn{
+    width:35px;
+    height:35px;
+  }
+
+  .content{
+    padding:15px;
+  }
+
+  .hero{
+    padding:21px;
+    border-radius:22px;
+  }
+
+  .hero h1{
+    font-size:21px;
+  }
+
+  .hero p{
+    font-size:11px;
+  }
+
+  .kpi-grid{
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+  }
+
+  .kpi{
+    padding:14px;
+    border-radius:17px;
+  }
+
+  .kpi-value{
+    font-size:20px;
+  }
+
+  .kpi-icon{
+    width:35px;
+    height:35px;
+    font-size:16px;
+  }
+
+  .grid-2{
+    grid-template-columns:1fr;
+  }
+
+  .equip-grid{
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+  }
+
+  .equip-img{
+    height:125px;
+  }
+
+  .equip-body{
+    padding:11px;
+  }
+
+  .equip-name{
+    font-size:12px;
+  }
+
+  .equip-meta{
+    font-size:9px;
+  }
+
+  .page-head{
+    align-items:flex-start;
+  }
+
+  .page-head h2{
+    font-size:20px;
+  }
+
+  .search-row{
+    flex-direction:column;
+  }
+
+  .payment-summary{
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+  }
+
+  .payment-card{
+    padding:14px;
+    min-height:100px;
+  }
+
+  .payment-card strong{
+    font-size:19px;
+  }
+
+  .invoice{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+
+  .invoice-amount{
+    text-align:left;
+    width:100%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+  }
+
+  .payment-methods{
+    grid-template-columns:1fr 1fr;
+  }
+
+  .card{
+    padding:15px;
+    border-radius:19px;
+  }
+
+  .table-wrap{
+    margin:0 -3px;
+  }
+
+  .modal{
+    border-radius:22px;
+    padding:18px;
+  }
+
 }
 
-@media(max-width:480px){
- .stats{grid-template-columns:1fr}
- .title h1{font-size:17px}
- .actions .icon:nth-child(2){display:none}
+@media(max-width:430px){
+
+  .welcome-screen{
+    padding:12px;
+  }
+
+  .welcome-card{
+    padding:24px 17px;
+  }
+
+  .logo-big{
+    width:78px;
+    height:78px;
+    font-size:38px;
+  }
+
+  .welcome-card h1{
+    font-size:27px;
+  }
+
+  .equip-grid{
+    grid-template-columns:1fr 1fr;
+  }
+
+  .equip-img{
+    height:110px;
+  }
+
+  .equip-price{
+    font-size:10px;
+  }
+
+  .btn{
+    padding:9px 11px;
+    font-size:11px;
+  }
+
+  .hero-user{
+    font-size:10px;
+  }
 }
 </style>
 </head>
 
 <body>
 
-<div class="app">
+<!-- ======================================================
+     WELCOME SCREEN
+====================================================== -->
 
-<!-- ================= SIDEBAR ================= -->
-<aside class="sidebar" id="sidebar">
+<section class="welcome-screen" id="welcomeScreen">
 
- <div class="brand">
-  <div class="logo">🏠</div>
-  <div>
-   <h2>DORMHUB</h2>
-   <small>Borrow • Rent • Return</small>
-  </div>
- </div>
+  <div class="float one">💜</div>
+  <div class="float two">✨</div>
+  <div class="float three">🧸</div>
+  <div class="float four">🌸</div>
 
- <div class="menu">
+  <div class="welcome-card">
 
-  <div class="menu-title">ระบบหลัก</div>
+    <div class="logo-big">🏠</div>
 
-  <button class="active" onclick="showPage('dashboard',this)">
-   📊 <span>แดชบอร์ด</span>
-  </button>
+    <h1>DORMHUB</h1>
 
-  <button onclick="showPage('equipment',this)">
-   🧰 <span>อุปกรณ์ทั้งหมด</span>
-  </button>
+    <div class="subtitle">
+      ระบบยืม–เช่าอุปกรณ์หอพักนักศึกษา
+    </div>
 
-  <button onclick="showPage('borrow',this)">
-   📋 <span>ยืม / เช่าอุปกรณ์</span>
-  </button>
+    <span class="welcome-badge">
+      💜 PSRU • Pibulsongkram Rajabhat University
+    </span>
 
-  <button onclick="showPage('requests',this)">
-   🔔 <span>รายการคำขอ</span>
-  </button>
+    <h2 class="welcome-title">
+      ยินดีต้อนรับเข้าสู่ DORMHUB 👋
+    </h2>
 
-  <button onclick="showPage('notifications',this)">
-   📢 <span>แจ้งเตือน</span>
-  </button>
-
-  <div class="menu-title">จัดการ</div>
-
-  <button onclick="showPage('members',this)">
-   👥 <span>ผู้พักอาศัย</span>
-  </button>
-
-  <button onclick="showPage('repair',this)">
-   🔧 <span>แจ้งซ่อม</span>
-  </button>
-
-  <button onclick="showPage('history',this)">
-   🕘 <span>ประวัติการใช้งาน</span>
-  </button>
-
-  <button onclick="showPage('reports',this)">
-   📈 <span>รายงานและสถิติ</span>
-  </button>
-
-  <div class="menu-title">ช่วยเหลือ</div>
-
-  <button onclick="showPage('guide',this)">
-   📖 <span>วิธีใช้งานเว็บไซต์</span>
-  </button>
-
-  <button onclick="showPage('reviews',this)">
-   ⭐ <span>รีวิวอุปกรณ์</span>
-  </button>
-
-  <button onclick="showPage('settings',this)">
-   ⚙️ <span>ตั้งค่าระบบ</span>
-  </button>
-
- </div>
-
- <div class="sidebar-foot">
-  DORMHUB v2.0<br>
-  ระบบบริหารจัดการอุปกรณ์หอพัก<br>
-  <span style="color:#a78bfa">University Project</span>
- </div>
-
-</aside>
-
-
-<!-- ================= MAIN ================= -->
-
-<main class="main">
-
-<header class="topbar">
-
- <div class="title">
-
-  <div style="display:flex;align-items:center;gap:9px">
-
-   <button class="icon mobile" onclick="toggleSidebar()">☰</button>
-
-   <div>
-    <h1 id="pageTitle">แดชบอร์ด</h1>
-    <p id="pageSubtitle">
-     ภาพรวมการยืมและเช่าอุปกรณ์ในหอพัก
+    <p class="welcome-desc">
+      ก่อนเข้าใช้งาน ขอรู้จักคุณนิดนึงนะ
+      ✨
     </p>
-   </div>
 
-  </div>
+    <form id="loginForm">
 
- </div>
+      <div class="form-group">
+        <label>ชื่อ–นามสกุล</label>
 
- <div class="actions">
+        <div class="input-wrap">
+          <span>👤</span>
+          <input
+            class="form-control"
+            id="loginName"
+            placeholder="เช่น นางสาวมินตรา ใจดี"
+            required
+          >
+        </div>
+      </div>
 
-  <button class="icon"
-          onclick="toggleTheme()"
-          id="themeBtn">
-   🌙
-  </button>
+      <div class="form-group">
+        <label>รหัสนักศึกษา</label>
 
-  <button class="icon"
-          onclick="showToast('ไม่มีการแจ้งเตือนใหม่ 🔔')">
-   🔔
-  </button>
+        <div class="input-wrap">
+          <span>🎓</span>
+          <input
+            class="form-control"
+            id="loginStudentId"
+            placeholder="เช่น 661234567"
+            inputmode="numeric"
+            required
+          >
+        </div>
+      </div>
 
-  <div class="profile">
-   <div class="avatar">👩🏻</div>
-   <span>
-    <strong>ผู้ดูแลหอพัก</strong><br>
-    <small style="color:var(--muted)">Administrator</small>
-   </span>
-  </div>
+      <div class="form-group">
+        <label>อาคารหอพัก</label>
 
- </div>
+        <div class="input-wrap">
+          <span>🏢</span>
 
-</header>
+          <select class="form-control" id="loginBuilding" required>
+            <option value="">เลือกอาคาร</option>
+            <option>อาคาร A</option>
+            <option>อาคาร B</option>
+            <option>อาคาร C</option>
+            <option>อาคาร D</option>
+          </select>
+        </div>
+      </div>
 
+      <div class="form-group">
+        <label>เลขห้อง</label>
 
-<div class="content">
+        <div class="input-wrap">
+          <span>🚪</span>
+          <input
+            class="form-control"
+            id="loginRoom"
+            placeholder="เช่น A-203"
+            required
+          >
+        </div>
+      </div>
 
-<!-- ================= DASHBOARD ================= -->
+      <button class="enter-btn" type="submit">
+        เข้าสู่ DORMHUB 💜
+      </button>
 
-<section id="dashboard" class="page active">
+    </form>
 
- <div class="section-head">
-
-  <div>
-   <h2>สวัสดีค่ะ 👋</h2>
-   <p>
-    ยินดีต้อนรับสู่ระบบจัดการอุปกรณ์หอพัก DORMHUB
-   </p>
-  </div>
-
-  <button class="btn"
-          onclick="openModal('borrowModal')">
-   ＋ สร้างรายการยืม/เช่า
-  </button>
-
- </div>
-
-
- <div class="notice">
-  💡 <strong>แจ้งเตือนผู้ดูแล:</strong>
-  วันนี้มีรายการอุปกรณ์ใกล้ครบกำหนดคืน
-  <strong id="dashboardDue">0 รายการ</strong>
- </div>
-
-
- <div class="stats">
-
-  <div class="stat">
-   <div class="stat-top">
-    <div>
-     <h4>อุปกรณ์ทั้งหมด</h4>
-     <div class="value" id="statEquipment">0</div>
-    </div>
-    <div class="stat-icon">🧰</div>
-   </div>
-   <div class="change">พร้อมให้บริการ</div>
-  </div>
-
-
-  <div class="stat">
-   <div class="stat-top">
-    <div>
-     <h4>กำลังถูกยืม/เช่า</h4>
-     <div class="value" id="statActive">0</div>
-    </div>
-    <div class="stat-icon">📦</div>
-   </div>
-   <div class="change">รายการที่ยังไม่คืน</div>
-  </div>
-
-
-  <div class="stat">
-   <div class="stat-top">
-    <div>
-     <h4>รออนุมัติ</h4>
-     <div class="value" id="statPending">0</div>
-    </div>
-    <div class="stat-icon">⏳</div>
-   </div>
-   <div class="change" style="color:var(--orange)">
-    ควรตรวจสอบ
-   </div>
-  </div>
-
-
-  <div class="stat">
-   <div class="stat-top">
-    <div>
-     <h4>รายได้ค่าเช่า</h4>
-     <div class="value" id="statIncome">฿0</div>
-    </div>
-    <div class="stat-icon">💰</div>
-   </div>
-   <div class="change">สะสมจากรายการเช่า</div>
-  </div>
-
- </div>
-
-
- <div class="grid2">
-
-  <div class="card">
-
-   <div class="section-head">
-
-    <div>
-     <h3>🔥 อุปกรณ์ยอดนิยม</h3>
-     <p>อุปกรณ์ที่มีการใช้งานสูง</p>
+    <div class="demo-text">
+      ระบบต้นแบบสำหรับโครงงานมหาวิทยาลัย • ข้อมูลตัวอย่างเก็บในอุปกรณ์ของคุณ
     </div>
 
-    <button class="btn light sm"
-            onclick="showPage('equipment',document.querySelectorAll('.menu button')[1])">
-     ดูทั้งหมด
+  </div>
+</section>
+
+
+<!-- ======================================================
+     MAIN APPLICATION
+====================================================== -->
+
+<div class="app" id="app">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+
+    <div class="brand">
+      <div class="brand-icon">🏠</div>
+
+      <div>
+        <div class="brand-title">DORMHUB</div>
+        <div class="brand-small">PSRU DORM SYSTEM</div>
+      </div>
+    </div>
+
+    <div class="user-mini">
+      <div class="avatar" id="sideAvatar">ม</div>
+
+      <div>
+        <strong id="sideName">นักศึกษา</strong>
+        <small id="sideRoom">ห้อง -</small>
+      </div>
+    </div>
+
+    <div class="menu-title">เมนูหลัก</div>
+
+    <button class="nav-btn active" data-page="dashboard">
+      <span class="nav-icon">🏠</span>
+      <span>หน้าหลัก</span>
     </button>
 
-   </div>
+    <button class="nav-btn" data-page="equipment">
+      <span class="nav-icon">📦</span>
+      <span>อุปกรณ์</span>
+    </button>
+
+    <button class="nav-btn" data-page="borrow">
+      <span class="nav-icon">🔄</span>
+      <span>รายการยืม–เช่า</span>
+    </button>
 
-   <div class="equipment-grid"
-        id="popularEquipment">
-   </div>
+    <button class="nav-btn" data-page="payments">
+      <span class="nav-icon">💳</span>
+      <span>ชำระเงิน</span>
+      <span class="badge" id="paymentBadge">0</span>
+    </button>
 
-  </div>
+    <button class="nav-btn" data-page="requests">
+      <span class="nav-icon">📋</span>
+      <span>คำขอ</span>
+      <span class="badge">3</span>
+    </button>
 
+    <button class="nav-btn" data-page="notifications">
+      <span class="nav-icon">🔔</span>
+      <span>แจ้งเตือน</span>
+    </button>
 
-  <div class="card">
+    <div class="menu-title">จัดการระบบ</div>
 
-   <h3>⚡ กิจกรรมล่าสุด</h3>
+    <button class="nav-btn" data-page="members">
+      <span class="nav-icon">👥</span>
+      <span>สมาชิก</span>
+    </button>
 
-   <div id="activityList"></div>
+    <button class="nav-btn" data-page="repair">
+      <span class="nav-icon">🔧</span>
+      <span>แจ้งซ่อม</span>
+    </button>
 
-  </div>
+    <button class="nav-btn" data-page="history">
+      <span class="nav-icon">🕘</span>
+      <span>ประวัติ</span>
+    </button>
 
- </div>
+    <button class="nav-btn" data-page="reports">
+      <span class="nav-icon">📊</span>
+      <span>รายงาน</span>
+    </button>
 
+    <button class="nav-btn" data-page="reviews">
+      <span class="nav-icon">⭐</span>
+      <span>รีวิว</span>
+    </button>
 
- <div class="grid3">
+    <button class="nav-btn" data-page="settings">
+      <span class="nav-icon">⚙️</span>
+      <span>ตั้งค่า</span>
+    </button>
 
-  <div class="card">
+    <button class="logout-btn" onclick="logout()">
+      🚪 ออกจากระบบ
+    </button>
+
+  </aside>
+
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <header class="topbar">
+
+      <div style="display:flex;align-items:center;gap:12px">
+
+        <button
+          class="mobile-menu"
+          onclick="toggleSidebar()"
+        >
+          ☰
+        </button>
+
+        <div class="top-title" id="topTitle">
+          หน้าหลัก
+        </div>
+
+      </div>
+
+      <div class="top-actions">
 
-   <h3>📦 สถานะคลังอุปกรณ์</h3>
+        <button
+          class="icon-btn"
+          onclick="showPage('notifications')"
+        >
+          🔔
+        </button>
+
+        <button
+          class="icon-btn"
+          onclick="toggleDarkMode()"
+        >
+          🌙
+        </button>
 
-   <div class="stat-mini">
-    <span>พร้อมใช้งาน</span>
-    <strong id="availableCount">0</strong>
-   </div>
+      </div>
 
-   <div class="stat-mini">
-    <span>ถูกยืม/เช่า</span>
-    <strong id="usedCount">0</strong>
-   </div>
+    </header>
 
-   <div class="stat-mini">
-    <span>อุปกรณ์ใกล้หมด</span>
-    <strong id="lowCount">0</strong>
-   </div>
 
-  </div>
+    <div class="content">
 
 
-  <div class="card">
+      <!-- ==================================================
+           DASHBOARD
+      ================================================== -->
 
-   <h3>⭐ คะแนนความพึงพอใจ</h3>
+      <section class="page active" id="page-dashboard">
 
-   <div style="font-size:35px;font-weight:800">
-    4.7<span style="font-size:15px;color:var(--muted)"> / 5</span>
-   </div>
+        <div class="hero">
 
-   <div class="rating" style="font-size:18px">
-    ★★★★★
-   </div>
+          <h1>
+            สวัสดี <span id="heroName">นักศึกษา</span> 💜
+          </h1>
 
-   <p style="font-size:11px;color:var(--muted)">
-    จากผู้ใช้งาน 126 รีวิว
-   </p>
+          <p>
+            ยินดีต้อนรับเข้าสู่ระบบจัดการอุปกรณ์หอพักนักศึกษา
+          </p>
 
-  </div>
+          <div class="hero-user">
+            🎓 รหัส <span id="heroStudentId">-</span>
+            &nbsp; • &nbsp;
+            🏢 <span id="heroRoom">-</span>
+          </div>
 
+        </div>
 
-  <div class="card">
 
-   <h3>📊 อัตราคืนตรงเวลา</h3>
+        <div class="kpi-grid">
 
-   <div style="font-size:35px;font-weight:800">
-    94%
-   </div>
+          <div class="kpi">
+            <div class="kpi-top">
+              <div>
+                <div class="kpi-label">อุปกรณ์ทั้งหมด</div>
+                <div class="kpi-value" id="kpiEquipment">0</div>
+              </div>
+              <div class="kpi-icon">📦</div>
+            </div>
+          </div>
 
-   <div class="progress">
-    <span style="width:94%"></span>
-   </div>
+          <div class="kpi">
+            <div class="kpi-top">
+              <div>
+                <div class="kpi-label">กำลังยืม/เช่า</div>
+                <div class="kpi-value" id="kpiBorrow">0</div>
+              </div>
+              <div class="kpi-icon">🔄</div>
+            </div>
+          </div>
 
-   <p style="font-size:11px;color:var(--green)">
-    อยู่ในเกณฑ์ดีมาก
-   </p>
+          <div class="kpi">
+            <div class="kpi-top">
+              <div>
+                <div class="kpi-label">รอชำระเงิน</div>
+                <div class="kpi-value" id="kpiPayment">฿0</div>
+              </div>
+              <div class="kpi-icon">💳</div>
+            </div>
+          </div>
 
-  </div>
+          <div class="kpi">
+            <div class="kpi-top">
+              <div>
+                <div class="kpi-label">คะแนนรีวิว</div>
+                <div class="kpi-value">4.8 ⭐</div>
+              </div>
+              <div class="kpi-icon">⭐</div>
+            </div>
+          </div>
 
- </div>
+        </div>
 
 
- <div class="card">
+        <div class="grid-2">
 
-  <div class="section-head">
+          <div class="card">
 
-   <div>
-    <h3>📅 รายการใกล้ถึงกำหนดคืน</h3>
-    <p>ติดตามอุปกรณ์ที่ผู้พักยังไม่ได้ส่งคืน</p>
-   </div>
+            <div class="card-title">
+              <h3>📦 อุปกรณ์ยอดนิยม</h3>
 
-   <button class="btn light sm"
-           onclick="showPage('borrow',document.querySelectorAll('.menu button')[2])">
-    ดูรายการทั้งหมด
-   </button>
+              <button
+                class="btn btn-light"
+                onclick="showPage('equipment')"
+              >
+                ดูทั้งหมด
+              </button>
+            </div>
 
-  </div>
+            <div id="popularEquipment"></div>
 
-  <div class="table-wrap">
+          </div>
 
-   <table>
 
-    <thead>
-     <tr>
-      <th>เลขที่</th>
-      <th>ผู้ยืม</th>
-      <th>ห้อง</th>
-      <th>อุปกรณ์</th>
-      <th>กำหนดคืน</th>
-      <th>ประเภท</th>
-      <th>สถานะ</th>
-     </tr>
-    </thead>
+          <div class="card">
 
-    <tbody id="dueTable"></tbody>
+            <div class="card-title">
+              <h3>💳 รายการชำระเงินล่าสุด</h3>
 
-   </table>
+              <button
+                class="btn btn-light"
+                onclick="showPage('payments')"
+              >
+                ดูทั้งหมด
+              </button>
+            </div>
 
-  </div>
+            <div id="dashboardPayments"></div>
 
- </div>
+          </div>
 
-</section>
+        </div>
 
 
-<!-- ================= EQUIPMENT ================= -->
+        <div class="card">
 
-<section id="equipment" class="page">
+          <div class="card-title">
+            <h3>📈 สถิติการใช้งาน</h3>
+          </div>
 
- <div class="section-head">
+          <div class="chart" id="dashboardChart"></div>
 
-  <div>
-   <h2>🧰 อุปกรณ์ทั้งหมด</h2>
-   <p>ค้นหาและตรวจสอบอุปกรณ์ภายในหอพัก</p>
-  </div>
+        </div>
 
-  <button class="btn"
-          onclick="openModal('equipmentModal')">
-   ＋ เพิ่มอุปกรณ์
-  </button>
+      </section>
 
- </div>
 
+      <!-- ==================================================
+           EQUIPMENT
+      ================================================== -->
 
- <div class="card">
+      <section class="page" id="page-equipment">
 
-  <div class="filter-row">
+        <div class="page-head">
 
-   <input class="search"
-          id="equipmentSearch"
-          placeholder="🔎 ค้นหาอุปกรณ์..."
-          oninput="renderEquipment()">
+          <div>
+            <h2>📦 อุปกรณ์หอพัก</h2>
+            <p>เลือกอุปกรณ์ที่ต้องการยืมหรือเช่า</p>
+          </div>
 
-   <select id="categoryFilter"
-           onchange="renderEquipment()">
+          <button
+            class="btn btn-primary"
+            onclick="openBorrowModal()"
+          >
+            + ยืม/เช่า
+          </button>
 
-    <option value="">ทุกหมวดหมู่</option>
-    <option>เครื่องใช้ไฟฟ้า</option>
-    <option>ทำความสะอาด</option>
-    <option>ครัว</option>
-    <option>อุปกรณ์ทั่วไป</option>
-    <option>การเรียน</option>
+        </div>
 
-   </select>
+        <div class="search-row">
 
-   <select id="statusFilter"
-           onchange="renderEquipment()">
+          <input
+            class="search"
+            id="equipmentSearch"
+            placeholder="🔍 ค้นหาอุปกรณ์..."
+            oninput="renderEquipment()"
+          >
 
-    <option value="">ทุกสถานะ</option>
-    <option value="พร้อม">พร้อมใช้</option>
-    <option value="น้อย">เหลือน้อย</option>
-    <option value="หมด">หมด</option>
+          <select
+            class="search"
+            id="equipmentCategory"
+            onchange="renderEquipment()"
+          >
+            <option value="">ทุกประเภท</option>
+            <option>เครื่องใช้ไฟฟ้า</option>
+            <option>ครัว</option>
+            <option>ทำความสะอาด</option>
+            <option>อุปกรณ์ทั่วไป</option>
+            <option>การเรียน</option>
+          </select>
 
-   </select>
+        </div>
 
-  </div>
+        <div class="equip-grid" id="equipmentGrid"></div>
 
+      </section>
 
-  <div style="margin-bottom:15px">
-   <strong id="equipmentCount">0 รายการ</strong>
-  </div>
 
+      <!-- ==================================================
+           BORROW
+      ================================================== -->
 
-  <div class="equipment-grid"
-       id="equipmentGrid">
-  </div>
+      <section class="page" id="page-borrow">
 
- </div>
+        <div class="page-head">
 
-</section>
+          <div>
+            <h2>🔄 รายการยืม–เช่า</h2>
+            <p>ติดตามอุปกรณ์ที่กำลังใช้งาน</p>
+          </div>
 
+          <button
+            class="btn btn-primary"
+            onclick="openBorrowModal()"
+          >
+            + สร้างรายการ
+          </button>
 
-<!-- ================= BORROW ================= -->
+        </div>
 
-<section id="borrow" class="page">
+        <div class="card">
 
- <div class="section-head">
+          <div class="table-wrap">
+            <table>
 
-  <div>
-   <h2>📋 ยืม / เช่าอุปกรณ์</h2>
-   <p>จัดการรายการยืมและเช่าของผู้พักอาศัย</p>
-  </div>
+              <thead>
+                <tr>
+                  <th>เลขที่</th>
+                  <th>อุปกรณ์</th>
+                  <th>ประเภท</th>
+                  <th>วันที่ยืม</th>
+                  <th>กำหนดคืน</th>
+                  <th>ค่าบริการ</th>
+                  <th>สถานะ</th>
+                  <th>จัดการ</th>
+                </tr>
+              </thead>
 
-  <button class="btn"
-          onclick="openModal('borrowModal')">
-   ＋ สร้างรายการ
-  </button>
+              <tbody id="borrowTable"></tbody>
 
- </div>
+            </table>
+          </div>
 
+        </div>
 
- <div class="stats">
+      </section>
 
-  <div class="stat">
-   <h4>รายการทั้งหมด</h4>
-   <div class="value" id="borrowTotal">0</div>
-  </div>
 
-  <div class="stat">
-   <h4>กำลังใช้งาน</h4>
-   <div class="value" id="borrowActive">0</div>
-  </div>
+      <!-- ==================================================
+           PAYMENTS
+      ================================================== -->
 
-  <div class="stat">
-   <h4>คืนแล้ว</h4>
-   <div class="value" id="borrowReturned">0</div>
-  </div>
+      <section class="page" id="page-payments">
 
-  <div class="stat">
-   <h4>เกินกำหนด</h4>
-   <div class="value" id="borrowLate">0</div>
-  </div>
+        <div class="page-head">
 
- </div>
+          <div>
+            <h2>💳 ชำระเงิน</h2>
+            <p>จัดการค่าบริการยืม–เช่าอุปกรณ์หอพัก</p>
+          </div>
 
+        </div>
 
- <div class="card">
 
-  <div class="section-head">
+        <div class="payment-summary">
 
-   <h3>รายการยืม/เช่าทั้งหมด</h3>
+          <div class="payment-card pending">
+            <small>รอชำระ</small>
+            <strong id="payPending">฿0</strong>
+          </div>
 
-   <input class="search"
-          id="borrowSearch"
-          placeholder="🔎 ค้นหา..."
-          oninput="renderBorrow()">
+          <div class="payment-card paid">
+            <small>ชำระแล้ว</small>
+            <strong id="payPaid">฿0</strong>
+          </div>
 
-  </div>
+          <div class="payment-card balance">
+            <small>เงินประกันคงค้าง</small>
+            <strong id="payDeposit">฿0</strong>
+          </div>
 
+          <div class="payment-card transactions">
+            <small>ธุรกรรมทั้งหมด</small>
+            <strong id="payTransactions">0</strong>
+          </div>
 
-  <div class="table-wrap">
+        </div>
 
-   <table>
 
-    <thead>
-     <tr>
-      <th>เลขที่</th>
-      <th>ผู้ยืม</th>
-      <th>ห้อง</th>
-      <th>อุปกรณ์</th>
-      <th>ประเภท</th>
-      <th>วันที่ยืม</th>
-      <th>กำหนดคืน</th>
-      <th>ค่าบริการ</th>
-      <th>สถานะ</th>
-      <th>จัดการ</th>
-     </tr>
-    </thead>
+        <div class="card">
 
-    <tbody id="borrowTable"></tbody>
+          <div class="card-title">
+            <h3>🧾 ใบแจ้งชำระเงิน</h3>
 
-   </table>
+            <select
+              class="btn btn-light"
+              id="paymentFilter"
+              onchange="renderPayments()"
+            >
+              <option value="">ทั้งหมด</option>
+              <option value="pending">รอชำระ</option>
+              <option value="paid">ชำระแล้ว</option>
+            </select>
+          </div>
 
-  </div>
+          <div id="invoiceList"></div>
 
- </div>
+        </div>
 
-</section>
+      </section>
 
 
-<!-- ================= REQUESTS ================= -->
+      <!-- ==================================================
+           REQUESTS
+      ================================================== -->
 
-<section id="requests" class="page">
+      <section class="page" id="page-requests">
 
- <div class="section-head">
+        <div class="page-head">
+          <div>
+            <h2>📋 คำขอยืม–เช่า</h2>
+            <p>รายการคำขอของนักศึกษา</p>
+          </div>
+        </div>
 
-  <div>
-   <h2>🔔 รายการคำขอ</h2>
-   <p>อนุมัติหรือปฏิเสธคำขอจากผู้พักอาศัย</p>
-  </div>
+        <div class="card">
 
- </div>
+          <div class="table-wrap">
+            <table>
 
+              <thead>
+                <tr>
+                  <th>เลขที่</th>
+                  <th>ผู้ขอ</th>
+                  <th>ห้อง</th>
+                  <th>อุปกรณ์</th>
+                  <th>ประเภท</th>
+                  <th>วันที่</th>
+                  <th>สถานะ</th>
+                </tr>
+              </thead>
 
- <div class="card">
+              <tbody id="requestTable"></tbody>
 
-  <div class="info-box">
-   <h4>💡 ขั้นตอนการอนุมัติ</h4>
-   <p>
-    ตรวจสอบชื่อผู้พัก ห้อง อุปกรณ์ จำนวนที่ว่าง
-    และวันที่ต้องการใช้ ก่อนกดอนุมัติ
-   </p>
-  </div>
+            </table>
+          </div>
 
+        </div>
 
-  <div class="table-wrap">
+      </section>
 
-   <table>
 
-    <thead>
-     <tr>
-      <th>คำขอ</th>
-      <th>ผู้พัก</th>
-      <th>ห้อง</th>
-      <th>อุปกรณ์</th>
-      <th>ประเภท</th>
-      <th>วันที่ขอ</th>
-      <th>สถานะ</th>
-      <th>การทำงาน</th>
-     </tr>
-    </thead>
+      <!-- ==================================================
+           NOTIFICATIONS
+      ================================================== -->
 
-    <tbody id="requestTable"></tbody>
+      <section class="page" id="page-notifications">
 
-   </table>
+        <div class="page-head">
+          <div>
+            <h2>🔔 การแจ้งเตือน</h2>
+            <p>ติดตามข่าวสารและสถานะรายการของคุณ</p>
+          </div>
+        </div>
 
-  </div>
+        <div class="card" id="notificationList"></div>
 
- </div>
+      </section>
 
-</section>
 
+      <!-- ==================================================
+           MEMBERS
+      ================================================== -->
 
-<!-- ================= NOTIFICATIONS ================= -->
+      <section class="page" id="page-members">
 
-<section id="notifications" class="page">
+        <div class="page-head">
+          <div>
+            <h2>👥 สมาชิก</h2>
+            <p>ข้อมูลผู้ใช้งานระบบ</p>
+          </div>
+        </div>
 
- <div class="section-head">
+        <div class="card">
 
-  <div>
-   <h2>📢 ศูนย์แจ้งเตือน</h2>
-   <p>ติดตามข่าวสารและการแจ้งเตือนจากระบบ</p>
-  </div>
+          <div class="table-wrap">
+            <table>
 
-  <button class="btn light"
-          onclick="markNotificationsRead()">
-   ✓ อ่านทั้งหมด
-  </button>
+              <thead>
+                <tr>
+                  <th>รหัสนักศึกษา</th>
+                  <th>ชื่อ</th>
+                  <th>ห้อง</th>
+                  <th>โทรศัพท์</th>
+                  <th>รายการใช้งาน</th>
+                  <th>สถานะ</th>
+                </tr>
+              </thead>
 
- </div>
+              <tbody id="memberTable"></tbody>
 
+            </table>
+          </div>
 
- <div class="card" id="notificationList">
+        </div>
 
-  <div class="activity">
-   <div class="activity-icon">⏰</div>
-   <div>
-    <strong>มีรายการใกล้ครบกำหนดคืน</strong>
-    <small>กรุณาตรวจสอบรายการ BR-1003</small>
-   </div>
-  </div>
+      </section>
 
-  <div class="activity">
-   <div class="activity-icon">📦</div>
-   <div>
-    <strong>เครื่องดูดฝุ่นเหลือ 1 เครื่อง</strong>
-    <small>ควรตรวจสอบจำนวนอุปกรณ์ในคลัง</small>
-   </div>
-  </div>
 
-  <div class="activity">
-   <div class="activity-icon">⭐</div>
-   <div>
-    <strong>มีรีวิวใหม่</strong>
-    <small>ผู้พักอาศัยให้คะแนน 5 ดาว</small>
-   </div>
-  </div>
+      <!-- ==================================================
+           REPAIR
+      ================================================== -->
 
-  <div class="activity">
-   <div class="activity-icon">🔧</div>
-   <div>
-    <strong>มีการแจ้งซ่อมใหม่</strong>
-    <small>พัดลมตั้งโต๊ะหมายเลข F-03 มีปัญหา</small>
-   </div>
-  </div>
+      <section class="page" id="page-repair">
 
- </div>
+        <div class="page-head">
 
-</section>
+          <div>
+            <h2>🔧 แจ้งซ่อม</h2>
+            <p>แจ้งปัญหาอุปกรณ์หอพัก</p>
+          </div>
 
+          <button
+            class="btn btn-primary"
+            onclick="openRepairModal()"
+          >
+            + แจ้งซ่อม
+          </button>
 
-<!-- ================= MEMBERS ================= -->
+        </div>
 
-<section id="members" class="page">
+        <div class="card">
 
- <div class="section-head">
+          <div class="table-wrap">
+            <table>
 
-  <div>
-   <h2>👥 ผู้พักอาศัย</h2>
-   <p>ข้อมูลผู้ใช้งานระบบ DORMHUB</p>
-  </div>
+              <thead>
+                <tr>
+                  <th>เลขที่</th>
+                  <th>อุปกรณ์</th>
+                  <th>ผู้แจ้ง</th>
+                  <th>ห้อง</th>
+                  <th>ปัญหา</th>
+                  <th>วันที่</th>
+                  <th>สถานะ</th>
+                </tr>
+              </thead>
 
-  <button class="btn"
-          onclick="openModal('memberModal')">
-   ＋ เพิ่มผู้พัก
-  </button>
+              <tbody id="repairTable"></tbody>
 
- </div>
+            </table>
+          </div>
 
+        </div>
 
- <div class="card">
+      </section>
 
-  <div class="section-head">
 
-   <strong id="memberCount">0 คน</strong>
+      <!-- ==================================================
+           HISTORY
+      ================================================== -->
 
-   <input class="search"
-          id="memberSearch"
-          placeholder="🔎 ค้นหาชื่อ/ห้อง..."
-          oninput="renderMembers()">
+      <section class="page" id="page-history">
 
-  </div>
+        <div class="page-head">
+          <div>
+            <h2>🕘 ประวัติการใช้งาน</h2>
+            <p>ประวัติการยืม–เช่าและการคืนอุปกรณ์</p>
+          </div>
+        </div>
 
+        <div class="card">
 
-  <div class="table-wrap">
+          <div class="table-wrap">
+            <table>
 
-   <table>
+              <thead>
+                <tr>
+                  <th>เลขที่</th>
+                  <th>อุปกรณ์</th>
+                  <th>วันที่เริ่ม</th>
+                  <th>กำหนดคืน</th>
+                  <th>ค่าบริการ</th>
+                  <th>สถานะ</th>
+                </tr>
+              </thead>
 
-    <thead>
-     <tr>
-      <th>ชื่อ</th>
-      <th>ห้อง</th>
-      <th>เบอร์โทร</th>
-      <th>รายการค้าง</th>
-      <th>ยอดค่าเช่า</th>
-      <th>สถานะ</th>
-     </tr>
-    </thead>
+              <tbody id="historyTable"></tbody>
 
-    <tbody id="memberTable"></tbody>
+            </table>
+          </div>
 
-   </table>
+        </div>
 
-  </div>
+      </section>
 
- </div>
 
-</section>
+      <!-- ==================================================
+           REPORTS
+      ================================================== -->
 
+      <section class="page" id="page-reports">
 
-<!-- ================= REPAIR ================= -->
+        <div class="page-head">
+          <div>
+            <h2>📊 รายงาน</h2>
+            <p>สรุปข้อมูลการใช้งานระบบ</p>
+          </div>
+        </div>
 
-<section id="repair" class="page">
+        <div class="kpi-grid">
 
- <div class="section-head">
+          <div class="kpi">
+            <div class="kpi-label">รายได้จากค่าบริการ</div>
+            <div class="kpi-value" id="reportRevenue">฿0</div>
+          </div>
 
-  <div>
-   <h2>🔧 แจ้งซ่อมอุปกรณ์</h2>
-   <p>ติดตามอุปกรณ์ที่ชำรุดและสถานะการซ่อม</p>
-  </div>
+          <div class="kpi">
+            <div class="kpi-label">สมาชิก</div>
+            <div class="kpi-value" id="reportMembers">0</div>
+          </div>
 
-  <button class="btn orange"
-          onclick="openModal('repairModal')">
-   ＋ แจ้งซ่อม
-  </button>
+          <div class="kpi">
+            <div class="kpi-label">รายการทั้งหมด</div>
+            <div class="kpi-value" id="reportBorrows">0</div>
+          </div>
 
- </div>
+          <div class="kpi">
+            <div class="kpi-label">อุปกรณ์พร้อมใช้งาน</div>
+            <div class="kpi-value" id="reportAvailable">0</div>
+          </div>
 
+        </div>
 
- <div class="stats">
+        <div class="card">
+          <div class="card-title">
+            <h3>📈 การใช้บริการรายเดือน</h3>
+          </div>
 
-  <div class="stat">
-   <h4>แจ้งซ่อมทั้งหมด</h4>
-   <div class="value" id="repairTotal">4</div>
-  </div>
+          <div class="chart" id="reportChart"></div>
+        </div>
 
-  <div class="stat">
-   <h4>รอดำเนินการ</h4>
-   <div class="value">2</div>
-  </div>
+      </section>
 
-  <div class="stat">
-   <h4>กำลังซ่อม</h4>
-   <div class="value">1</div>
-  </div>
 
-  <div class="stat">
-   <h4>ซ่อมเสร็จแล้ว</h4>
-   <div class="value">1</div>
-  </div>
+      <!-- ==================================================
+           REVIEWS
+      ================================================== -->
 
- </div>
+      <section class="page" id="page-reviews">
 
+        <div class="page-head">
 
- <div class="card">
+          <div>
+            <h2>⭐ รีวิว</h2>
+            <p>ความคิดเห็นจากผู้ใช้งาน</p>
+          </div>
 
-  <div class="table-wrap">
+          <button
+            class="btn btn-primary"
+            onclick="openReviewModal()"
+          >
+            + เขียนรีวิว
+          </button>
 
-   <table>
+        </div>
 
-    <thead>
-     <tr>
-      <th>เลขที่</th>
-      <th>อุปกรณ์</th>
-      <th>ผู้แจ้ง</th>
-      <th>ห้อง</th>
-      <th>ปัญหา</th>
-      <th>วันที่แจ้ง</th>
-      <th>สถานะ</th>
-     </tr>
-    </thead>
+        <div id="reviewList"></div>
 
-    <tbody id="repairTable"></tbody>
+      </section>
 
-   </table>
 
-  </div>
+      <!-- ==================================================
+           SETTINGS
+      ================================================== -->
 
- </div>
+      <section class="page" id="page-settings">
 
-</section>
+        <div class="page-head">
 
+          <div>
+            <h2>⚙️ ตั้งค่า</h2>
+            <p>ตั้งค่าระบบ DORMHUB</p>
+          </div>
 
-<!-- ================= HISTORY ================= -->
+        </div>
 
-<section id="history" class="page">
+        <div class="card">
 
- <div class="section-head">
+          <h3 style="margin-bottom:15px">
+            🏫 ข้อมูลหอพัก
+          </h3>
 
-  <div>
-   <h2>🕘 ประวัติการใช้งาน</h2>
-   <p>ประวัติการยืม เช่า และคืนอุปกรณ์</p>
-  </div>
+          <label class="form-label">ชื่อระบบ</label>
+          <input
+            class="form-control"
+            value="DORMHUB"
+            disabled
+          >
 
-  <button class="btn light"
-          onclick="exportCSV()">
-   ⬇ ส่งออก CSV
-  </button>
+          <label class="form-label">มหาวิทยาลัย</label>
+          <input
+            class="form-control"
+            value="มหาวิทยาลัยราชภัฏพิบูลสงคราม"
+            disabled
+          >
 
- </div>
+          <label class="form-label">ค่าปรับคืนล่าช้า / วัน</label>
+          <input
+            class="form-control"
+            id="lateFeeSetting"
+            type="number"
+            value="20"
+          >
 
+          <label class="form-label">เงินประกันเริ่มต้น</label>
+          <input
+            class="form-control"
+            id="depositSetting"
+            type="number"
+            value="100"
+          >
 
- <div class="card">
+          <button
+            class="btn btn-primary"
+            onclick="saveSettings()"
+          >
+            บันทึกการตั้งค่า
+          </button>
 
-  <div class="table-wrap">
+        </div>
 
-   <table>
 
-    <thead>
-     <tr>
-      <th>เลขที่</th>
-      <th>ผู้พัก</th>
-      <th>ห้อง</th>
-      <th>อุปกรณ์</th>
-      <th>ประเภท</th>
-      <th>วันที่ยืม</th>
-      <th>วันที่คืน</th>
-      <th>ค่าบริการ</th>
-      <th>สถานะ</th>
-     </tr>
-    </thead>
+        <div class="card">
 
-    <tbody id="historyTable"></tbody>
+          <h3 style="margin-bottom:10px">
+            💳 ข้อมูลการชำระเงิน
+          </h3>
 
-   </table>
+          <p style="font-size:12px;color:var(--muted);line-height:1.8">
+            รองรับ QR พร้อมเพย์, การโอนเงิน และชำระเงินสดที่สำนักงานหอพัก
+            สำหรับโครงงานสามารถจำลองการชำระเงินได้ภายในเบราว์เซอร์
+          </p>
 
-  </div>
+        </div>
 
- </div>
+      </section>
 
-</section>
-
-
-<!-- ================= REPORT ================= -->
-
-<section id="reports" class="page">
-
- <div class="section-head">
-
-  <div>
-   <h2>📈 รายงานและสถิติ</h2>
-   <p>วิเคราะห์ข้อมูลเพื่อช่วยบริหารจัดการหอพัก</p>
-  </div>
-
-  <button class="btn"
-          onclick="showToast('สร้างรายงานเรียบร้อยแล้ว 📄')">
-   📄 สร้างรายงาน
-  </button>
-
- </div>
-
-
- <div class="grid3">
-
-  <div class="card">
-
-   <h3>💰 รายได้ค่าเช่า</h3>
-
-   <div style="font-size:32px;font-weight:800"
-        id="reportIncome">
-    ฿0
-   </div>
-
-   <p style="color:var(--green);font-size:12px">
-    รายได้จากรายการเช่า
-   </p>
-
-  </div>
-
-
-  <div class="card">
-
-   <h3>📦 อัตราการใช้งาน</h3>
-
-   <div style="font-size:32px;font-weight:800">
-    78%
-   </div>
-
-   <div class="progress">
-    <span style="width:78%"></span>
-   </div>
-
-  </div>
-
-
-  <div class="card">
-
-   <h3>⭐ ความพึงพอใจ</h3>
-
-   <div style="font-size:32px;font-weight:800">
-    4.7/5
-   </div>
-
-   <div class="rating">★★★★★</div>
-
-  </div>
-
- </div>
-
-
- <div class="grid2">
-
-  <div class="card">
-
-   <h3>📊 การใช้งานตามหมวดหมู่</h3>
-
-   <p style="font-size:12px">เครื่องใช้ไฟฟ้า</p>
-   <div class="progress">
-    <span style="width:88%"></span>
-   </div>
-
-   <p style="font-size:12px">ทำความสะอาด</p>
-   <div class="progress">
-    <span style="width:72%"></span>
-   </div>
-
-   <p style="font-size:12px">ครัว</p>
-   <div class="progress">
-    <span style="width:65%"></span>
-   </div>
-
-   <p style="font-size:12px">อุปกรณ์ทั่วไป</p>
-   <div class="progress">
-    <span style="width:54%"></span>
-   </div>
-
-  </div>
-
-
-  <div class="card">
-
-   <h3>💡 ข้อเสนอแนะจากระบบ</h3>
-
-   <div class="activity">
-    <div class="activity-icon">💡</div>
-    <div>
-     <strong>ควรเพิ่มเครื่องดูดฝุ่น</strong>
-     <small>มีการขอใช้งานบ่อยในช่วงวันหยุด</small>
     </div>
-   </div>
-
-   <div class="activity">
-    <div class="activity-icon">⚠️</div>
-    <div>
-     <strong>ติดตามการคืนอุปกรณ์</strong>
-     <small>มีรายการเกินกำหนดคืน</small>
-    </div>
-   </div>
-
-   <div class="activity">
-    <div class="activity-icon">📈</div>
-    <div>
-     <strong>พัดลมมีอัตราการใช้งานสูง</strong>
-     <small>ควรเตรียมอุปกรณ์สำรองในช่วงฤดูร้อน</small>
-    </div>
-   </div>
-
-  </div>
-
- </div>
-
-</section>
-
-
-<!-- ================= GUIDE ================= -->
-
-<section id="guide" class="page">
-
- <div class="section-head">
-
-  <div>
-   <h2>📖 วิธีใช้งานเว็บไซต์</h2>
-   <p>คู่มือการใช้งาน DORMHUB สำหรับผู้พักอาศัย</p>
-  </div>
-
- </div>
-
-
- <div class="card">
-
-  <div class="info-box">
-
-   <h4>🏠 DORMHUB คืออะไร?</h4>
-
-   <p>
-    DORMHUB เป็นระบบบริหารจัดการการยืมและเช่าอุปกรณ์
-    ภายในหอพัก ช่วยให้ผู้พักสามารถค้นหาอุปกรณ์
-    ตรวจสอบสถานะ ส่งคำขอยืม/เช่า และติดตามกำหนดคืน
-    ได้อย่างสะดวก
-   </p>
-
-  </div>
-
-
-  <h3>🚀 ขั้นตอนการใช้งาน</h3>
-
-  <div class="steps">
-
-   <div class="step">
-
-    <div class="step-num">1</div>
-
-    <div>
-     <h4>ค้นหาอุปกรณ์</h4>
-     <p>
-      เข้าเมนู “อุปกรณ์ทั้งหมด”
-      แล้วค้นหาสิ่งของที่ต้องการ เช่น พัดลม
-      หม้อหุงข้าว หรือเครื่องดูดฝุ่น
-     </p>
-    </div>
-
-   </div>
-
-
-   <div class="step">
-
-    <div class="step-num">2</div>
-
-    <div>
-     <h4>ตรวจสอบสถานะ</h4>
-     <p>
-      ตรวจสอบจำนวนอุปกรณ์ที่ว่าง
-      ราคาเช่าต่อวัน และรายละเอียดก่อนทำรายการ
-     </p>
-    </div>
-
-   </div>
-
-
-   <div class="step">
-
-    <div class="step-num">3</div>
-
-    <div>
-     <h4>เลือกยืมหรือเช่า</h4>
-     <p>
-      กดปุ่ม “ยืม/เช่า”
-      แล้วกรอกข้อมูลผู้พัก ห้อง จำนวนวัน
-      และประเภทการใช้งาน
-     </p>
-    </div>
-
-   </div>
-
-
-   <div class="step">
-
-    <div class="step-num">4</div>
-
-    <div>
-     <h4>รอการอนุมัติ</h4>
-     <p>
-      ผู้ดูแลตรวจสอบคำขอและอนุมัติรายการ
-      เมื่ออนุมัติแล้วจึงสามารถรับอุปกรณ์ได้
-     </p>
-    </div>
-
-   </div>
-
-
-   <div class="step">
-
-    <div class="step-num">5</div>
-
-    <div>
-     <h4>รับอุปกรณ์</h4>
-     <p>
-      ผู้พักนำบัตรนักศึกษา/หลักฐานการจอง
-      มารับอุปกรณ์ตามจุดที่กำหนด
-     </p>
-    </div>
-
-   </div>
-
-
-   <div class="step">
-
-    <div class="step-num">6</div>
-
-    <div>
-     <h4>ส่งคืนตามกำหนด</h4>
-     <p>
-      ส่งคืนอุปกรณ์ภายในวันที่กำหนด
-      เพื่อหลีกเลี่ยงค่าปรับกรณีคืนล่าช้า
-     </p>
-    </div>
-
-   </div>
-
-  </div>
-
- </div>
-
-
- <div class="card">
-
-  <h3>✨ ฟังก์ชันสำคัญของระบบ</h3>
-
-  <div class="guide-grid">
-
-   <div class="guide">
-    <div class="guide-icon">🔎</div>
-    <h4>ค้นหาอุปกรณ์</h4>
-    <p>ค้นหาตามชื่อและหมวดหมู่</p>
-   </div>
-
-   <div class="guide">
-    <div class="guide-icon">📦</div>
-    <h4>ตรวจสอบจำนวน</h4>
-    <p>ดูจำนวนที่พร้อมใช้งานแบบทันที</p>
-   </div>
-
-   <div class="guide">
-    <div class="guide-icon">💰</div>
-    <h4>คำนวณค่าเช่า</h4>
-    <p>คำนวณค่าเช่าตามจำนวนวัน</p>
-   </div>
-
-   <div class="guide">
-    <div class="guide-icon">🔔</div>
-    <h4>แจ้งเตือน</h4>
-    <p>แจ้งเตือนก่อนถึงกำหนดคืน</p>
-   </div>
-
-  </div>
-
- </div>
-
-</section>
-
-
-<!-- ================= REVIEWS ================= -->
-
-<section id="reviews" class="page">
-
- <div class="section-head">
-
-  <div>
-   <h2>⭐ รีวิวอุปกรณ์</h2>
-   <p>ความคิดเห็นจากผู้พักอาศัย</p>
-  </div>
-
-  <button class="btn"
-          onclick="openModal('reviewModal')">
-   ＋ เขียนรีวิว
-  </button>
-
- </div>
-
-
- <div class="grid2">
-
-  <div class="card">
-
-   <h3>⭐ คะแนนรวม</h3>
-
-   <div style="font-size:48px;font-weight:800">
-    4.7
-   </div>
-
-   <div class="rating" style="font-size:22px">
-    ★★★★★
-   </div>
-
-   <p style="color:var(--muted);font-size:12px">
-    จากทั้งหมด 126 รีวิว
-   </p>
-
-  </div>
-
-
-  <div class="card">
-
-   <h3>📊 คะแนนรีวิว</h3>
-
-   <div class="stat-mini">
-    <span>5 ดาว</span>
-    <strong>82%</strong>
-   </div>
-
-   <div class="stat-mini">
-    <span>4 ดาว</span>
-    <strong>12%</strong>
-   </div>
-
-   <div class="stat-mini">
-    <span>3 ดาว</span>
-    <strong>4%</strong>
-   </div>
-
-   <div class="stat-mini">
-    <span>1–2 ดาว</span>
-    <strong>2%</strong>
-   </div>
-
-  </div>
-
- </div>
-
-
- <div class="card">
-
-  <h3>💬 รีวิวล่าสุด</h3>
-
-  <div class="review">
-
-   <div class="review-head">
-    <strong>มินตรา พ.</strong>
-    <span class="rating">★★★★★</span>
-   </div>
-
-   <p>
-    เครื่องดูดฝุ่นใช้งานง่ายมาก ระบบจองสะดวก
-    ไม่ต้องเดินไปถามเจ้าหน้าที่หลายรอบ
-   </p>
-
-  </div>
-
-
-  <div class="review">
-
-   <div class="review-head">
-    <strong>พิมพ์ชนก ส.</strong>
-    <span class="rating">★★★★★</span>
-   </div>
-
-   <p>
-    ชอบระบบแจ้งเตือนมาก ทำให้ไม่ลืมวันคืนอุปกรณ์
-   </p>
-
-  </div>
-
-
-  <div class="review">
-
-   <div class="review-head">
-    <strong>กิตติ ว.</strong>
-    <span class="rating">★★★★☆</span>
-   </div>
-
-   <p>
-    มีอุปกรณ์ให้เลือกหลายอย่างและราคาค่าเช่าไม่แพง
-   </p>
-
-  </div>
-
- </div>
-
-</section>
-
-
-<!-- ================= SETTINGS ================= -->
-
-<section id="settings" class="page">
-
- <div class="section-head">
-
-  <div>
-   <h2>⚙️ ตั้งค่าระบบ</h2>
-   <p>กำหนดกฎและข้อมูลพื้นฐานของหอพัก</p>
-  </div>
-
- </div>
-
-
- <div class="card">
-
-  <div class="form-grid">
-
-   <div class="form-group">
-    <label>ชื่อหอพัก</label>
-    <input id="dormName"
-           value="DORMHUB Residence">
-   </div>
-
-   <div class="form-group">
-    <label>ระยะเวลายืมสูงสุด (วัน)</label>
-    <input type="number"
-           id="maxDays"
-           value="7">
-   </div>
-
-   <div class="form-group">
-    <label>เงินประกันเริ่มต้น</label>
-    <input type="number"
-           id="defaultDeposit"
-           value="100">
-   </div>
-
-   <div class="form-group">
-    <label>ค่าปรับคืนล่าช้า/วัน</label>
-    <input type="number"
-           id="lateFee"
-           value="50">
-   </div>
-
-   <div class="form-group">
-    <label>เวลาเปิดให้รับอุปกรณ์</label>
-    <input type="time"
-           value="08:00">
-   </div>
-
-   <div class="form-group">
-    <label>เวลาปิดรับคืน</label>
-    <input type="time"
-           value="20:00">
-   </div>
-
-   <div class="form-group full">
-
-    <label>ข้อความแจ้งเตือนผู้พัก</label>
-
-    <textarea id="noticeText">กรุณาตรวจสอบอุปกรณ์ก่อนรับและส่งคืนตามกำหนดเวลา</textarea>
-
-   </div>
-
-  </div>
-
-
-  <button class="btn"
-          onclick="saveSettings()">
-   💾 บันทึกการตั้งค่า
-  </button>
-
- </div>
-
-
- <div class="card">
-
-  <h3>🔐 ความปลอดภัย</h3>
-
-  <div class="stat-mini">
-   <span>การยืนยันตัวตน</span>
-   <span class="badge ok">เปิดใช้งาน</span>
-  </div>
-
-  <div class="stat-mini">
-   <span>บันทึกประวัติการใช้งาน</span>
-   <span class="badge ok">เปิดใช้งาน</span>
-  </div>
-
-  <div class="stat-mini">
-   <span>แจ้งเตือนคืนล่าช้า</span>
-   <span class="badge ok">เปิดใช้งาน</span>
-  </div>
-
- </div>
-
-</section>
-
-</div>
-</main>
+  </main>
 </div>
 
 
-<!-- ================= BORROW MODAL ================= -->
+<!-- ======================================================
+     BORROW MODAL
+====================================================== -->
 
-<div class="modal" id="borrowModal">
+<div class="modal-bg" id="borrowModal">
 
- <div class="modal-box">
+  <div class="modal">
 
-  <div class="modal-head">
+    <div class="modal-head">
+      <h3>📦 สร้างรายการยืม–เช่า</h3>
 
-   <h2>📋 สร้างรายการยืม / เช่า</h2>
+      <button
+        class="close"
+        onclick="closeModal('borrowModal')"
+      >
+        ✕
+      </button>
+    </div>
 
-   <button class="close"
-           onclick="closeModal('borrowModal')">
-    ×
-   </button>
+    <label class="form-label">อุปกรณ์</label>
 
-  </div>
+    <select class="form-control" id="borrowEquipment"></select>
 
+    <label class="form-label">ประเภทการใช้งาน</label>
 
-  <div class="form-grid">
-
-   <div class="form-group">
-    <label>ชื่อผู้พัก</label>
-    <input id="borrower"
-           placeholder="เช่น น.ส. มินตรา">
-   </div>
-
-   <div class="form-group">
-    <label>ห้อง</label>
-    <input id="room"
-           placeholder="เช่น A-203">
-   </div>
-
-   <div class="form-group full">
-    <label>อุปกรณ์</label>
-    <select id="borrowEquipment"
-            onchange="updateBorrowPrice()">
-    </select>
-   </div>
-
-   <div class="form-group">
-    <label>ประเภท</label>
-    <select id="borrowType"
-            onchange="updateBorrowPrice()">
-     <option value="ยืม">ยืมฟรี</option>
-     <option value="เช่า">เช่ามีค่าบริการ</option>
-    </select>
-   </div>
-
-   <div class="form-group">
-    <label>จำนวนวัน</label>
-    <input type="number"
-           id="borrowDays"
-           value="1"
-           min="1"
-           max="30"
-           oninput="updateBorrowPrice()">
-   </div>
-
-   <div class="form-group">
-    <label>ค่าบริการ</label>
-    <input type="number"
-           id="borrowFee"
-           value="0"
-           min="0">
-   </div>
-
-   <div class="form-group">
-    <label>เงินประกัน</label>
-    <input type="number"
-           id="deposit"
-           value="100"
-           min="0">
-   </div>
-
-  </div>
-
-
-  <div class="info-box">
-
-   <h4>💡 หมายเหตุ</h4>
-
-   <p>
-    ผู้พักต้องรับผิดชอบอุปกรณ์ตลอดระยะเวลาการยืม
-    หากเกิดความเสียหายอาจมีค่าใช้จ่ายเพิ่มเติม
-   </p>
-
-  </div>
-
-
-  <button class="btn"
-          style="width:100%"
-          onclick="addBorrow()">
-   ✓ ยืนยันรายการ
-  </button>
-
- </div>
-
-</div>
-
-
-<!-- ================= EQUIPMENT MODAL ================= -->
-
-<div class="modal" id="equipmentModal">
-
- <div class="modal-box">
-
-  <div class="modal-head">
-
-   <h2>🧰 เพิ่มอุปกรณ์</h2>
-
-   <button class="close"
-           onclick="closeModal('equipmentModal')">
-    ×
-   </button>
-
-  </div>
-
-
-  <div class="form-grid">
-
-   <div class="form-group">
-    <label>ชื่ออุปกรณ์</label>
-    <input id="eqName"
-           placeholder="เช่น เครื่องปั่น">
-   </div>
-
-   <div class="form-group">
-
-    <label>หมวดหมู่</label>
-
-    <select id="eqCat">
-
-     <option>เครื่องใช้ไฟฟ้า</option>
-     <option>ทำความสะอาด</option>
-     <option>ครัว</option>
-     <option>อุปกรณ์ทั่วไป</option>
-     <option>การเรียน</option>
-
+    <select class="form-control" id="borrowType">
+      <option value="ยืม">ยืม</option>
+      <option value="เช่า">เช่า</option>
     </select>
 
-   </div>
+    <label class="form-label">จำนวนวัน</label>
 
+    <input
+      class="form-control"
+      id="borrowDays"
+      type="number"
+      value="3"
+      min="1"
+      max="30"
+    >
 
-   <div class="form-group">
-    <label>จำนวนทั้งหมด</label>
-    <input type="number"
-           id="eqTotal"
-           value="1"
-           min="1">
-   </div>
+    <div class="total-box">
 
+      <div class="total-row">
+        <span>ค่าบริการ</span>
+        <strong id="borrowFeePreview">฿0</strong>
+      </div>
 
-   <div class="form-group">
-    <label>ค่าเช่าต่อวัน</label>
-    <input type="number"
-           id="eqPrice"
-           value="0"
-           min="0">
-   </div>
+      <div class="total-row">
+        <span>เงินประกัน</span>
+        <strong id="borrowDepositPreview">฿100</strong>
+      </div>
 
+      <div class="total-row final">
+        <span>ยอดชำระ</span>
+        <strong id="borrowTotalPreview">฿100</strong>
+      </div>
 
-   <div class="form-group full">
+    </div>
 
-    <label>URL รูปภาพ</label>
-
-    <input id="eqImage"
-           placeholder="https://...">
-
-   </div>
+    <button
+      class="btn btn-primary"
+      style="width:100%"
+      onclick="createBorrow()"
+    >
+      ยืนยันรายการ 💜
+    </button>
 
   </div>
-
-
-  <button class="btn"
-          style="width:100%"
-          onclick="addEquipment()">
-   💾 เพิ่มอุปกรณ์
-  </button>
-
- </div>
 
 </div>
 
 
-<!-- ================= MEMBER MODAL ================= -->
+<!-- ======================================================
+     PAYMENT MODAL
+====================================================== -->
 
-<div class="modal" id="memberModal">
+<div class="modal-bg" id="paymentModal">
 
- <div class="modal-box">
+  <div class="modal">
 
-  <div class="modal-head">
+    <div class="modal-head">
 
-   <h2>👤 เพิ่มผู้พักอาศัย</h2>
+      <h3>💳 ชำระเงิน</h3>
 
-   <button class="close"
-           onclick="closeModal('memberModal')">
-    ×
-   </button>
+      <button
+        class="close"
+        onclick="closeModal('paymentModal')"
+      >
+        ✕
+      </button>
+
+    </div>
+
+    <div id="paymentDetail"></div>
+
+    <div class="payment-methods">
+
+      <button
+        class="method active"
+        data-method="QR พร้อมเพย์"
+        onclick="selectPaymentMethod(this)"
+      >
+        <strong>📱 QR พร้อมเพย์</strong>
+        <small>สแกนเพื่อชำระ</small>
+      </button>
+
+      <button
+        class="method"
+        data-method="โอนธนาคาร"
+        onclick="selectPaymentMethod(this)"
+      >
+        <strong>🏦 โอนธนาคาร</strong>
+        <small>แนบเลขอ้างอิง</small>
+      </button>
+
+      <button
+        class="method"
+        data-method="เงินสด"
+        onclick="selectPaymentMethod(this)"
+      >
+        <strong>💵 เงินสด</strong>
+        <small>สำนักงานหอพัก</small>
+      </button>
+
+      <button
+        class="method"
+        data-method="มหาวิทยาลัย"
+        onclick="selectPaymentMethod(this)"
+      >
+        <strong>🎓 ระบบมหาวิทยาลัย</strong>
+        <small>ช่องทางภายใน</small>
+      </button>
+
+    </div>
+
+    <div id="qrPayment">
+
+      <div class="qr-box">
+
+        <strong>QR พร้อมเพย์</strong>
+
+        <div class="fake-qr"></div>
+
+        <div style="font-size:11px">
+          สำนักงานหอพักนักศึกษา
+        </div>
+
+        <div style="font-size:10px;color:#999">
+          QR ตัวอย่างสำหรับโครงงาน
+        </div>
+
+      </div>
+
+    </div>
+
+    <div id="transferPayment" class="hidden">
+
+      <label class="form-label">
+        เลขอ้างอิงการโอน
+      </label>
+
+      <input
+        class="form-control"
+        id="transferRef"
+        placeholder="เช่น TRX-20260902-001"
+      >
+
+    </div>
+
+    <button
+      class="btn btn-success"
+      style="width:100%;margin-top:5px"
+      onclick="confirmPayment()"
+    >
+      ✓ ยืนยันการชำระเงิน
+    </button>
 
   </div>
-
-
-  <div class="form-grid">
-
-   <div class="form-group">
-    <label>ชื่อ-นามสกุล</label>
-    <input id="memName">
-   </div>
-
-   <div class="form-group">
-    <label>ห้อง</label>
-    <input id="memRoom">
-   </div>
-
-   <div class="form-group full">
-    <label>เบอร์โทร</label>
-    <input id="memPhone">
-   </div>
-
-  </div>
-
-
-  <button class="btn"
-          style="width:100%"
-          onclick="addMember()">
-   💾 เพิ่มผู้พัก
-  </button>
-
- </div>
 
 </div>
 
 
-<!-- ================= REPAIR MODAL ================= -->
+<!-- ======================================================
+     REPAIR MODAL
+====================================================== -->
 
-<div class="modal" id="repairModal">
+<div class="modal-bg" id="repairModal">
 
- <div class="modal-box">
+  <div class="modal">
 
-  <div class="modal-head">
+    <div class="modal-head">
 
-   <h2>🔧 แจ้งซ่อมอุปกรณ์</h2>
+      <h3>🔧 แจ้งซ่อมอุปกรณ์</h3>
 
-   <button class="close"
-           onclick="closeModal('repairModal')">
-    ×
-   </button>
+      <button
+        class="close"
+        onclick="closeModal('repairModal')"
+      >
+        ✕
+      </button>
 
-  </div>
+    </div>
 
+    <label class="form-label">อุปกรณ์</label>
 
-  <div class="form-grid">
+    <select class="form-control" id="repairEquipment"></select>
 
-   <div class="form-group">
-    <label>ชื่อผู้แจ้ง</label>
-    <input id="repairName">
-   </div>
+    <label class="form-label">รายละเอียดปัญหา</label>
 
-   <div class="form-group">
-    <label>ห้อง</label>
-    <input id="repairRoom">
-   </div>
+    <textarea
+      class="form-control"
+      id="repairProblem"
+      rows="4"
+      placeholder="อธิบายปัญหาที่พบ..."
+    ></textarea>
 
-   <div class="form-group full">
-
-    <label>อุปกรณ์</label>
-
-    <select id="repairEquipment"></select>
-
-   </div>
-
-   <div class="form-group full">
-
-    <label>รายละเอียดปัญหา</label>
-
-    <textarea id="repairProblem"
-              placeholder="เช่น เปิดไม่ติด / มีเสียงดัง / สายไฟชำรุด"></textarea>
-
-   </div>
+    <button
+      class="btn btn-primary"
+      style="width:100%"
+      onclick="createRepair()"
+    >
+      ส่งแจ้งซ่อม 🔧
+    </button>
 
   </div>
-
-
-  <button class="btn orange"
-          style="width:100%"
-          onclick="addRepair()">
-   🔧 ส่งรายการแจ้งซ่อม
-  </button>
-
- </div>
 
 </div>
 
 
-<!-- ================= REVIEW MODAL ================= -->
+<!-- ======================================================
+     REVIEW MODAL
+====================================================== -->
 
-<div class="modal" id="reviewModal">
+<div class="modal-bg" id="reviewModal">
 
- <div class="modal-box">
+  <div class="modal">
 
-  <div class="modal-head">
+    <div class="modal-head">
 
-   <h2>⭐ เขียนรีวิวอุปกรณ์</h2>
+      <h3>⭐ เขียนรีวิว</h3>
 
-   <button class="close"
-           onclick="closeModal('reviewModal')">
-    ×
-   </button>
+      <button
+        class="close"
+        onclick="closeModal('reviewModal')"
+      >
+        ✕
+      </button>
 
-  </div>
+    </div>
 
+    <label class="form-label">คะแนน</label>
 
-  <div class="form-group">
+    <select class="form-control" id="reviewRating">
+      <option value="5">⭐⭐⭐⭐⭐ 5 คะแนน</option>
+      <option value="4">⭐⭐⭐⭐ 4 คะแนน</option>
+      <option value="3">⭐⭐⭐ 3 คะแนน</option>
+      <option value="2">⭐⭐ 2 คะแนน</option>
+      <option value="1">⭐ 1 คะแนน</option>
+    </select>
 
-   <label>ชื่อผู้พัก</label>
+    <label class="form-label">ความคิดเห็น</label>
 
-   <input id="reviewName">
+    <textarea
+      class="form-control"
+      id="reviewText"
+      rows="4"
+      placeholder="บอกความรู้สึกเกี่ยวกับการใช้งาน..."
+    ></textarea>
 
-  </div>
-
-
-  <div class="form-group">
-
-   <label>อุปกรณ์</label>
-
-   <select id="reviewEquipment"></select>
-
-  </div>
-
-
-  <div class="form-group">
-
-   <label>คะแนน</label>
-
-   <select id="reviewScore">
-
-    <option value="5">★★★★★ 5 ดาว</option>
-    <option value="4">★★★★☆ 4 ดาว</option>
-    <option value="3">★★★☆☆ 3 ดาว</option>
-    <option value="2">★★☆☆☆ 2 ดาว</option>
-    <option value="1">★☆☆☆☆ 1 ดาว</option>
-
-   </select>
+    <button
+      class="btn btn-primary"
+      style="width:100%"
+      onclick="createReview()"
+    >
+      ส่งรีวิว ⭐
+    </button>
 
   </div>
-
-
-  <div class="form-group">
-
-   <label>ความคิดเห็น</label>
-
-   <textarea id="reviewText"
-             placeholder="บอกความคิดเห็นเกี่ยวกับอุปกรณ์..."></textarea>
-
-  </div>
-
-
-  <button class="btn"
-          style="width:100%"
-          onclick="addReview()">
-   ⭐ ส่งรีวิว
-  </button>
-
- </div>
 
 </div>
 
+
+<!-- PRINT RECEIPT -->
+
+<div class="print-area" id="printArea"></div>
 
 <div class="toast" id="toast"></div>
 
 
 <script>
 
-/* =====================================================
+/* ======================================================
    DATA
-===================================================== */
+====================================================== */
 
-const images={
+const equipmentSeed = [
 
- fan:
- "https://images.unsplash.com/photo-1558008258-3256797b43f3?auto=format&fit=crop&w=900&q=85",
+{
+ id:1,
+ name:"พัดลมตั้งโต๊ะ",
+ category:"เครื่องใช้ไฟฟ้า",
+ total:6,
+ available:4,
+ price:30,
+ rating:4.8,
+ img:"https://images.unsplash.com/photo-1558008258-3256797b43f3?auto=format&fit=crop&w=700&q=80"
+},
 
- vacuum:
- "https://images.unsplash.com/photo-1558317374-067fb5f30001?auto=format&fit=crop&w=900&q=85",
+{
+ id:2,
+ name:"เครื่องดูดฝุ่น",
+ category:"ทำความสะอาด",
+ total:3,
+ available:1,
+ price:50,
+ rating:4.9,
+ img:"https://images.unsplash.com/photo-1558317374-067fb5f30001?auto=format&fit=crop&w=700&q=80"
+},
 
- rice:
- "https://images.unsplash.com/photo-1585515320310-259814833e62?auto=format&fit=crop&w=900&q=85",
+{
+ id:3,
+ name:"หม้อหุงข้าว",
+ category:"ครัว",
+ total:4,
+ available:2,
+ price:40,
+ rating:4.7,
+ img:"https://images.unsplash.com/photo-1585515320310-259814833e62?auto=format&fit=crop&w=700&q=80"
+},
 
- microwave:
- "https://images.unsplash.com/photo-1585659722983-3a675dabf23d?auto=format&fit=crop&w=900&q=85",
+{
+ id:4,
+ name:"ไมโครเวฟ",
+ category:"ครัว",
+ total:2,
+ available:1,
+ price:60,
+ rating:4.8,
+ img:"https://images.unsplash.com/photo-1585659722983-3a675dabf23d?auto=format&fit=crop&w=700&q=80"
+},
 
- iron:
- "https://images.unsplash.com/photo-1633432695599-3b4e8a6a0f2e?auto=format&fit=crop&w=900&q=85",
+{
+ id:5,
+ name:"เตารีด",
+ category:"เครื่องใช้ไฟฟ้า",
+ total:3,
+ available:3,
+ price:25,
+ rating:4.5,
+ img:"https://images.unsplash.com/photo-1633432695599-3b4e8a6a0f2e?auto=format&fit=crop&w=700&q=80"
+},
 
- table:
- "https://images.unsplash.com/photo-1493663284031-b7e3aefcae8?auto=format&fit=crop&w=900&q=85",
+{
+ id:6,
+ name:"ชุดโต๊ะญี่ปุ่น",
+ category:"อุปกรณ์ทั่วไป",
+ total:5,
+ available:3,
+ price:20,
+ rating:4.6,
+ img:"https://images.unsplash.com/photo-1493663284031-b7e3aefcae8?auto=format&fit=crop&w=700&q=80"
+},
 
- rack:
- "https://images.unsplash.com/photo-1595428774223-ef52624120d2?auto=format&fit=crop&w=900&q=85",
+{
+ id:7,
+ name:"ราวตากผ้า",
+ category:"อุปกรณ์ทั่วไป",
+ total:6,
+ available:5,
+ price:20,
+ rating:4.5,
+ img:"https://images.unsplash.com/photo-1595428774223-ef52624120d2?auto=format&fit=crop&w=700&q=80"
+},
 
- mop:
- "https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=900&q=85",
+{
+ id:8,
+ name:"ไม้ถูพื้น",
+ category:"ทำความสะอาด",
+ total:8,
+ available:6,
+ price:0,
+ rating:4.4,
+ img:"https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=700&q=80"
+},
 
- kettle:
- "https://images.unsplash.com/photo-1594213114663-d94db9b17119?auto=format&fit=crop&w=900&q=85",
+{
+ id:9,
+ name:"กาต้มน้ำไฟฟ้า",
+ category:"เครื่องใช้ไฟฟ้า",
+ total:3,
+ available:2,
+ price:30,
+ rating:4.7,
+ img:"https://images.unsplash.com/photo-1594213114663-d94db9b17119?auto=format&fit=crop&w=700&q=80"
+},
 
- blender:
- "https://images.unsplash.com/photo-1570222094114-d054a817e56b?auto=format&fit=crop&w=900&q=85",
+{
+ id:10,
+ name:"เครื่องปั่น",
+ category:"ครัว",
+ total:2,
+ available:2,
+ price:40,
+ rating:4.6,
+ img:"https://images.unsplash.com/photo-1570222094114-d054a817e56b?auto=format&fit=crop&w=700&q=80"
+},
 
- chair:
- "https://images.unsplash.com/photo-1503602642458-232111445657?auto=format&fit=crop&w=900&q=85",
+{
+ id:11,
+ name:"เก้าอี้",
+ category:"อุปกรณ์ทั่วไป",
+ total:10,
+ available:8,
+ price:10,
+ rating:4.3,
+ img:"https://images.unsplash.com/photo-1503602642458-232111445657?auto=format&fit=crop&w=700&q=80"
+},
 
- lamp:
- "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=900&q=85",
+{
+ id:12,
+ name:"โคมไฟอ่านหนังสือ",
+ category:"การเรียน",
+ total:5,
+ available:4,
+ price:15,
+ rating:4.8,
+ img:"https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=700&q=80"
+},
 
- projector:
- "https://images.unsplash.com/photo-1535016120720-40c646be5580?auto=format&fit=crop&w=900&q=85",
+{
+ id:13,
+ name:"โปรเจกเตอร์",
+ category:"การเรียน",
+ total:2,
+ available:1,
+ price:100,
+ rating:4.9,
+ img:"https://images.unsplash.com/photo-1535016120720-40c646be5580?auto=format&fit=crop&w=700&q=80"
+},
 
- extension:
- "https://images.unsplash.com/photo-1619677260315-6a7c1f7e8d2b?auto=format&fit=crop&w=900&q=85",
+{
+ id:14,
+ name:"ปลั๊กพ่วง",
+ category:"เครื่องใช้ไฟฟ้า",
+ total:8,
+ available:6,
+ price:10,
+ rating:4.5,
+ img:"https://images.unsplash.com/photo-1619677260315-6a7c1f7e8d2b?auto=format&fit=crop&w=700&q=80"
+},
 
- keyboard:
- "https://images.unsplash.com/photo-1587829741301-dc798b83add3?auto=format&fit=crop&w=900&q=85",
+{
+ id:15,
+ name:"คีย์บอร์ด",
+ category:"การเรียน",
+ total:4,
+ available:3,
+ price:15,
+ rating:4.4,
+ img:"https://images.unsplash.com/photo-1587829741301-dc798b83add3?auto=format&fit=crop&w=700&q=80"
+},
 
- hairdryer:
- "https://images.unsplash.com/photo-1522338140262-f46f5913618a?auto=format&fit=crop&w=900&q=85"
+{
+ id:16,
+ name:"ไดร์เป่าผม",
+ category:"เครื่องใช้ไฟฟ้า",
+ total:4,
+ available:2,
+ price:30,
+ rating:4.7,
+ img:"https://images.unsplash.com/photo-1522338140262-f46f5913618a?auto=format&fit=crop&w=700&q=80"
+},
 
+{
+ id:17,
+ name:"โต๊ะอ่านหนังสือ",
+ category:"การเรียน",
+ total:4,
+ available:3,
+ price:20,
+ rating:4.5,
+ img:"https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=700&q=80"
+},
+
+{
+ id:18,
+ name:"ไม้แขวนเสื้อ",
+ category:"อุปกรณ์ทั่วไป",
+ total:20,
+ available:17,
+ price:5,
+ rating:4.4,
+ img:"https://images.unsplash.com/photo-1595428774223-ef52624120d2?auto=format&fit=crop&w=700&q=80"
+},
+
+{
+ id:19,
+ name:"ไม้กวาด",
+ category:"ทำความสะอาด",
+ total:10,
+ available:8,
+ price:0,
+ rating:4.3,
+ img:"https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=700&q=80"
+},
+
+{
+ id:20,
+ name:"ถังน้ำ",
+ category:"อุปกรณ์ทั่วไป",
+ total:10,
+ available:9,
+ price:0,
+ rating:4.4,
+ img:"https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=700&q=80"
+}
+
+];
+
+
+/* ======================================================
+   STORAGE
+====================================================== */
+
+const KEY = {
+ user:"dormhub_psru_user",
+ equipment:"dormhub_psru_equipment",
+ borrows:"dormhub_psru_borrows",
+ payments:"dormhub_psru_payments",
+ requests:"dormhub_psru_requests",
+ repairs:"dormhub_psru_repairs",
+ reviews:"dormhub_psru_reviews",
+ members:"dormhub_psru_members",
+ settings:"dormhub_psru_settings"
 };
 
 
-let equipment=
-JSON.parse(localStorage.getItem("dorm_equipment_v2")||"null")
-||
-[
+function getData(key, fallback=[]){
 
- {
-  id:1,
-  name:"พัดลมตั้งโต๊ะ",
-  cat:"เครื่องใช้ไฟฟ้า",
-  total:6,
-  available:4,
-  price:30,
-  image:images.fan,
-  rating:4.8
- },
+  try{
+    const data=localStorage.getItem(key);
 
- {
-  id:2,
-  name:"เครื่องดูดฝุ่น",
-  cat:"ทำความสะอาด",
-  total:3,
-  available:1,
-  price:50,
-  image:images.vacuum,
-  rating:4.9
- },
+    if(data){
+      return JSON.parse(data);
+    }
 
- {
-  id:3,
-  name:"หม้อหุงข้าว",
-  cat:"ครัว",
-  total:4,
-  available:2,
-  price:40,
-  image:images.rice,
-  rating:4.7
- },
+  }catch(e){}
 
- {
-  id:4,
-  name:"ไมโครเวฟ",
-  cat:"ครัว",
-  total:2,
-  available:1,
-  price:60,
-  image:images.microwave,
-  rating:4.8
- },
-
- {
-  id:5,
-  name:"เตารีด",
-  cat:"เครื่องใช้ไฟฟ้า",
-  total:3,
-  available:3,
-  price:25,
-  image:images.iron,
-  rating:4.5
- },
-
- {
-  id:6,
-  name:"ชุดโต๊ะญี่ปุ่น",
-  cat:"อุปกรณ์ทั่วไป",
-  total:5,
-  available:3,
-  price:20,
-  image:images.table,
-  rating:4.6
- },
-
- {
-  id:7,
-  name:"ราวตากผ้า",
-  cat:"อุปกรณ์ทั่วไป",
-  total:6,
-  available:5,
-  price:20,
-  image:images.rack,
-  rating:4.5
- },
-
- {
-  id:8,
-  name:"ไม้ถูพื้น",
-  cat:"ทำความสะอาด",
-  total:8,
-  available:6,
-  price:0,
-  image:images.mop,
-  rating:4.4
- },
-
- {
-  id:9,
-  name:"กาต้มน้ำไฟฟ้า",
-  cat:"เครื่องใช้ไฟฟ้า",
-  total:3,
-  available:2,
-  price:30,
-  image:images.kettle,
-  rating:4.7
- },
-
- {
-  id:10,
-  name:"เครื่องปั่น",
-  cat:"ครัว",
-  total:2,
-  available:2,
-  price:40,
-  image:images.blender,
-  rating:4.6
- },
-
- {
-  id:11,
-  name:"เก้าอี้",
-  cat:"อุปกรณ์ทั่วไป",
-  total:10,
-  available:8,
-  price:10,
-  image:images.chair,
-  rating:4.3
- },
-
- {
-  id:12,
-  name:"โคมไฟอ่านหนังสือ",
-  cat:"การเรียน",
-  total:5,
-  available:4,
-  price:15,
-  image:images.lamp,
-  rating:4.8
- },
-
- {
-  id:13,
-  name:"โปรเจกเตอร์",
-  cat:"การเรียน",
-  total:2,
-  available:1,
-  price:100,
-  image:images.projector,
-  rating:4.9
- },
-
- {
-  id:14,
-  name:"ปลั๊กพ่วง",
-  cat:"เครื่องใช้ไฟฟ้า",
-  total:8,
-  available:6,
-  price:10,
-  image:images.extension,
-  rating:4.5
- },
-
- {
-  id:15,
-  name:"คีย์บอร์ด",
-  cat:"การเรียน",
-  total:4,
-  available:3,
-  price:15,
-  image:images.keyboard,
-  rating:4.4
- },
-
- {
-  id:16,
-  name:"ไดร์เป่าผม",
-  cat:"เครื่องใช้ไฟฟ้า",
-  total:4,
-  available:2,
-  price:30,
-  image:images.hairdryer,
-  rating:4.7
- }
-
-];
+  return fallback;
+}
 
 
-let borrows=
-JSON.parse(localStorage.getItem("dorm_borrows_v2")||"null")
-||
-[
+function setData(key,data){
+  localStorage.setItem(key,JSON.stringify(data));
+}
 
+
+let user=getData(KEY.user,null);
+
+let equipment=getData(KEY.equipment,equipmentSeed);
+
+let borrows=getData(KEY.borrows,[
  {
   id:"BR-1001",
-  name:"มินตรา",
-  room:"A-203",
-  eq:"เครื่องดูดฝุ่น",
+  equipment:"เครื่องดูดฝุ่น",
   type:"ยืม",
-  date:"02/09/2026",
-  due:"04/09/2026",
+  start:"2026-09-02",
+  due:"2026-09-04",
   fee:0,
-  status:"กำลังใช้งาน"
+  deposit:100,
+  status:"กำลังใช้งาน",
+  paymentStatus:"paid"
  },
-
  {
   id:"BR-1002",
-  name:"พิมพ์ชนก",
-  room:"B-105",
-  eq:"พัดลมตั้งโต๊ะ",
+  equipment:"พัดลมตั้งโต๊ะ",
   type:"เช่า",
-  date:"01/09/2026",
-  due:"05/09/2026",
+  start:"2026-09-01",
+  due:"2026-09-05",
   fee:120,
-  status:"กำลังใช้งาน"
- },
-
- {
-  id:"BR-1003",
-  name:"กิตติ",
-  room:"A-101",
-  eq:"หม้อหุงข้าว",
-  type:"เช่า",
-  date:"31/08/2026",
-  due:"03/09/2026",
-  fee:120,
-  status:"ใกล้ครบกำหนด"
- },
-
- {
-  id:"BR-1004",
-  name:"น้ำฝน",
-  room:"C-302",
-  eq:"ชุดโต๊ะญี่ปุ่น",
-  type:"ยืม",
-  date:"30/08/2026",
-  due:"02/09/2026",
-  fee:0,
-  status:"เกินกำหนด"
- },
-
- {
-  id:"BR-1005",
-  name:"ณิชา",
-  room:"A-204",
-  eq:"ไมโครเวฟ",
-  type:"เช่า",
-  date:"28/08/2026",
-  due:"01/09/2026",
-  fee:240,
-  status:"คืนแล้ว"
+  deposit:100,
+  status:"กำลังใช้งาน",
+  paymentStatus:"paid"
  }
+]);
 
-];
+let payments=getData(KEY.payments,[
+ {
+  id:"INV-1001",
+  borrowId:"BR-1002",
+  equipment:"พัดลมตั้งโต๊ะ",
+  student:"พิมพ์ชนก",
+  room:"B-105",
+  fee:120,
+  deposit:100,
+  lateFee:0,
+  total:220,
+  status:"paid",
+  method:"QR พร้อมเพย์",
+  date:"2026-09-01"
+ },
+ {
+  id:"INV-1002",
+  borrowId:"BR-1001",
+  equipment:"เครื่องดูดฝุ่น",
+  student:"มินตรา",
+  room:"A-203",
+  fee:0,
+  deposit:100,
+  lateFee:0,
+  total:100,
+  status:"pending",
+  method:"",
+  date:"2026-09-02"
+ }
+]);
 
-
-let requests=
-JSON.parse(localStorage.getItem("dorm_requests_v2")||"null")
-||
-[
-
+let requests=getData(KEY.requests,[
  {
   id:"RQ-001",
   name:"ณิชา",
   room:"A-204",
-  eq:"พัดลมตั้งโต๊ะ",
+  equipment:"พัดลมตั้งโต๊ะ",
   type:"เช่า",
-  date:"02/09/2026",
+  date:"2026-09-02",
   status:"รออนุมัติ"
  },
-
  {
   id:"RQ-002",
   name:"กวิน",
   room:"B-201",
-  eq:"เครื่องดูดฝุ่น",
+  equipment:"เครื่องดูดฝุ่น",
   type:"ยืม",
-  date:"02/09/2026",
+  date:"2026-09-02",
   status:"รออนุมัติ"
  },
-
  {
   id:"RQ-003",
   name:"แพรวา",
   room:"C-101",
-  eq:"หม้อหุงข้าว",
+  equipment:"หม้อหุงข้าว",
   type:"เช่า",
-  date:"01/09/2026",
+  date:"2026-09-01",
   status:"รออนุมัติ"
- },
-
- {
-  id:"RQ-004",
-  name:"ธนภัทร",
-  room:"B-304",
-  eq:"โปรเจกเตอร์",
-  type:"เช่า",
-  date:"01/09/2026",
-  status:"อนุมัติแล้ว"
  }
+]);
 
-];
-
-
-let members=
-JSON.parse(localStorage.getItem("dorm_members_v2")||"null")
-||
-[
-
- {
-  name:"มินตรา พ.",
-  room:"A-203",
-  phone:"081-234-5678",
-  active:1,
-  fee:0,
-  status:"ปกติ"
- },
-
- {
-  name:"พิมพ์ชนก ส.",
-  room:"B-105",
-  phone:"082-345-6789",
-  active:1,
-  fee:120,
-  status:"ปกติ"
- },
-
- {
-  name:"กิตติ ว.",
-  room:"A-101",
-  phone:"083-456-7890",
-  active:1,
-  fee:120,
-  status:"ปกติ"
- },
-
- {
-  name:"น้ำฝน ร.",
-  room:"C-302",
-  phone:"084-567-8901",
-  active:1,
-  fee:0,
-  status:"ติดตามการคืน"
- },
-
- {
-  name:"ณิชา ก.",
-  room:"A-204",
-  phone:"085-678-9012",
-  active:0,
-  fee:240,
-  status:"ปกติ"
- },
-
- {
-  name:"แพรวา จ.",
-  room:"C-101",
-  phone:"086-789-0123",
-  active:0,
-  fee:0,
-  status:"ปกติ"
- },
-
- {
-  name:"กวิน ท.",
-  room:"B-201",
-  phone:"087-890-1234",
-  active:0,
-  fee:0,
-  status:"ปกติ"
- },
-
- {
-  name:"ธนภัทร ก.",
-  room:"B-304",
-  phone:"088-901-2345",
-  active:0,
-  fee:100,
-  status:"ปกติ"
- }
-
-];
-
-
-let repairs=
-JSON.parse(localStorage.getItem("dorm_repairs")||"null")
-||
-[
-
+let repairs=getData(KEY.repairs,[
  {
   id:"RP-001",
-  eq:"พัดลมตั้งโต๊ะ",
+  equipment:"พัดลมตั้งโต๊ะ",
   name:"น้ำฝน",
   room:"C-302",
-  problem:"พัดลมมีเสียงดัง",
-  date:"01/09/2026",
+  problem:"เสียงดัง",
+  date:"2026-09-01",
   status:"กำลังซ่อม"
  },
-
  {
   id:"RP-002",
-  eq:"ไมโครเวฟ",
+  equipment:"ไมโครเวฟ",
   name:"มินตรา",
   room:"A-203",
   problem:"ปุ่มกดไม่ทำงาน",
-  date:"31/08/2026",
-  status:"รอดำเนินการ"
- },
-
- {
-  id:"RP-003",
-  eq:"เตารีด",
-  name:"พิมพ์ชนก",
-  room:"B-105",
-  problem:"ความร้อนไม่สม่ำเสมอ",
-  date:"29/08/2026",
-  status:"ซ่อมเสร็จแล้ว"
- },
-
- {
-  id:"RP-004",
-  eq:"เครื่องดูดฝุ่น",
-  name:"กิตติ",
-  room:"A-101",
-  problem:"ดูดฝุ่นไม่แรง",
-  date:"28/08/2026",
+  date:"2026-08-31",
   status:"รอดำเนินการ"
  }
+]);
 
-];
+let reviews=getData(KEY.reviews,[
+ {
+  name:"มินตรา",
+  equipment:"เครื่องดูดฝุ่น",
+  rating:5,
+  text:"ใช้งานง่ายมากค่ะ อุปกรณ์สะอาดดี 💜",
+  date:"2026-09-02"
+ }
+]);
+
+let members=getData(KEY.members,[
+ {
+  id:"661234567",
+  name:"มินตรา ใจดี",
+  room:"A-203",
+  phone:"08X-XXX-1111",
+  active:1,
+  status:"ใช้งาน"
+ },
+ {
+  id:"661234568",
+  name:"พิมพ์ชนก สุขใจ",
+  room:"B-105",
+  phone:"08X-XXX-2222",
+  active:1,
+  status:"ใช้งาน"
+ },
+ {
+  id:"661234569",
+  name:"กิตติ พัฒนา",
+  room:"A-101",
+  phone:"08X-XXX-3333",
+  active:0,
+  status:"ใช้งาน"
+ }
+]);
+
+let settings=getData(KEY.settings,{
+ lateFee:20,
+ deposit:100
+});
 
 
-let reviews=
-JSON.parse(localStorage.getItem("dorm_reviews")||"null")
-||
-[];
+/* ======================================================
+   HELPERS
+====================================================== */
+
+function money(value){
+  return "฿"+Number(value||0).toLocaleString("th-TH");
+}
 
 
-/* =====================================================
-   PAGE INFO
-===================================================== */
+function today(){
 
-const info={
+  const d=new Date();
 
- dashboard:[
-  "แดชบอร์ด",
-  "ภาพรวมการยืมและเช่าอุปกรณ์ในหอพัก"
- ],
+  return d.toISOString().split("T")[0];
 
- equipment:[
-  "อุปกรณ์ทั้งหมด",
-  "ค้นหา ตรวจสอบ และจัดการอุปกรณ์"
- ],
+}
 
- borrow:[
-  "ยืม / เช่าอุปกรณ์",
-  "จัดการรายการยืมและเช่าของผู้พัก"
- ],
 
- requests:[
-  "รายการคำขอ",
-  "อนุมัติหรือปฏิเสธคำขอจากผู้พัก"
- ],
+function formatDate(date){
 
- notifications:[
-  "ศูนย์แจ้งเตือน",
-  "ข่าวสารและการแจ้งเตือนจากระบบ"
- ],
+  if(!date)return"-";
 
- members:[
-  "ผู้พักอาศัย",
-  "ข้อมูลผู้ใช้งานระบบ"
- ],
+  const d=new Date(date+"T00:00:00");
 
- repair:[
-  "แจ้งซ่อม",
-  "ติดตามอุปกรณ์ที่ชำรุด"
- ],
+  return d.toLocaleDateString("th-TH",{
+    day:"2-digit",
+    month:"2-digit",
+    year:"numeric"
+  });
 
- history:[
-  "ประวัติการใช้งาน",
-  "ประวัติการยืม เช่า และคืน"
- ],
+}
 
- reports:[
-  "รายงานและสถิติ",
-  "วิเคราะห์ข้อมูลการใช้งานระบบ"
- ],
 
- guide:[
-  "วิธีใช้งานเว็บไซต์",
-  "คู่มือการใช้งาน DORMHUB"
- ],
+function uid(prefix){
 
- reviews:[
-  "รีวิวอุปกรณ์",
-  "ความคิดเห็นจากผู้พักอาศัย"
- ],
+  return prefix+
+    Date.now().toString().slice(-6)+
+    Math.floor(Math.random()*90+10);
 
- settings:[
-  "ตั้งค่าระบบ",
-  "กำหนดกฎและข้อมูลพื้นฐาน"
- ]
+}
 
+
+function escapeHTML(text){
+
+  return String(text??"")
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+
+}
+
+
+function toast(message){
+
+  const el=document.getElementById("toast");
+
+  el.textContent=message;
+
+  el.classList.add("show");
+
+  setTimeout(()=>{
+    el.classList.remove("show");
+  },2500);
+
+}
+
+
+/* ======================================================
+   LOGIN
+====================================================== */
+
+document.getElementById("loginForm").addEventListener("submit",function(e){
+
+  e.preventDefault();
+
+  user={
+    name:document.getElementById("loginName").value.trim(),
+    studentId:document.getElementById("loginStudentId").value.trim(),
+    building:document.getElementById("loginBuilding").value,
+    room:document.getElementById("loginRoom").value.trim()
+  };
+
+  if(!user.name || !user.studentId || !user.building || !user.room){
+    toast("กรุณากรอกข้อมูลให้ครบ 💜");
+    return;
+  }
+
+  localStorage.setItem(KEY.user,JSON.stringify(user));
+
+  startApp();
+
+});
+
+
+function startApp(){
+
+  user=getData(KEY.user,null);
+
+  if(!user)return;
+
+  document.getElementById("welcomeScreen").style.display="none";
+
+  document.getElementById("app").classList.add("active");
+
+  updateUserUI();
+
+  renderAll();
+
+}
+
+
+function updateUserUI(){
+
+  if(!user)return;
+
+  const first=user.name.charAt(0);
+
+  document.getElementById("sideAvatar").textContent=first;
+
+  document.getElementById("sideName").textContent=user.name;
+
+  document.getElementById("sideRoom").textContent=
+    user.building+" • ห้อง "+user.room;
+
+  document.getElementById("heroName").textContent=user.name;
+
+  document.getElementById("heroStudentId").textContent=user.studentId;
+
+  document.getElementById("heroRoom").textContent=
+    user.building+" • ห้อง "+user.room;
+
+}
+
+
+function logout(){
+
+  if(confirm("ต้องการออกจากระบบหรือไม่?")){
+
+    localStorage.removeItem(KEY.user);
+
+    location.reload();
+
+  }
+
+}
+
+
+/* ======================================================
+   NAVIGATION
+====================================================== */
+
+const pageNames={
+ dashboard:"หน้าหลัก",
+ equipment:"อุปกรณ์",
+ borrow:"รายการยืม–เช่า",
+ payments:"ชำระเงิน",
+ requests:"คำขอ",
+ notifications:"แจ้งเตือน",
+ members:"สมาชิก",
+ repair:"แจ้งซ่อม",
+ history:"ประวัติ",
+ reports:"รายงาน",
+ reviews:"รีวิว",
+ settings:"ตั้งค่า"
 };
 
 
-/* =====================================================
-   NAVIGATION
-===================================================== */
+document.querySelectorAll(".nav-btn").forEach(btn=>{
 
-function showPage(id,btn){
+  btn.addEventListener("click",()=>{
 
- document
- .querySelectorAll(".page")
- .forEach(x=>x.classList.remove("active"));
+    showPage(btn.dataset.page);
 
- document
- .getElementById(id)
- .classList.add("active");
+  });
+
+});
 
 
- document
- .querySelectorAll(".menu button")
- .forEach(x=>x.classList.remove("active"));
+function showPage(page){
 
- if(btn)btn.classList.add("active");
+  document.querySelectorAll(".page")
+    .forEach(p=>p.classList.remove("active"));
 
+  const target=document.getElementById("page-"+page);
 
- document.getElementById("pageTitle").textContent=
- info[id][0];
+  if(target){
+    target.classList.add("active");
+  }
 
- document.getElementById("pageSubtitle").textContent=
- info[id][1];
+  document.querySelectorAll(".nav-btn")
+    .forEach(btn=>{
+      btn.classList.toggle(
+        "active",
+        btn.dataset.page===page
+      );
+    });
 
+  document.getElementById("topTitle").textContent=
+    pageNames[page]||"DORMHUB";
 
- document
- .getElementById("sidebar")
- .classList.remove("open");
+  document.getElementById("sidebar")
+    .classList.remove("open");
 
-
- window.scrollTo({
-  top:0,
-  behavior:"smooth"
- });
-
-
- if(id==="equipment")renderEquipment();
- if(id==="borrow")renderBorrow();
- if(id==="requests")renderRequests();
- if(id==="members")renderMembers();
- if(id==="history")renderHistory();
- if(id==="repair")renderRepairs();
- if(id==="reviews")renderReviews();
+  if(page==="payments"){
+    renderPayments();
+  }
 
 }
 
 
 function toggleSidebar(){
 
- document
- .getElementById("sidebar")
- .classList.toggle("open");
+  document.getElementById("sidebar")
+    .classList.toggle("open");
 
 }
 
 
-function toggleTheme(){
+/* ======================================================
+   DASHBOARD
+====================================================== */
 
- document.body.classList.toggle("dark-mode");
+function renderDashboard(){
 
- const dark=
- document.body.classList.contains("dark-mode");
+  document.getElementById("kpiEquipment").textContent=
+    equipment.reduce((sum,e)=>sum+e.total,0);
 
- document.getElementById("themeBtn").textContent=
- dark?"☀️":"🌙";
+  document.getElementById("kpiBorrow").textContent=
+    borrows.filter(b=>b.status!=="คืนแล้ว").length;
 
- localStorage.setItem("dorm_theme",dark?"dark":"light");
+  const pending=
+    payments
+      .filter(p=>p.status==="pending")
+      .reduce((sum,p)=>sum+p.total,0);
+
+  document.getElementById("kpiPayment").textContent=
+    money(pending);
+
+  const popular=
+    [...equipment]
+    .sort((a,b)=>b.rating-a.rating)
+    .slice(0,5);
+
+  document.getElementById("popularEquipment").innerHTML=
+    popular.map(e=>`
+
+      <div style="
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        padding:10px 0;
+        border-bottom:1px solid var(--border)
+      ">
+
+        <div>
+          <strong style="font-size:12px">
+            ${escapeHTML(e.name)}
+          </strong>
+
+          <div style="font-size:10px;color:var(--muted)">
+            ⭐ ${e.rating} • เหลือ ${e.available} ชิ้น
+          </div>
+        </div>
+
+        <strong style="font-size:11px;color:var(--primary)">
+          ${e.price?money(e.price)+"/วัน":"ฟรี"}
+        </strong>
+
+      </div>
+
+    `).join("");
+
+  const latest=payments.slice(-4).reverse();
+
+  document.getElementById("dashboardPayments").innerHTML=
+    latest.length
+    ?
+    latest.map(p=>`
+
+      <div style="
+        display:flex;
+        justify-content:space-between;
+        padding:10px 0;
+        border-bottom:1px solid var(--border)
+      ">
+
+        <div>
+          <strong style="font-size:11px">
+            ${escapeHTML(p.equipment)}
+          </strong>
+
+          <div style="font-size:9px;color:var(--muted)">
+            ${p.id}
+          </div>
+        </div>
+
+        <span class="status ${p.status==="paid"?"green":"orange"}">
+          ${p.status==="paid"?"ชำระแล้ว":"รอชำระ"}
+        </span>
+
+      </div>
+
+    `).join("")
+    :
+    `<div class="empty">ยังไม่มีรายการ</div>`;
+
+  renderChart("dashboardChart");
 
 }
 
 
-/* =====================================================
-   STORAGE
-===================================================== */
+/* ======================================================
+   EQUIPMENT
+====================================================== */
 
-function save(){
+function renderEquipment(){
 
- localStorage.setItem(
-  "dorm_equipment_v2",
-  JSON.stringify(equipment)
- );
+  const search=
+    (document.getElementById("equipmentSearch")?.value||"")
+    .toLowerCase();
 
- localStorage.setItem(
-  "dorm_borrows_v2",
-  JSON.stringify(borrows)
- );
+  const category=
+    document.getElementById("equipmentCategory")?.value||"";
 
- localStorage.setItem(
-  "dorm_requests_v2",
-  JSON.stringify(requests)
- );
+  const list=equipment.filter(e=>{
 
- localStorage.setItem(
-  "dorm_members_v2",
-  JSON.stringify(members)
- );
+    const match=
+      e.name.toLowerCase().includes(search);
 
- localStorage.setItem(
-  "dorm_repairs",
-  JSON.stringify(repairs)
- );
+    const cat=
+      !category || e.category===category;
 
- localStorage.setItem(
-  "dorm_reviews",
-  JSON.stringify(reviews)
- );
+    return match && cat;
+
+  });
+
+  const grid=document.getElementById("equipmentGrid");
+
+  if(!list.length){
+
+    grid.innerHTML=`
+      <div class="empty" style="grid-column:1/-1">
+        <div class="empty-icon">📦</div>
+        ไม่พบอุปกรณ์
+      </div>
+    `;
+
+    return;
+
+  }
+
+  grid.innerHTML=list.map(e=>{
+
+    const percent=
+      Math.max(
+        0,
+        Math.min(
+          100,
+          (e.available/e.total)*100
+        )
+      );
+
+    return`
+
+      <div class="equip-card">
+
+        <img
+          class="equip-img"
+          src="${e.img}"
+          alt="${escapeHTML(e.name)}"
+          onerror="this.src='https://images.unsplash.com/photo-1558008258-3256797b43f3?auto=format&fit=crop&w=700&q=80'"
+        >
+
+        <div class="equip-body">
+
+          <span class="equip-category">
+            ${escapeHTML(e.category)}
+          </span>
+
+          <div class="equip-name">
+            ${escapeHTML(e.name)}
+          </div>
+
+          <div class="equip-meta">
+
+            <span>
+              ⭐ ${e.rating}
+            </span>
+
+            <span>
+              เหลือ ${e.available}/${e.total}
+            </span>
+
+          </div>
+
+          <div class="stockbar">
+            <span style="width:${percent}%"></span>
+          </div>
+
+          <div class="equip-meta">
+
+            <span class="equip-price">
+              ${e.price?money(e.price)+"/วัน":"ฟรี"}
+            </span>
+
+            <button
+              class="btn btn-primary"
+              onclick="openBorrowModal(${e.id})"
+            >
+              ยืม
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    `;
+
+  }).join("");
 
 }
 
 
-/* =====================================================
-   TOAST
-===================================================== */
+/* ======================================================
+   BORROW
+====================================================== */
 
-function showToast(msg){
+function openBorrowModal(equipmentId){
 
- const t=document.getElementById("toast");
+  const select=
+    document.getElementById("borrowEquipment");
 
- const d=document.createElement("div");
+  select.innerHTML=
+    equipment
+    .filter(e=>e.available>0)
+    .map(e=>`
+      <option
+        value="${e.id}"
+        ${equipmentId==e.id?"selected":""}
+      >
+        ${escapeHTML(e.name)}
+        ${e.price?` • ${money(e.price)}/วัน`:" • ฟรี"}
+      </option>
+    `)
+    .join("");
 
- d.className="toast-item";
+  updateBorrowPreview();
 
- d.textContent=msg;
+  document.getElementById("borrowDays")
+    .oninput=updateBorrowPreview;
 
- t.appendChild(d);
+  select.onchange=updateBorrowPreview;
 
- setTimeout(()=>{
-  d.remove();
- },2600);
+  document.getElementById("borrowModal")
+    .classList.add("show");
 
 }
 
 
-/* =====================================================
+function updateBorrowPreview(){
+
+  const id=
+    Number(document.getElementById("borrowEquipment").value);
+
+  const days=
+    Number(document.getElementById("borrowDays").value)||1;
+
+  const item=equipment.find(e=>e.id===id);
+
+  if(!item)return;
+
+  const fee=item.price*days;
+
+  const deposit=
+    Number(settings.deposit||100);
+
+  document.getElementById("borrowFeePreview")
+    .textContent=money(fee);
+
+  document.getElementById("borrowDepositPreview")
+    .textContent=money(deposit);
+
+  document.getElementById("borrowTotalPreview")
+    .textContent=money(fee+deposit);
+
+}
+
+
+function createBorrow(){
+
+  const equipmentId=
+    Number(document.getElementById("borrowEquipment").value);
+
+  const type=
+    document.getElementById("borrowType").value;
+
+  const days=
+    Number(document.getElementById("borrowDays").value)||1;
+
+  const item=
+    equipment.find(e=>e.id===equipmentId);
+
+  if(!item || item.available<=0){
+
+    toast("อุปกรณ์ไม่พร้อมให้บริการ");
+    return;
+
+  }
+
+  const start=today();
+
+  const dueDateObj=
+    new Date(start+"T00:00:00");
+
+  dueDateObj.setDate(
+    dueDateObj.getDate()+days
+  );
+
+  const due=
+    dueDateObj.toISOString().split("T")[0];
+
+  const fee=item.price*days;
+
+  const deposit=Number(settings.deposit||100);
+
+  const borrowId=uid("BR-");
+
+  const borrow={
+
+    id:borrowId,
+
+    equipment:item.name,
+
+    type:type,
+
+    start:start,
+
+    due:due,
+
+    fee:fee,
+
+    deposit:deposit,
+
+    status:"กำลังใช้งาน",
+
+    paymentStatus:"pending"
+
+  };
+
+  borrows.push(borrow);
+
+  item.available--;
+
+  const payment={
+
+    id:uid("INV-"),
+
+    borrowId:borrowId,
+
+    equipment:item.name,
+
+    student:user.name,
+
+    room:user.room,
+
+    fee:fee,
+
+    deposit:deposit,
+
+    lateFee:0,
+
+    total:fee+deposit,
+
+    status:"pending",
+
+    method:"",
+
+    date:start
+
+  };
+
+  payments.push(payment);
+
+  setData(KEY.borrows,borrows);
+
+  setData(KEY.equipment,equipment);
+
+  setData(KEY.payments,payments);
+
+  closeModal("borrowModal");
+
+  renderAll();
+
+  toast("สร้างรายการสำเร็จ 💜 กรุณาชำระเงิน");
+
+  showPage("payments");
+
+}
+
+
+/* ======================================================
+   PAYMENTS
+====================================================== */
+
+let selectedPaymentId=null;
+
+let selectedMethod="QR พร้อมเพย์";
+
+
+function renderPayments(){
+
+  const pending=
+    payments
+    .filter(p=>p.status==="pending")
+    .reduce((sum,p)=>sum+p.total,0);
+
+  const paid=
+    payments
+    .filter(p=>p.status==="paid")
+    .reduce((sum,p)=>sum+p.fee+p.lateFee,0);
+
+  const deposit=
+    payments
+    .filter(p=>p.status==="paid")
+    .reduce((sum,p)=>sum+p.deposit,0);
+
+  document.getElementById("payPending").textContent=
+    money(pending);
+
+  document.getElementById("payPaid").textContent=
+    money(paid);
+
+  document.getElementById("payDeposit").textContent=
+    money(deposit);
+
+  document.getElementById("payTransactions").textContent=
+    payments.length;
+
+  document.getElementById("paymentBadge").textContent=
+    payments.filter(p=>p.status==="pending").length;
+
+  const filter=
+    document.getElementById("paymentFilter")?.value||"";
+
+  const list=
+    payments
+    .filter(p=>!filter || p.status===filter)
+    .slice()
+    .reverse();
+
+  const box=document.getElementById("invoiceList");
+
+  if(!list.length){
+
+    box.innerHTML=`
+      <div class="empty">
+        <div class="empty-icon">💳</div>
+        ไม่มีรายการชำระเงิน
+      </div>
+    `;
+
+    return;
+
+  }
+
+  box.innerHTML=list.map(p=>`
+
+    <div class="invoice">
+
+      <div class="invoice-info">
+
+        <h4>
+          ${escapeHTML(p.equipment)}
+        </h4>
+
+        <p>
+          ${p.id} • ${formatDate(p.date)}
+        </p>
+
+        <p>
+          ${escapeHTML(p.student)}
+          • ห้อง ${escapeHTML(p.room)}
+        </p>
+
+        <div style="margin-top:7px">
+
+          <span class="status ${
+            p.status==="paid"?"green":"orange"
+          }">
+            ${p.status==="paid"?"✓ ชำระแล้ว":"⏳ รอชำระ"}
+          </span>
+
+        </div>
+
+      </div>
+
+      <div class="invoice-amount">
+
+        <div>
+          <small style="color:var(--muted)">
+            ยอดรวม
+          </small>
+
+          <strong>
+            ${money(p.total)}
+          </strong>
+        </div>
+
+        ${
+          p.status==="pending"
+          ?
+          `<button
+            class="btn btn-primary"
+            onclick="openPayment('${p.id}')"
+          >
+            ชำระทันที
+          </button>`
+          :
+          `<button
+            class="btn btn-light"
+            onclick="printReceipt('${p.id}')"
+          >
+            🧾 ใบเสร็จ
+          </button>`
+        }
+
+      </div>
+
+    </div>
+
+  `).join("");
+
+}
+
+
+function openPayment(id){
+
+  selectedPaymentId=id;
+
+  const p=
+    payments.find(x=>x.id===id);
+
+  if(!p)return;
+
+  selectedMethod="QR พร้อมเพย์";
+
+  document.querySelectorAll(".method")
+    .forEach((el,i)=>{
+      el.classList.toggle("active",i===0);
+    });
+
+  document.getElementById("paymentDetail").innerHTML=`
+
+    <div class="total-box">
+
+      <div class="total-row">
+        <span>เลขที่ใบแจ้งหนี้</span>
+        <strong>${p.id}</strong>
+      </div>
+
+      <div class="total-row">
+        <span>อุปกรณ์</span>
+        <strong>${escapeHTML(p.equipment)}</strong>
+      </div>
+
+      <div class="total-row">
+        <span>ค่าบริการ</span>
+        <strong>${money(p.fee)}</strong>
+      </div>
+
+      <div class="total-row">
+        <span>เงินประกัน</span>
+        <strong>${money(p.deposit)}</strong>
+      </div>
+
+      ${
+        p.lateFee
+        ?
+        `
+        <div class="total-row">
+          <span>ค่าปรับล่าช้า</span>
+          <strong>${money(p.lateFee)}</strong>
+        </div>
+        `
+        :""
+      }
+
+      <div class="total-row final">
+        <span>ยอดที่ต้องชำระ</span>
+        <strong>${money(p.total)}</strong>
+      </div>
+
+    </div>
+
+  `;
+
+  document.getElementById("paymentModal")
+    .classList.add("show");
+
+}
+
+
+function selectPaymentMethod(button){
+
+  document.querySelectorAll(".method")
+    .forEach(el=>el.classList.remove("active"));
+
+  button.classList.add("active");
+
+  selectedMethod=
+    button.dataset.method;
+
+  document.getElementById("qrPayment")
+    .classList.toggle(
+      "hidden",
+      selectedMethod!=="QR พร้อมเพย์"
+    );
+
+  document.getElementById("transferPayment")
+    .classList.toggle(
+      "hidden",
+      selectedMethod!=="โอนธนาคาร"
+    );
+
+}
+
+
+function confirmPayment(){
+
+  if(!selectedPaymentId)return;
+
+  const p=
+    payments.find(x=>x.id===selectedPaymentId);
+
+  if(!p)return;
+
+  if(selectedMethod==="โอนธนาคาร"){
+
+    const ref=
+      document.getElementById("transferRef").value.trim();
+
+    if(!ref){
+
+      toast("กรุณาใส่เลขอ้างอิงการโอน");
+      return;
+
+    }
+
+  }
+
+  p.status="paid";
+
+  p.method=selectedMethod;
+
+  p.paidAt=
+    new Date().toISOString();
+
+  if(selectedMethod==="โอนธนาคาร"){
+
+    p.reference=
+      document.getElementById("transferRef").value.trim();
+
+  }
+
+  const borrow=
+    borrows.find(b=>b.id===p.borrowId);
+
+  if(borrow){
+
+    borrow.paymentStatus="paid";
+
+  }
+
+  setData(KEY.payments,payments);
+
+  setData(KEY.borrows,borrows);
+
+  closeModal("paymentModal");
+
+  renderAll();
+
+  toast("ชำระเงินสำเร็จแล้ว 💚");
+
+}
+
+
+/* ======================================================
+   RECEIPT
+====================================================== */
+
+function printReceipt(id){
+
+  const p=
+    payments.find(x=>x.id===id);
+
+  if(!p)return;
+
+  document.getElementById("printArea").innerHTML=`
+
+    <div style="max-width:700px;margin:auto">
+
+      <h1 style="text-align:center">
+        DORMHUB
+      </h1>
+
+      <h2 style="text-align:center">
+        มหาวิทยาลัยราชภัฏพิบูลสงคราม
+      </h2>
+
+      <p style="text-align:center">
+        สำนักงานหอพักนักศึกษา
+      </p>
+
+      <hr style="margin:20px 0">
+
+      <p>
+        <strong>ใบเสร็จเลขที่:</strong> ${p.id}
+      </p>
+
+      <p>
+        <strong>วันที่:</strong> ${formatDate(p.date)}
+      </p>
+
+      <p>
+        <strong>นักศึกษา:</strong> ${escapeHTML(p.student)}
+      </p>
+
+      <p>
+        <strong>ห้อง:</strong> ${escapeHTML(p.room)}
+      </p>
+
+      <p>
+        <strong>อุปกรณ์:</strong> ${escapeHTML(p.equipment)}
+      </p>
+
+      <hr style="margin:20px 0">
+
+      <p>
+        ค่าบริการ: ${money(p.fee)}
+      </p>
+
+      <p>
+        เงินประกัน: ${money(p.deposit)}
+      </p>
+
+      <p>
+        ค่าปรับล่าช้า: ${money(p.lateFee)}
+      </p>
+
+      <h2 style="margin-top:20px">
+        ยอดรวม: ${money(p.total)}
+      </h2>
+
+      <p>
+        ช่องทางชำระเงิน: ${escapeHTML(p.method||"-")}
+      </p>
+
+      <hr style="margin:25px 0">
+
+      <p style="text-align:center">
+        ✓ ชำระเงินเรียบร้อย
+      </p>
+
+      <p style="text-align:center;font-size:12px">
+        เอกสารนี้เป็นใบเสร็จตัวอย่างสำหรับระบบต้นแบบ DORMHUB
+      </p>
+
+    </div>
+
+  `;
+
+  window.print();
+
+}
+
+
+/* ======================================================
+   BORROW TABLE
+====================================================== */
+
+function renderBorrows(){
+
+  const tbody=
+    document.getElementById("borrowTable");
+
+  if(!borrows.length){
+
+    tbody.innerHTML=`
+      <tr>
+        <td colspan="8">
+          <div class="empty">
+            ยังไม่มีรายการ
+          </div>
+        </td>
+      </tr>
+    `;
+
+    return;
+
+  }
+
+  tbody.innerHTML=
+    borrows.slice().reverse().map(b=>`
+
+      <tr>
+
+        <td><strong>${b.id}</strong></td>
+
+        <td>${escapeHTML(b.equipment)}</td>
+
+        <td>${b.type}</td>
+
+        <td>${formatDate(b.start)}</td>
+
+        <td>${formatDate(b.due)}</td>
+
+        <td>${money(b.fee)}</td>
+
+        <td>
+          <span class="status ${
+            b.status==="กำลังใช้งาน"
+            ?"blue"
+            :"green"
+          }">
+            ${b.status}
+          </span>
+        </td>
+
+        <td>
+
+          ${
+            b.status!=="คืนแล้ว"
+            ?
+            `<button
+              class="btn btn-success"
+              onclick="returnBorrow('${b.id}')"
+            >
+              คืน
+            </button>`
+            :
+            "-"
+          }
+
+        </td>
+
+      </tr>
+
+    `).join("");
+
+}
+
+
+function returnBorrow(id){
+
+  const b=
+    borrows.find(x=>x.id===id);
+
+  if(!b)return;
+
+  const item=
+    equipment.find(
+      e=>e.name===b.equipment
+    );
+
+  if(item){
+
+    item.available=
+      Math.min(
+        item.total,
+        item.available+1
+      );
+
+  }
+
+  b.status="คืนแล้ว";
+
+  setData(KEY.borrows,borrows);
+
+  setData(KEY.equipment,equipment);
+
+  renderAll();
+
+  toast("คืนอุปกรณ์เรียบร้อยแล้ว 💚");
+
+}
+
+
+/* ======================================================
+   REQUESTS
+====================================================== */
+
+function renderRequests(){
+
+  document.getElementById("requestTable").innerHTML=
+    requests.map(r=>`
+
+      <tr>
+
+        <td>${r.id}</td>
+
+        <td>${escapeHTML(r.name)}</td>
+
+        <td>${r.room}</td>
+
+        <td>${escapeHTML(r.equipment)}</td>
+
+        <td>${r.type}</td>
+
+        <td>${formatDate(r.date)}</td>
+
+        <td>
+          <span class="status orange">
+            ${r.status}
+          </span>
+        </td>
+
+      </tr>
+
+    `).join("");
+
+}
+
+
+/* ======================================================
+   NOTIFICATIONS
+====================================================== */
+
+function renderNotifications(){
+
+  const pending=
+    payments.filter(p=>p.status==="pending");
+
+  let list=[];
+
+  pending.forEach(p=>{
+
+    list.push({
+      icon:"💳",
+      title:"มีรายการรอชำระเงิน",
+      text:`${p.equipment} จำนวน ${money(p.total)}`
+    });
+
+  });
+
+  list.push({
+    icon:"✨",
+    title:"ยินดีต้อนรับสู่ DORMHUB",
+    text:"ระบบยืม–เช่าอุปกรณ์สำหรับหอพักนักศึกษา PSRU"
+  });
+
+  document.getElementById("notificationList").innerHTML=
+    list.map(n=>`
+
+      <div class="notification">
+
+        <div class="notification-icon">
+          ${n.icon}
+        </div>
+
+        <div>
+          <strong>${n.title}</strong>
+          <p>${n.text}</p>
+        </div>
+
+      </div>
+
+    `).join("");
+
+}
+
+
+/* ======================================================
+   MEMBERS
+====================================================== */
+
+function renderMembers(){
+
+  const list=[...members];
+
+  if(user && !list.some(m=>m.id===user.studentId)){
+
+    list.unshift({
+      id:user.studentId,
+      name:user.name,
+      room:user.room,
+      phone:"-",
+      active:borrows.filter(b=>b.status!=="คืนแล้ว").length,
+      status:"ใช้งาน"
+    });
+
+  }
+
+  document.getElementById("memberTable").innerHTML=
+    list.map(m=>`
+
+      <tr>
+
+        <td>${escapeHTML(m.id)}</td>
+
+        <td>${escapeHTML(m.name)}</td>
+
+        <td>${escapeHTML(m.room)}</td>
+
+        <td>${escapeHTML(m.phone)}</td>
+
+        <td>${m.active}</td>
+
+        <td>
+          <span class="status green">
+            ${m.status}
+          </span>
+        </td>
+
+      </tr>
+
+    `).join("");
+
+}
+
+
+/* ======================================================
+   REPAIR
+====================================================== */
+
+function renderRepairs(){
+
+  document.getElementById("repairTable").innerHTML=
+    repairs.slice().reverse().map(r=>`
+
+      <tr>
+
+        <td>${r.id}</td>
+
+        <td>${escapeHTML(r.equipment)}</td>
+
+        <td>${escapeHTML(r.name)}</td>
+
+        <td>${escapeHTML(r.room)}</td>
+
+        <td>${escapeHTML(r.problem)}</td>
+
+        <td>${formatDate(r.date)}</td>
+
+        <td>
+          <span class="status ${
+            r.status==="กำลังซ่อม"
+            ?"orange"
+            :"blue"
+          }">
+            ${r.status}
+          </span>
+        </td>
+
+      </tr>
+
+    `).join("");
+
+}
+
+
+function openRepairModal(){
+
+  document.getElementById("repairEquipment").innerHTML=
+    equipment.map(e=>`
+      <option>${escapeHTML(e.name)}</option>
+    `).join("");
+
+  document.getElementById("repairProblem").value="";
+
+  document.getElementById("repairModal")
+    .classList.add("show");
+
+}
+
+
+function createRepair(){
+
+  const eq=
+    document.getElementById("repairEquipment").value;
+
+  const problem=
+    document.getElementById("repairProblem").value.trim();
+
+  if(!problem){
+
+    toast("กรุณาระบุปัญหา");
+    return;
+
+  }
+
+  repairs.push({
+
+    id:uid("RP-"),
+
+    equipment:eq,
+
+    name:user.name,
+
+    room:user.room,
+
+    problem:problem,
+
+    date:today(),
+
+    status:"รอดำเนินการ"
+
+  });
+
+  setData(KEY.repairs,repairs);
+
+  closeModal("repairModal");
+
+  renderRepairs();
+
+  toast("แจ้งซ่อมเรียบร้อย 🔧");
+
+}
+
+
+/* ======================================================
+   HISTORY
+====================================================== */
+
+function renderHistory(){
+
+  document.getElementById("historyTable").innerHTML=
+    borrows
+    .filter(b=>b.status==="คืนแล้ว")
+    .map(b=>`
+
+      <tr>
+
+        <td>${b.id}</td>
+
+        <td>${escapeHTML(b.equipment)}</td>
+
+        <td>${formatDate(b.start)}</td>
+
+        <td>${formatDate(b.due)}</td>
+
+        <td>${money(b.fee)}</td>
+
+        <td>
+          <span class="status green">
+            คืนแล้ว
+          </span>
+        </td>
+
+      </tr>
+
+    `).join("");
+
+}
+
+
+/* ======================================================
+   REPORTS
+====================================================== */
+
+function renderReports(){
+
+  const revenue=
+    payments
+    .filter(p=>p.status==="paid")
+    .reduce(
+      (sum,p)=>sum+p.fee+p.lateFee,
+      0
+    );
+
+  document.getElementById("reportRevenue")
+    .textContent=money(revenue);
+
+  document.getElementById("reportMembers")
+    .textContent=members.length;
+
+  document.getElementById("reportBorrows")
+    .textContent=borrows.length;
+
+  document.getElementById("reportAvailable")
+    .textContent=
+      equipment.reduce(
+        (sum,e)=>sum+e.available,
+        0
+      );
+
+  renderChart("reportChart");
+
+}
+
+
+function renderChart(id){
+
+  const box=document.getElementById(id);
+
+  if(!box)return;
+
+  const values=[
+    35,52,42,75,60,85,68
+  ];
+
+  const labels=[
+    "ม.ค.",
+    "ก.พ.",
+    "มี.ค.",
+    "เม.ย.",
+    "พ.ค.",
+    "มิ.ย.",
+    "ก.ค."
+  ];
+
+  box.innerHTML=
+    values.map((v,i)=>`
+
+      <div class="bar-item">
+
+        <div
+          class="bar"
+          style="height:${v}%"
+        ></div>
+
+        <div class="bar-label">
+          ${labels[i]}
+        </div>
+
+      </div>
+
+    `).join("");
+
+}
+
+
+/* ======================================================
+   REVIEWS
+====================================================== */
+
+function renderReviews(){
+
+  const box=
+    document.getElementById("reviewList");
+
+  if(!reviews.length){
+
+    box.innerHTML=`
+      <div class="card empty">
+        <div class="empty-icon">⭐</div>
+        ยังไม่มีรีวิว
+      </div>
+    `;
+
+    return;
+
+  }
+
+  box.innerHTML=
+    reviews.slice().reverse().map(r=>`
+
+      <div class="card">
+
+        <div style="
+          display:flex;
+          justify-content:space-between
+        ">
+
+          <strong>
+            ${escapeHTML(r.name)}
+          </strong>
+
+          <span>
+            ${"⭐".repeat(Number(r.rating))}
+          </span>
+
+        </div>
+
+        <p style="
+          font-size:12px;
+          margin-top:8px;
+          color:var(--muted)
+        ">
+          ${escapeHTML(r.text)}
+        </p>
+
+        <small style="
+          display:block;
+          margin-top:8px;
+          color:#aaa
+        ">
+          ${escapeHTML(r.equipment||"DORMHUB")}
+          • ${formatDate(r.date)}
+        </small>
+
+      </div>
+
+    `).join("");
+
+}
+
+
+function openReviewModal(){
+
+  document.getElementById("reviewText").value="";
+
+  document.getElementById("reviewModal")
+    .classList.add("show");
+
+}
+
+
+function createReview(){
+
+  const rating=
+    Number(document.getElementById("reviewRating").value);
+
+  const text=
+    document.getElementById("reviewText").value.trim();
+
+  if(!text){
+
+    toast("กรุณาเขียนความคิดเห็น");
+    return;
+
+  }
+
+  reviews.push({
+
+    name:user.name,
+
+    equipment:"DORMHUB",
+
+    rating:rating,
+
+    text:text,
+
+    date:today()
+
+  });
+
+  setData(KEY.reviews,reviews);
+
+  closeModal("reviewModal");
+
+  renderReviews();
+
+  toast("ส่งรีวิวเรียบร้อย ⭐");
+
+}
+
+
+/* ======================================================
+   SETTINGS
+====================================================== */
+
+function saveSettings(){
+
+  settings.lateFee=
+    Number(document.getElementById("lateFeeSetting").value)||20;
+
+  settings.deposit=
+    Number(document.getElementById("depositSetting").value)||100;
+
+  setData(KEY.settings,settings);
+
+  toast("บันทึกการตั้งค่าแล้ว ⚙️");
+
+}
+
+
+/* ======================================================
    MODAL
-===================================================== */
-
-function openModal(id){
-
- if(id==="borrowModal"){
-  fillEquipmentSelect();
- }
-
- if(id==="repairModal"){
-  fillRepairSelect();
- }
-
- if(id==="reviewModal"){
-  fillReviewSelect();
- }
-
- document
- .getElementById(id)
- .classList.add("show");
-
-}
-
+====================================================== */
 
 function closeModal(id){
 
- document
- .getElementById(id)
- .classList.remove("show");
+  document.getElementById(id)
+    .classList.remove("show");
 
 }
 
 
-window.addEventListener("click",e=>{
+/* Close modal by clicking background */
 
- if(e.target.classList.contains("modal")){
-  e.target.classList.remove("show");
- }
+document.querySelectorAll(".modal-bg")
+.forEach(bg=>{
+
+  bg.addEventListener("click",function(e){
+
+    if(e.target===bg){
+
+      bg.classList.remove("show");
+
+    }
+
+  });
 
 });
 
 
-/* =====================================================
-   STATUS
-===================================================== */
+/* ======================================================
+   DARK MODE
+====================================================== */
 
-function statusBadge(s){
+function toggleDarkMode(){
 
- let c="ok";
+  const dark=
+    document.body.dataset.dark==="1";
 
- if(s.includes("เกิน"))
-  c="danger";
+  if(dark){
 
- else if(s.includes("รอ"))
-  c="warn";
+    document.body.dataset.dark="0";
 
- else if(s.includes("ใกล้"))
-  c="warn";
+    document.documentElement.style.setProperty(
+      "--bg","#f7f5ff"
+    );
 
- else if(s.includes("คืนแล้ว"))
-  c="blue-badge";
+    document.documentElement.style.setProperty(
+      "--card","#ffffff"
+    );
 
- else if(s.includes("ปฏิเสธ"))
-  c="danger";
+    document.documentElement.style.setProperty(
+      "--text","#241b35"
+    );
 
- else if(s.includes("ซ่อม"))
-  c="cyan";
+  }else{
 
- return `<span class="badge ${c}">${s}</span>`;
+    document.body.dataset.dark="1";
 
-}
+    document.documentElement.style.setProperty(
+      "--bg","#17121f"
+    );
 
+    document.documentElement.style.setProperty(
+      "--card","#241d2e"
+    );
 
-/* =====================================================
-   EQUIPMENT CARD
-===================================================== */
+    document.documentElement.style.setProperty(
+      "--text","#f8f5ff"
+    );
 
-function equipmentCard(e){
-
- let state=
- e.available<=0
- ?"หมด"
- :e.available<=1
- ?"เหลือน้อย"
- :"พร้อม";
-
- let cls=
- e.available<=0
- ?"danger"
- :e.available<=1
- ?"warn"
- :"ok";
-
-
- return `
-
- <div class="equip">
-
-  <img
-   src="${e.image}"
-   onerror="this.src='${images.table}'"
-   alt="${e.name}"
-  >
-
-  <div class="equip-body">
-
-   <div class="equip-title">
-
-    <strong>${e.name}</strong>
-
-    <span class="badge ${cls}">
-     ${state}
-    </span>
-
-   </div>
-
-   <p>
-    ${e.cat}
-    · ทั้งหมด ${e.total} ชิ้น
-    · ว่าง ${e.available} ชิ้น
-   </p>
-
-   <div class="rating">
-    ★★★★★ ${e.rating||4.5}
-   </div>
-
-   <div
-    class="equip-foot"
-    style="margin-top:10px"
-   >
-
-    <strong>
-     ${e.price?`฿${e.price}/วัน`:"ยืมฟรี"}
-    </strong>
-
-    <button
-     class="btn sm"
-     ${e.available<=0?"disabled":""}
-     onclick="quickBorrow('${e.name.replace(/'/g,"\\'")}')"
-    >
-     ${e.available<=0?"ไม่ว่าง":"ยืม/เช่า"}
-    </button>
-
-   </div>
-
-  </div>
-
- </div>
-
- `;
-
-}
-
-
-/* =====================================================
-   RENDER EQUIPMENT
-===================================================== */
-
-function renderEquipment(){
-
- const q=
- (document.getElementById("equipmentSearch")?.value||"")
- .toLowerCase();
-
- const cat=
- document.getElementById("categoryFilter")?.value||"";
-
- const status=
- document.getElementById("statusFilter")?.value||"";
-
-
- const list=equipment.filter(e=>{
-
-  const text=
-  (e.name+" "+e.cat).toLowerCase();
-
-  const matchSearch=text.includes(q);
-
-  const matchCat=
-  !cat || e.cat===cat;
-
-  let matchStatus=true;
-
-  if(status==="พร้อม")
-   matchStatus=e.available>1;
-
-  if(status==="น้อย")
-   matchStatus=e.available===1;
-
-  if(status==="หมด")
-   matchStatus=e.available<=0;
-
-  return matchSearch&&matchCat&&matchStatus;
-
- });
-
-
- document.getElementById("equipmentGrid").innerHTML=
- list.map(equipmentCard).join("")
- ||
- '<div class="empty">ไม่พบอุปกรณ์ที่ค้นหา</div>';
-
-
- document.getElementById("equipmentCount").textContent=
- `${list.length} รายการ`;
-
-}
-
-
-function renderPopular(){
-
- const popular=
- [...equipment]
- .sort((a,b)=>(b.rating||0)-(a.rating||0))
- .slice(0,3);
-
- document.getElementById("popularEquipment")
- .innerHTML=
- popular.map(equipmentCard).join("");
-
-}
-
-
-/* =====================================================
-   BORROW SELECT
-===================================================== */
-
-function fillEquipmentSelect(){
-
- const s=
- document.getElementById("borrowEquipment");
-
- s.innerHTML=
- equipment.map(e=>
- `<option
-   value="${e.name}"
-   ${e.available<=0?"disabled":""}
- >
-   ${e.name} — ว่าง ${e.available} ชิ้น
- </option>`
- ).join("");
-
- updateBorrowPrice();
-
-}
-
-
-function updateBorrowPrice(){
-
- const eq=
- document.getElementById("borrowEquipment").value;
-
- const type=
- document.getElementById("borrowType").value;
-
- const days=
- +document.getElementById("borrowDays").value||1;
-
- const item=
- equipment.find(e=>e.name===eq);
-
- if(!item)return;
-
- const fee=
- type==="เช่า"
- ?item.price*days
- :0;
-
- document.getElementById("borrowFee").value=fee;
-
-}
-
-
-function quickBorrow(name){
-
- openModal("borrowModal");
-
- fillEquipmentSelect();
-
- document.getElementById("borrowEquipment").value=name;
-
- updateBorrowPrice();
-
-}
-
-
-/* =====================================================
-   ADD BORROW
-===================================================== */
-
-function addBorrow(){
-
- const name=
- document.getElementById("borrower").value.trim();
-
- const room=
- document.getElementById("room").value.trim();
-
- const eq=
- document.getElementById("borrowEquipment").value;
-
- const type=
- document.getElementById("borrowType").value;
-
- const days=
- +document.getElementById("borrowDays").value;
-
- const fee=
- +document.getElementById("borrowFee").value;
-
-
- if(!name||!room){
-
-  showToast("กรุณากรอกชื่อผู้พักและห้องให้ครบ");
-
-  return;
-
- }
-
-
- const item=
- equipment.find(e=>e.name===eq);
-
-
- if(!item||item.available<=0){
-
-  showToast("อุปกรณ์นี้ไม่มีว่างในขณะนี้");
-
-  return;
-
- }
-
-
- const id=
- "BR-"+(1000+borrows.length+1);
-
-
- const now=new Date();
-
- const due=
- new Date(
-  now.getTime()+days*86400000
- );
-
-
- const fmt=d=>
- String(d.getDate()).padStart(2,"0")+
- "/"+
- String(d.getMonth()+1).padStart(2,"0")+
- "/"+
- d.getFullYear();
-
-
- borrows.unshift({
-
-  id,
-  name,
-  room,
-  eq,
-  type,
-  date:fmt(now),
-  due:fmt(due),
-  fee,
-  status:"กำลังใช้งาน"
-
- });
-
-
- item.available--;
-
- save();
-
- closeModal("borrowModal");
-
- document.getElementById("borrower").value="";
- document.getElementById("room").value="";
-
- renderAll();
-
- showToast(`บันทึก ${id} สำเร็จ ✓`);
-
-}
-
-
-/* =====================================================
-   BORROW TABLE
-===================================================== */
-
-function renderBorrow(){
-
- const q=
- (document.getElementById("borrowSearch")?.value||"")
- .toLowerCase();
-
-
- const list=
- borrows.filter(b=>
- (b.id+" "+b.name+" "+b.room+" "+b.eq)
- .toLowerCase()
- .includes(q)
- );
-
-
- document.getElementById("borrowTable")
- .innerHTML=
- list.map(b=>`
-
- <tr>
-
-  <td>${b.id}</td>
-
-  <td><strong>${b.name}</strong></td>
-
-  <td>${b.room}</td>
-
-  <td>${b.eq}</td>
-
-  <td>
-   ${
-    b.type==="เช่า"
-    ?'<span class="badge purple">เช่า</span>'
-    :'<span class="badge blue-badge">ยืม</span>'
-   }
-  </td>
-
-  <td>${b.date}</td>
-
-  <td>${b.due}</td>
-
-  <td>฿${Number(b.fee).toLocaleString()}</td>
-
-  <td>${statusBadge(b.status)}</td>
-
-  <td>
-
-   ${
-    b.status!=="คืนแล้ว"
-
-    ?
-
-    `<button
-      class="btn green sm"
-      onclick="returnItem('${b.id}')"
-    >
-      รับคืน
-    </button>`
-
-    :
-
-    "—"
-   }
-
-  </td>
-
- </tr>
-
- `).join("")
- ||
- '<tr><td colspan="10" class="empty">ไม่มีข้อมูล</td></tr>';
-
-
- document.getElementById("borrowTotal").textContent=
- borrows.length;
-
- document.getElementById("borrowActive").textContent=
- borrows.filter(b=>b.status!=="คืนแล้ว").length;
-
- document.getElementById("borrowReturned").textContent=
- borrows.filter(b=>b.status==="คืนแล้ว").length;
-
- document.getElementById("borrowLate").textContent=
- borrows.filter(b=>b.status==="เกินกำหนด").length;
-
-}
-
-
-function returnItem(id){
-
- const b=
- borrows.find(x=>x.id===id);
-
- if(!b)return;
-
- b.status="คืนแล้ว";
-
- const e=
- equipment.find(x=>x.name===b.eq);
-
- if(e){
-
-  e.available=
-  Math.min(
-   e.total,
-   e.available+1
-  );
-
- }
-
- save();
-
- renderAll();
-
- showToast(
-  `รับคืน ${id} เรียบร้อยแล้ว ✓`
- );
-
-}
-
-
-/* =====================================================
-   REQUESTS
-===================================================== */
-
-function renderRequests(){
-
- document.getElementById("requestTable")
- .innerHTML=
- requests.map(r=>`
-
- <tr>
-
-  <td>${r.id}</td>
-
-  <td>${r.name}</td>
-
-  <td>${r.room}</td>
-
-  <td>${r.eq}</td>
-
-  <td>${r.type}</td>
-
-  <td>${r.date}</td>
-
-  <td>${statusBadge(r.status)}</td>
-
-  <td>
-
-  ${
-   r.status==="รออนุมัติ"
-
-   ?
-
-   `<button
-     class="btn green sm"
-     onclick="approve('${r.id}')"
-   >
-    อนุมัติ
-   </button>
-
-   <button
-     class="btn red sm"
-     onclick="reject('${r.id}')"
-   >
-    ปฏิเสธ
-   </button>`
-
-   :"—"
   }
 
-  </td>
-
- </tr>
-
- `).join("");
-
 }
 
 
-function approve(id){
-
- const r=
- requests.find(x=>x.id===id);
-
- if(!r)return;
-
- const e=
- equipment.find(x=>x.name===r.eq);
-
-
- if(e&&e.available<=0){
-
-  showToast(
-   "อุปกรณ์หมด ไม่สามารถอนุมัติได้"
-  );
-
-  return;
-
- }
-
-
- r.status="อนุมัติแล้ว";
-
- if(e)e.available--;
-
- save();
-
- renderAll();
-
- showToast(
-  `อนุมัติ ${id} แล้ว ✓`
- );
-
-}
-
-
-function reject(id){
-
- const r=
- requests.find(x=>x.id===id);
-
- if(r){
-
-  r.status="ปฏิเสธ";
-
-  save();
-
-  renderRequests();
-
-  showToast(
-   `ปฏิเสธ ${id} แล้ว`
-  );
-
- }
-
-}
-
-
-/* =====================================================
-   MEMBERS
-===================================================== */
-
-function renderMembers(){
-
- const q=
- (document.getElementById("memberSearch")?.value||"")
- .toLowerCase();
-
-
- const list=
- members.filter(m=>
- (m.name+" "+m.room)
- .toLowerCase()
- .includes(q)
- );
-
-
- document.getElementById("memberTable")
- .innerHTML=
- list.map(m=>`
-
- <tr>
-
-  <td>
-   <strong>${m.name}</strong>
-  </td>
-
-  <td>${m.room}</td>
-
-  <td>${m.phone}</td>
-
-  <td>${m.active}</td>
-
-  <td>
-   ฿${Number(m.fee||0).toLocaleString()}
-  </td>
-
-  <td>
-
-   ${
-    m.status==="ปกติ"
-
-    ?'<span class="badge ok">ปกติ</span>'
-
-    :'<span class="badge warn">'+m.status+'</span>'
-   }
-
-  </td>
-
- </tr>
-
- `).join("");
-
-
- document.getElementById("memberCount").textContent=
- `${members.length} คน`;
-
-}
-
-
-function addMember(){
-
- const name=
- document.getElementById("memName").value.trim();
-
- const room=
- document.getElementById("memRoom").value.trim();
-
- const phone=
- document.getElementById("memPhone").value.trim();
-
-
- if(!name||!room){
-
-  showToast("กรุณากรอกข้อมูลให้ครบ");
-
-  return;
-
- }
-
-
- members.push({
-
-  name,
-  room,
-  phone,
-  active:0,
-  fee:0,
-  status:"ปกติ"
-
- });
-
-
- save();
-
- closeModal("memberModal");
-
- renderMembers();
-
- showToast(
-  "เพิ่มผู้พักเรียบร้อย ✓"
- );
-
-}
-
-
-/* =====================================================
-   REPAIR
-===================================================== */
-
-function fillRepairSelect(){
-
- document.getElementById("repairEquipment")
- .innerHTML=
- equipment.map(e=>
- `<option>${e.name}</option>`
- ).join("");
-
-}
-
-
-function renderRepairs(){
-
- document.getElementById("repairTable")
- .innerHTML=
- repairs.map(r=>`
-
- <tr>
-
-  <td>${r.id}</td>
-
-  <td>${r.eq}</td>
-
-  <td>${r.name}</td>
-
-  <td>${r.room}</td>
-
-  <td>${r.problem}</td>
-
-  <td>${r.date}</td>
-
-  <td>${statusBadge(r.status)}</td>
-
- </tr>
-
- `).join("");
-
-
- document.getElementById("repairTotal").textContent=
- repairs.length;
-
-}
-
-
-function addRepair(){
-
- const name=
- document.getElementById("repairName").value.trim();
-
- const room=
- document.getElementById("repairRoom").value.trim();
-
- const eq=
- document.getElementById("repairEquipment").value;
-
- const problem=
- document.getElementById("repairProblem").value.trim();
-
-
- if(!name||!room||!problem){
-
-  showToast(
-   "กรุณากรอกข้อมูลให้ครบ"
-  );
-
-  return;
-
- }
-
-
- repairs.unshift({
-
-  id:"RP-"+String(repairs.length+1).padStart(3,"0"),
-
-  eq,
-  name,
-  room,
-  problem,
-
-  date:"02/09/2026",
-
-  status:"รอดำเนินการ"
-
- });
-
-
- save();
-
- closeModal("repairModal");
-
- renderRepairs();
-
- showToast(
-  "ส่งรายการแจ้งซ่อมแล้ว 🔧"
- );
-
-}
-
-
-/* =====================================================
-   HISTORY
-===================================================== */
-
-function renderHistory(){
-
- document.getElementById("historyTable")
- .innerHTML=
-
- borrows
- .filter(b=>b.status==="คืนแล้ว")
- .map(b=>`
-
- <tr>
-
-  <td>${b.id}</td>
-
-  <td>${b.name}</td>
-
-  <td>${b.room}</td>
-
-  <td>${b.eq}</td>
-
-  <td>${b.type}</td>
-
-  <td>${b.date}</td>
-
-  <td>02/09/2026</td>
-
-  <td>
-   ฿${Number(b.fee).toLocaleString()}
-  </td>
-
-  <td>
-   ${statusBadge("คืนแล้ว")}
-  </td>
-
- </tr>
-
- `).join("")
-
- ||
-
- '<tr><td colspan="9" class="empty">ยังไม่มีประวัติ</td></tr>';
-
-}
-
-
-/* =====================================================
-   REVIEWS
-===================================================== */
-
-function fillReviewSelect(){
-
- document.getElementById("reviewEquipment")
- .innerHTML=
- equipment.map(e=>
- `<option>${e.name}</option>`
- ).join("");
-
-}
-
-
-function renderReviews(){
-
- const container=
- document.querySelector("#reviews .card:last-child");
-
- if(!container)return;
-
- let html="<h3>💬 รีวิวล่าสุด</h3>";
-
- if(reviews.length===0){
-
-  html+=`
-
-  <div class="empty">
-   ยังไม่มีรีวิวจากผู้ใช้งาน
-  </div>
-
-  `;
-
- }else{
-
-  reviews.slice(0,8).forEach(r=>{
-
-   html+=`
-
-   <div class="review">
-
-    <div class="review-head">
-
-     <strong>${r.name}</strong>
-
-     <span class="rating">
-      ${"★".repeat(r.score)}
-      ${"☆".repeat(5-r.score)}
-     </span>
-
-    </div>
-
-    <p>
-     <strong>${r.eq}</strong><br>
-     ${r.text}
-    </p>
-
-   </div>
-
-   `;
-
-  });
-
- }
-
- container.innerHTML=html;
-
-}
-
-
-function addReview(){
-
- const name=
- document.getElementById("reviewName")
- .value.trim();
-
- const eq=
- document.getElementById("reviewEquipment")
- .value;
-
- const score=
- +document.getElementById("reviewScore").value;
-
- const text=
- document.getElementById("reviewText")
- .value.trim();
-
-
- if(!name||!text){
-
-  showToast("กรุณากรอกข้อมูลรีวิว");
-
-  return;
-
- }
-
-
- reviews.unshift({
-
-  name,
-  eq,
-  score,
-  text
-
- });
-
-
- save();
-
- closeModal("reviewModal");
-
- renderReviews();
-
- showToast(
-  "ขอบคุณสำหรับรีวิว ⭐"
- );
-
-}
-
-
-/* =====================================================
-   DASHBOARD
-===================================================== */
-
-function renderDashboard(){
-
- const total=
- equipment.reduce(
-  (a,e)=>a+e.total,
-  0
- );
-
- const available=
- equipment.reduce(
-  (a,e)=>a+e.available,
-  0
- );
-
- const active=
- borrows.filter(
-  b=>b.status!=="คืนแล้ว"
- ).length;
-
- const pending=
- requests.filter(
-  r=>r.status==="รออนุมัติ"
- ).length;
-
- const income=
- borrows.reduce(
-  (a,b)=>a+Number(b.fee||0),
-  0
- );
-
-
- document.getElementById("statEquipment")
- .textContent=total;
-
- document.getElementById("statActive")
- .textContent=active;
-
- document.getElementById("statPending")
- .textContent=pending;
-
- document.getElementById("statIncome")
- .textContent=
- "฿"+income.toLocaleString();
-
-
- document.getElementById("availableCount")
- .textContent=available;
-
- document.getElementById("usedCount")
- .textContent=total-available;
-
- document.getElementById("lowCount")
- .textContent=
- equipment.filter(
-  e=>e.available<=1
- ).length;
-
-
- document.getElementById("dashboardDue")
- .textContent=
- borrows.filter(
-  b=>b.status==="ใกล้ครบกำหนด"||
-     b.status==="เกินกำหนด"
- ).length+" รายการ";
-
-
- document.getElementById("dueTable")
- .innerHTML=
-
- borrows
- .filter(b=>b.status!=="คืนแล้ว")
- .slice(0,6)
- .map(b=>`
-
- <tr>
-
-  <td>${b.id}</td>
-
-  <td>${b.name}</td>
-
-  <td>${b.room}</td>
-
-  <td>${b.eq}</td>
-
-  <td>${b.due}</td>
-
-  <td>${b.type}</td>
-
-  <td>${statusBadge(b.status)}</td>
-
- </tr>
-
- `).join("");
-
-
- document.getElementById("activityList")
- .innerHTML=
-
- borrows.slice(0,5)
- .map(b=>`
-
- <div class="activity">
-
-  <div class="activity-icon">
-   ${b.type==="เช่า"?"💰":"📦"}
-  </div>
-
-  <div>
-
-   <strong>
-    ${b.name}
-    ${b.type}
-    ${b.eq}
-   </strong>
-
-   <small>
-    ห้อง ${b.room} · ${b.date}
-   </small>
-
-  </div>
-
- </div>
-
- `).join("");
-
-
- document.getElementById("reportIncome")
- .textContent=
- "฿"+income.toLocaleString();
-
-}
-
-
-/* =====================================================
-   NOTIFICATION
-===================================================== */
-
-function markNotificationsRead(){
-
- showToast(
-  "ทำเครื่องหมายว่าอ่านทั้งหมดแล้ว ✓"
- );
-
-}
-
-
-/* =====================================================
-   SETTINGS
-===================================================== */
-
-function saveSettings(){
-
- localStorage.setItem(
-  "dorm_name",
-  document.getElementById("dormName").value
- );
-
- localStorage.setItem(
-  "dorm_notice",
-  document.getElementById("noticeText").value
- );
-
- showToast(
-  "บันทึกการตั้งค่าแล้ว ✓"
- );
-
-}
-
-
-/* =====================================================
-   EXPORT CSV
-===================================================== */
-
-function exportCSV(){
-
- const rows=[
-
-  [
-   "เลขที่",
-   "ผู้พัก",
-   "ห้อง",
-   "อุปกรณ์",
-   "ประเภท",
-   "วันที่ยืม",
-   "กำหนดคืน",
-   "ค่าบริการ",
-   "สถานะ"
-  ],
-
-  ...borrows.map(b=>[
-   b.id,
-   b.name,
-   b.room,
-   b.eq,
-   b.type,
-   b.date,
-   b.due,
-   b.fee,
-   b.status
-  ])
-
- ];
-
-
- const csv=
- "\uFEFF"+
- rows
- .map(r=>
-  r.map(v=>
-   `"${String(v).replaceAll('"','""')}"`
-  ).join(",")
- )
- .join("\n");
-
-
- const a=
- document.createElement("a");
-
- a.href=
- URL.createObjectURL(
-  new Blob(
-   [csv],
-   {type:"text/csv;charset=utf-8"}
-  )
- );
-
- a.download=
- "DORMHUB-report.csv";
-
- a.click();
-
- showToast(
-  "ส่งออกไฟล์ CSV แล้ว ✓"
- );
-
-}
-
-
-/* =====================================================
-   ADD EQUIPMENT
-===================================================== */
-
-function addEquipment(){
-
- const name=
- document.getElementById("eqName")
- .value.trim();
-
- const cat=
- document.getElementById("eqCat")
- .value;
-
- const total=
- +document.getElementById("eqTotal")
- .value;
-
- const price=
- +document.getElementById("eqPrice")
- .value;
-
- const img=
- document.getElementById("eqImage")
- .value.trim()
- ||
- images.table;
-
-
- if(!name||!total){
-
-  showToast(
-   "กรุณากรอกชื่อและจำนวน"
-  );
-
-  return;
-
- }
-
-
- equipment.push({
-
-  id:Date.now(),
-
-  name,
-  cat,
-  total,
-  available:total,
-  price,
-  image:img,
-  rating:5
-
- });
-
-
- save();
-
- closeModal("equipmentModal");
-
- renderAll();
-
- showToast(
-  "เพิ่มอุปกรณ์เรียบร้อย ✓"
- );
-
-}
-
-
-/* =====================================================
+/* ======================================================
    RENDER ALL
-===================================================== */
+====================================================== */
 
 function renderAll(){
 
- renderDashboard();
+  renderDashboard();
 
- renderPopular();
+  renderEquipment();
 
- renderEquipment();
+  renderBorrows();
 
- renderBorrow();
+  renderPayments();
 
- renderRequests();
+  renderRequests();
 
- renderMembers();
+  renderNotifications();
 
- renderHistory();
+  renderMembers();
 
- renderRepairs();
+  renderRepairs();
 
- renderReviews();
+  renderHistory();
 
-}
+  renderReports();
 
-
-/* =====================================================
-   LOAD
-===================================================== */
-
-if(
- localStorage.getItem("dorm_theme")==="dark"
-){
-
- document.body.classList.add("dark-mode");
-
- document.getElementById("themeBtn")
- .textContent="☀️";
+  renderReviews();
 
 }
 
 
-renderAll();
+/* ======================================================
+   INIT
+====================================================== */
+
+document.addEventListener("DOMContentLoaded",()=>{
+
+  if(user){
+
+    startApp();
+
+  }
+
+});
 
 </script>
 
 </body>
 </html>
-
-

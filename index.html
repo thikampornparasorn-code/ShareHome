@@ -1719,9 +1719,159 @@ body.dark .chat-pickup-card{
 }
 
 </style>
+<style>
+
+/* =========================================================
+   DORMHUB MOBILE-FIRST UI
+========================================================= */
+html{font-size:16px;-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{overflow-x:hidden;-webkit-tap-highlight-color:transparent}
+button,input,select,textarea{font:inherit}
+button{touch-action:manipulation}
+.app{min-height:100dvh}
+.sidebar{transition:transform .25s ease}
+.mobile-topbar{display:none}
+.mobile-overlay{display:none}
+
+@media (max-width: 768px){
+  body{padding-bottom:76px}
+  .app{display:block!important;min-height:100dvh}
+  .sidebar{
+    position:fixed!important;left:0;top:0;bottom:0;width:min(84vw,320px);
+    z-index:10050;transform:translateX(-105%);
+    box-shadow:18px 0 45px rgba(0,0,0,.18);
+  }
+  .sidebar.mobile-open{transform:translateX(0)}
+  .mobile-overlay{
+    position:fixed;inset:0;background:rgba(15,23,42,.48);
+    z-index:10040;backdrop-filter:blur(2px)
+  }
+  .mobile-overlay.show{display:block}
+  .main,.content,.page-container{width:100%!important;min-width:0!important}
+  .mobile-topbar{
+    position:sticky;top:0;z-index:10020;height:58px;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:0 14px;background:rgba(255,255,255,.94);
+    border-bottom:1px solid rgba(0,0,0,.07);
+    backdrop-filter:blur(14px)
+  }
+  .mobile-brand{font-weight:900;font-size:17px;color:#4c1d95}
+  .mobile-menu-btn,.mobile-home-btn{
+    width:42px;height:42px;border:0;border-radius:13px;background:#f5f3ff;
+    color:#4c1d95;font-size:20px;display:grid;place-items:center
+  }
+  .page{padding:14px!important}
+  .page-head{gap:10px;align-items:flex-start}
+  .page-title{font-size:21px!important;line-height:1.25}
+  .page-sub{font-size:11px!important;line-height:1.5}
+  .grid,.grid-2,.grid-3,.grid-4{
+    grid-template-columns:1fr!important;
+    gap:12px!important
+  }
+  .card{
+    border-radius:16px!important;
+    padding:14px!important;
+    overflow:hidden
+  }
+  .stats,.stat-grid{grid-template-columns:repeat(2,1fr)!important;gap:9px!important}
+  .stat-card{min-width:0!important;padding:12px!important}
+  .table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  table{min-width:620px}
+  .btn,.btn-primary,.btn-secondary{
+    min-height:44px;
+    border-radius:12px!important
+  }
+  .form-group{margin-bottom:13px}
+  .input,input,select,textarea{
+    width:100%!important;
+    min-height:44px;
+    font-size:16px!important;
+    box-sizing:border-box
+  }
+  textarea{min-height:100px}
+  .welcome-screen{min-height:100dvh!important;padding:12px!important}
+  .welcome-card{
+    width:100%!important;max-width:520px!important;
+    min-height:0!important;
+    grid-template-columns:1fr!important;
+    border-radius:22px!important;
+    overflow:hidden
+  }
+  .welcome-photo{display:none!important}
+  .welcome-form{
+    width:100%!important;padding:24px 18px!important;
+    box-sizing:border-box
+  }
+  .logo-big{margin-bottom:10px!important}
+  .welcome-form h2{font-size:22px!important}
+  .access-status{font-size:10px!important}
+  .access-security-item{padding:9px 4px!important;font-size:9px!important}
+  .access-consent{font-size:11px}
+  .access-consent input,.access-remember input{
+    width:18px!important;min-height:18px!important;flex:0 0 18px
+  }
+  .product-grid,.equipment-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:10px!important
+  }
+  .product-card img,.equipment-card img{
+    height:135px!important;object-fit:cover
+  }
+  .product-card{min-width:0!important}
+  .product-card .btn{width:100%;font-size:11px!important;padding:8px 5px!important}
+  .modal{
+    align-items:flex-end!important;
+    padding:0!important
+  }
+  .modal-content{
+    width:100%!important;max-width:none!important;
+    max-height:88dvh!important;overflow-y:auto;
+    border-radius:22px 22px 0 0!important;
+    margin:0!important
+  }
+  .chat-layout{grid-template-columns:1fr!important}
+  .chat-contacts{
+    max-height:170px!important;
+    overflow-y:auto
+  }
+  .chat-messages{max-height:48dvh!important}
+  .chat-input-row{position:sticky;bottom:0;background:#fff;padding-top:8px}
+  .bottom-nav{
+    position:fixed;left:0;right:0;bottom:0;z-index:10030;
+    height:66px;background:rgba(255,255,255,.97);
+    border-top:1px solid rgba(0,0,0,.08);
+    display:grid;grid-template-columns:repeat(5,1fr);
+    padding:5px 4px env(safe-area-inset-bottom)
+  }
+  .bottom-nav button{
+    border:0;background:none;color:#6b7280;font-size:10px;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px
+  }
+  .bottom-nav button.active{color:#6d28d9;font-weight:800}
+  .bottom-nav b{font-size:19px;line-height:1}
+  .hide-mobile{display:none!important}
+}
+
+@media (max-width: 420px){
+  .product-grid,.equipment-grid{grid-template-columns:1fr 1fr!important}
+  .product-card img,.equipment-card img{height:115px!important}
+  .page{padding:11px!important}
+  .welcome-form{padding:21px 15px!important}
+  .stats,.stat-grid{grid-template-columns:1fr 1fr!important}
+}
+
+</style>
 </head>
 
 <body>
+
+<div class="mobile-topbar" id="mobileTopbar">
+  <button class="mobile-menu-btn" onclick="toggleMobileMenu()" aria-label="เปิดเมนู">☰</button>
+  <div class="mobile-brand">🏠 DORMHUB</div>
+  <button class="mobile-home-btn" onclick="showPage('dashboard')" aria-label="หน้าหลัก">⌂</button>
+</div>
+<div class="mobile-overlay" id="mobileOverlay" onclick="toggleMobileMenu(false)"></div>
+
 
 <!-- =========================================================
      PRE-ENTRY SYSTEM
@@ -9317,6 +9467,47 @@ window.addEventListener("storage",e=>{
 
 });
 
+
+/* =========================================================
+   MOBILE NAVIGATION
+========================================================= */
+function toggleMobileMenu(force){
+  const sidebar = document.getElementById("sidebar");
+  const overlay = document.getElementById("mobileOverlay");
+  if(!sidebar || !overlay) return;
+  const open = typeof force === "boolean"
+    ? force
+    : !sidebar.classList.contains("mobile-open");
+  sidebar.classList.toggle("mobile-open",open);
+  overlay.classList.toggle("show",open);
+}
+
+function closeMobileMenu(){
+  const sidebar=document.getElementById("sidebar");
+  const overlay=document.getElementById("mobileOverlay");
+  sidebar?.classList.remove("mobile-open");
+  overlay?.classList.remove("show");
+}
+
+/* Keep mobile navigation in sync with the existing showPage() */
+const _dormhubOriginalShowPage = window.showPage;
+if(typeof _dormhubOriginalShowPage === "function"){
+  window.showPage = function(page){
+    _dormhubOriginalShowPage(page);
+    closeMobileMenu();
+    document.querySelectorAll("[data-mobile-page]").forEach(btn=>{
+      btn.classList.toggle("active",btn.dataset.mobilePage===page);
+    });
+    window.scrollTo({top:0,behavior:"smooth"});
+  };
+}
+
+document.addEventListener("DOMContentLoaded",()=>{
+  document.querySelectorAll("#sidebar .nav-item").forEach(btn=>{
+    btn.addEventListener("click",closeMobileMenu);
+  });
+});
+
 </script>
 
 
@@ -9358,6 +9549,15 @@ window.addEventListener("storage",e=>{
 }
 
 </style>
+
+
+<nav class="bottom-nav" id="mobileBottomNav">
+  <button data-mobile-page="dashboard" onclick="showPage('dashboard')"><b>⌂</b>หน้าหลัก</button>
+  <button data-mobile-page="equipment" onclick="showPage('equipment')"><b>▣</b>อุปกรณ์</button>
+  <button data-mobile-page="borrow" onclick="showPage('borrow')"><b>↔</b>รายการ</button>
+  <button data-mobile-page="chat" onclick="showPage('chat')"><b>💬</b>แชต</button>
+  <button data-mobile-page="settings" onclick="showPage('settings')"><b>⚙</b>ตั้งค่า</button>
+</nav>
 
 </body>
 </html>

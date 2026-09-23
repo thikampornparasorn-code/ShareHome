@@ -1735,7 +1735,7 @@ button{touch-action:manipulation}
 
 @media (max-width: 768px){
   body{padding-bottom:76px}
-  .app{display:block!important;min-height:100dvh}
+  .app{min-height:100dvh}
   .sidebar{
     position:fixed!important;left:0;top:0;bottom:0;width:min(84vw,320px);
     z-index:10050;transform:translateX(-105%);
@@ -3377,13 +3377,45 @@ button{touch-action:manipulation}
 
           <div class="card">
             <div class="kpi-label">
-              รายได้จากรายการที่ชำระแล้ว
+              รายได้จริงจากค่าบริการ + ค่าปรับ
             </div>
             <div id="reportRevenue"
                  class="kpi-value">
               ฿0
             </div>
+            <div style="font-size:11px;color:var(--muted);margin-top:5px">
+              ไม่รวมเงินประกัน
+            </div>
           </div>
+
+          <div class="card">
+            <div class="kpi-label">
+              เงินประกันที่รับไว้
+            </div>
+            <div id="reportDeposit"
+                 class="kpi-value">
+              ฿0
+            </div>
+            <div style="font-size:11px;color:var(--muted);margin-top:5px">
+              แยกจากรายได้เพื่อความชัดเจน
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="kpi-label">
+              ยอดค้างชำระ
+            </div>
+            <div id="reportOutstanding"
+                 class="kpi-value">
+              ฿0
+            </div>
+          </div>
+
+        </div>
+
+        <div style="height:18px"></div>
+
+        <div class="grid grid-3">
 
           <div class="card">
             <div class="kpi-label">
@@ -3402,6 +3434,19 @@ button{touch-action:manipulation}
             <div id="reportRating"
                  class="kpi-value">
               0.0 ⭐
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="kpi-label">
+              เงินที่รับทั้งหมด
+            </div>
+            <div id="reportCollected"
+                 class="kpi-value">
+              ฿0
+            </div>
+            <div style="font-size:11px;color:var(--muted);margin-top:5px">
+              รายได้ + เงินประกัน
             </div>
           </div>
 
@@ -5695,6 +5740,30 @@ function loadUser(){
 
 }
 
+function logout(){
+
+  localStorage.removeItem(KEYS.user);
+  sessionStorage.removeItem("dormhub_session_user");
+
+  const app=document.getElementById("app");
+  const welcome=document.getElementById("welcomeScreen");
+
+  if(app) app.style.display="none";
+  if(welcome){
+    welcome.style.display="flex";
+    welcome.style.opacity="1";
+    welcome.style.transform="none";
+  }
+
+  document.getElementById("loginName").value="";
+  document.getElementById("loginStudentId").value="";
+  document.getElementById("loginRoom").value="";
+  const consent=document.getElementById("loginConsent");
+  if(consent) consent.checked=false;
+
+  toast("ออกจากระบบแล้ว","success");
+}
+
 
 /* =========================================================
    NAVIGATION
@@ -5746,17 +5815,18 @@ function showPage(page){
   document.querySelectorAll(".bottom-item")
     .forEach(x=>x.classList.remove("active"));
 
-  if(page==="dashboard")
-    document.querySelectorAll(".bottom-item")[0].classList.add("active");
+  const bottomItems = document.querySelectorAll(".bottom-item");
+  const bottomIndex = {
+    dashboard:0,
+    equipment:1,
+    borrow:2,
+    chat:3,
+    settings:4
+  };
 
-  if(page==="equipment")
-    document.querySelectorAll(".bottom-item")[1].classList.add("active");
-
-  if(page==="payments")
-    document.querySelectorAll(".bottom-item")[3].classList.add("active");
-
-  if(page==="chat")
-    document.querySelectorAll(".bottom-item")[4].classList.add("active");
+  if(bottomItems[bottomIndex[page]]){
+    bottomItems[bottomIndex[page]].classList.add("active");
+  }
 
 
   document.getElementById("sidebar")
@@ -6210,23 +6280,36 @@ function createBorrow(){
   const days =
     Number(document.getElementById("borrowDays").value||1);
 
+  const settings =
+    get(KEYS.settings,{deposit:100,maxDays:30});
+
+  const maxDays = Math.max(1,Number(settings.maxDays||30));
+
   if(qty<1 || qty>item.available){
+
 
     toast("จำนวนอุปกรณ์ไม่เพียงพอ","error");
     return;
 
   }
 
+  if(days<1 || days>maxDays){
+    toast(`ระยะเวลาต้องอยู่ระหว่าง 1-${maxDays} วัน`,"error");
+    return;
+  }
+
 
   const user = getUser();
+
+  if(!user){
+    toast("กรุณาเข้าสู่ระบบก่อนทำรายการ","error");
+    return;
+  }
 
   const mode =
     document.getElementById("borrowMode").value==="rent"
       ?"เช่า"
       :"ยืม";
-
-  const settings =
-    get(KEYS.settings,{deposit:100});
 
   const fee =
     mode==="เช่า"
@@ -6522,9 +6605,13 @@ function approveRequest(id){
 
 
   const settings =
-    get(KEYS.settings,{deposit:100});
+    get(KEYS.settings,{deposit:100,maxDays:30});
 
-  const days=1;
+  const days =
+    Math.min(
+      Math.max(1,Number(request.days||1)),
+      Math.max(1,Number(settings.maxDays||30))
+    );
 
   const fee =
     request.mode==="เช่า"
@@ -7295,10 +7382,59 @@ function showReceipt(id){
 
 let currentChatId=null;
 
+/* สร้างห้องแชตให้อัตโนมัติเมื่อมีสมาชิกใหม่ */
+function syncChatsWithMembers(){
+
+  const members = get(KEYS.members);
+  const chats = get(KEYS.chats);
+
+  let changed = false;
+
+  members.forEach(member => {
+
+    let chat = chats.find(c => c.id === member.id);
+
+    if(!chat){
+
+      chats.push({
+        id: member.id,
+        name: member.name,
+        role: member.role || "สมาชิก",
+        avatar: initials(member.name),
+        messages: []
+      });
+
+      changed = true;
+
+    }else{
+
+      if(chat.name !== member.name){
+        chat.name = member.name;
+        changed = true;
+      }
+
+      chat.role = member.role || chat.role || "สมาชิก";
+      chat.avatar = initials(member.name);
+
+      if(!Array.isArray(chat.messages)){
+        chat.messages = [];
+        changed = true;
+      }
+
+    }
+
+  });
+
+  if(changed)
+    set(KEYS.chats,chats);
+
+  return chats;
+}
+
 function renderChatContacts(){
 
   const chats =
-    get(KEYS.chats);
+    syncChatsWithMembers();
 
   const search =
     document.getElementById("chatSearch")
@@ -7471,54 +7607,46 @@ function renderChatMessages(){
 function sendMessage(){
 
   if(!currentChatId){
-
     toast("กรุณาเลือกผู้ติดต่อ","error");
     return;
-
   }
 
-
-  const input =
-    document.getElementById("chatMessageInput");
-
-  const text =
-    input.value.trim();
+  const input = document.getElementById("chatMessageInput");
+  const text = input.value.trim();
 
   if(!text) return;
 
+  const chats = syncChatsWithMembers();
+  const chat = chats.find(c=>c.id===currentChatId);
 
-  const chats =
-    get(KEYS.chats);
+  if(!chat){
+    toast("ไม่พบห้องแชต","error");
+    return;
+  }
 
-  const chat =
-    chats.find(c=>c.id===currentChatId);
+  const user = getUser();
+  const senderName = user?.name || "ผู้ใช้งาน";
 
-  if(!chat) return;
-
+  if(!Array.isArray(chat.messages))
+    chat.messages = [];
 
   chat.messages.push({
-
     sender:"me",
-
+    senderName,
     text,
-
-    time:new Date()
-      .toLocaleTimeString("th-TH",{
-        hour:"2-digit",
-        minute:"2-digit"
-      })
-
+    time:new Date().toLocaleTimeString("th-TH",{
+      hour:"2-digit",
+      minute:"2-digit"
+    }),
+    createdAt:new Date().toISOString()
   });
-
 
   set(KEYS.chats,chats);
 
   input.value="";
 
   renderChatMessages();
-
   renderChatContacts();
-
 
   addNotification(
     "💬",
@@ -7526,15 +7654,15 @@ function sendMessage(){
     `ถึง ${chat.name}`
   );
 
+  toast("ส่งข้อความแล้ว","success");
 }
-
 
 function startChat(ownerId){
 
   showPage("chat");
 
   const chats =
-    get(KEYS.chats);
+    syncChatsWithMembers();
 
   let chat =
     chats.find(c=>c.id===ownerId);
@@ -7729,6 +7857,20 @@ function savePickup(){
 
   const user=getUser();
 
+  if(!user){
+    toast("กรุณาเข้าสู่ระบบก่อนสร้างนัดรับ","error");
+    return;
+  }
+
+  const place=document.getElementById("pickupPlace").value.trim();
+  const date=document.getElementById("pickupDate").value;
+  const time=document.getElementById("pickupTime").value;
+
+  if(!place || !date || !time){
+    toast("กรุณากรอกสถานที่ วันที่ และเวลานัดรับให้ครบ","error");
+    return;
+  }
+
   const equipment =
     get(KEYS.equipment);
 
@@ -7753,7 +7895,7 @@ function savePickup(){
 
     itemId:item.id,
     ownerId:
-      window.currentChatId || item.ownerId || "",
+      (window.currentChatId || item.ownerId || ""),
     ownerName:
       get(KEYS.chats).find(c=>c.id===window.currentChatId)?.name ||
       item.owner ||
@@ -7869,6 +8011,14 @@ function renderMembers(){
             b.status!=="คืนแล้ว"
         ).length;
 
+      const payments =
+        get(KEYS.payments);
+
+      const outstanding =
+        payments
+          .filter(p=>p.member===m.name && p.status==="pending")
+          .reduce((sum,p)=>sum+Number(p.total||0),0);
+
       return `
 
         <tr>
@@ -7910,13 +8060,22 @@ function renderMembers(){
 
           <td>${active}</td>
 
-          <td>${money(m.fees)}</td>
+          <td>${money(outstanding)}</td>
 
           <td>
             ${statusBadge(m.status)}
           </td>
 
           <td>
+
+            <button
+              class="btn btn-primary"
+              style="padding:7px 9px"
+              onclick="startChat('${m.id}')">
+
+              💬 แชต
+
+            </button>
 
             <button
               class="btn btn-outline"
@@ -8024,30 +8183,46 @@ function saveMember(){
   }
 
 
+  let memberId = id;
+
   if(id){
 
     const member =
       members.find(x=>x.id===id);
 
+    if(!member){
+      toast("ไม่พบสมาชิกที่ต้องการแก้ไข","error");
+      return;
+    }
+
     Object.assign(member,data);
 
   }else{
 
+    memberId = uid("M");
+
     members.push({
-      id:uid("M"),
+      id:memberId,
       ...data
     });
 
   }
 
-
   set(KEYS.members,members);
+
+  /* เพิ่ม/อัปเดตห้องแชตทันที */
+  syncChatsWithMembers();
 
   closeModal("memberModal");
 
   renderAll();
 
-  toast("บันทึกสมาชิกแล้ว","success");
+  toast(
+    id
+      ? "แก้ไขสมาชิกและอัปเดตแชตแล้ว"
+      : "เพิ่มสมาชิกแล้ว และสร้างห้องแชตให้อัตโนมัติ",
+    "success"
+  );
 
 }
 
@@ -8064,6 +8239,17 @@ function deleteMember(id){
     members.filter(x=>x.id!==id);
 
   set(KEYS.members,members);
+
+  const chats = get(KEYS.chats)
+    .filter(c=>c.id!==id);
+
+  set(KEYS.chats,chats);
+
+  if(currentChatId===id){
+    currentChatId=null;
+    const msg=document.getElementById("chatMessages");
+    if(msg) msg.innerHTML=`<div class="empty">เลือกสมาชิกเพื่อเริ่มแชต</div>`;
+  }
 
   renderAll();
 
@@ -8650,17 +8836,37 @@ function renderReports(){
     get(KEYS.equipment);
 
 
-  const revenue =
-    payments
-      .filter(p=>p.status==="paid")
-      .reduce(
-        (s,p)=>
-          s+
-          Number(p.fee||0)+
-          Number(p.lateFee||0),
-        0
-      );
+  const paidPayments =
+    payments.filter(p=>p.status==="paid");
 
+  const pendingPayments =
+    payments.filter(p=>p.status==="pending");
+
+  /* รายได้จริง: ไม่รวมเงินประกัน */
+  const revenue =
+    paidPayments.reduce(
+      (s,p)=>
+        s+
+        Number(p.fee||0)+
+        Number(p.lateFee||0),
+      0
+    );
+
+  /* เงินประกันที่รับไว้ แยกบัญชีออกจากรายได้ */
+  const deposit =
+    paidPayments.reduce(
+      (s,p)=>s+Number(p.deposit||0),
+      0
+    );
+
+  const outstanding =
+    pendingPayments.reduce(
+      (s,p)=>s+Number(p.total||0),
+      0
+    );
+
+  const collected =
+    revenue + deposit;
 
   const avg =
     reviews.length
@@ -8673,6 +8879,24 @@ function renderReports(){
 
   document.getElementById("reportRevenue").textContent =
     money(revenue);
+
+  const reportDeposit =
+    document.getElementById("reportDeposit");
+
+  if(reportDeposit)
+    reportDeposit.textContent = money(deposit);
+
+  const reportOutstanding =
+    document.getElementById("reportOutstanding");
+
+  if(reportOutstanding)
+    reportOutstanding.textContent = money(outstanding);
+
+  const reportCollected =
+    document.getElementById("reportCollected");
+
+  if(reportCollected)
+    reportCollected.textContent = money(collected);
 
   document.getElementById("reportTransactions").textContent =
     borrows.length;
@@ -9380,6 +9604,9 @@ function renderAll(){
 
   renderReviews();
 
+  syncChatsWithMembers();
+  renderChatContacts();
+
   renderNotifications();
 
   renderReports();
@@ -9387,6 +9614,38 @@ function renderAll(){
   loadSettings();
 
 }
+
+
+/* =========================================================
+   REAL-TIME LOCAL SYNC
+========================================================= */
+
+/* เปิดหลายแท็บได้: เมื่อข้อมูลแชตเปลี่ยน แท็บอื่นจะรีเฟรชอัตโนมัติ */
+window.addEventListener("storage",event=>{
+
+  if(event.key===KEYS.chats ||
+     event.key===KEYS.members ||
+     event.key===KEYS.payments ||
+     event.key===KEYS.borrows){
+
+    if(document.getElementById("app")?.style.display !== "none"){
+
+      syncChatsWithMembers();
+      renderChatContacts();
+
+      if(currentChatId)
+        renderChatMessages();
+
+      renderPayments();
+      renderMembers();
+      renderDashboard();
+      renderReports();
+
+    }
+
+  }
+
+});
 
 
 /* =========================================================

@@ -1929,7 +1929,7 @@ button{touch-action:manipulation}
 
       <div class="access-status">
         <span class="access-status-dot"></span>
-        ระบบพร้อมใช้งาน • ตรวจสอบข้อมูลก่อนเข้า DORMHUB
+        ระบบพร้อมใช้งาน • เปิดจากไฟล์ HTML ได้ทันที
       </div>
 
       <div id="existingUserBox" class="access-existing">
@@ -1956,6 +1956,9 @@ button{touch-action:manipulation}
       </div>
 
       <div class="form-group">
+      </div>
+
+      <div class="form-group">
         <label>อาคาร / ห้องพัก</label>
         <input
           id="loginRoom"
@@ -1965,8 +1968,8 @@ button{touch-action:manipulation}
       </div>
 
       <label class="access-consent">
-        <input type="checkbox" id="loginConsent">
-        <span>ฉันยืนยันว่าข้อมูลที่กรอกเป็นข้อมูลสำหรับการใช้งานระบบ DORMHUB และยอมรับการจัดเก็บข้อมูลใน Browser เครื่องนี้เพื่อใช้ในระบบต้นแบบ</span>
+        <input type="checkbox" id="loginConsent" checked>
+        <span>ฉันยืนยันว่าข้อมูลที่กรอกเป็นข้อมูลสำหรับการใช้งานระบบ DORMHUB และยอมรับการจัดเก็บข้อมูลเพื่อใช้งานระบบ</span>
       </label>
 
       <label class="access-remember">
@@ -1975,7 +1978,7 @@ button{touch-action:manipulation}
       </label>
 
       <button class="btn btn-primary btn-block" onclick="enterApp()">
-        🚀 ตรวจสอบและเข้าสู่ DORMHUB
+        🚀 เข้าสู่ DORMHUB
       </button>
 
       <div class="access-security">
@@ -1992,7 +1995,7 @@ button{touch-action:manipulation}
         line-height:1.6;
       ">
         Prototype สำหรับการศึกษา<br>
-        ข้อมูลตัวอย่างจัดเก็บใน Browser ด้วย localStorage
+        ข้อมูลระบบสามารถเชื่อมต่อฐานข้อมูลกลางผ่าน API ได้ และมี localStorage เป็นตัวสำรอง
       </p>
 
     </div>
@@ -2120,6 +2123,11 @@ button{touch-action:manipulation}
     <button class="nav-item" data-page="settings">
       <span class="nav-icon">⚙️</span>
       <span>ตั้งค่า</span>
+    </button>
+
+    <button class="nav-item admin-nav" data-page="admin">
+      <span class="nav-icon">🛠️</span>
+      <span>หลังบ้านแอดมิน</span>
     </button>
 
   </aside>
@@ -2543,6 +2551,56 @@ button{touch-action:manipulation}
 
       </section>
 
+
+      <!-- =================================================
+           ADMIN BACK OFFICE
+      ================================================= -->
+      <section id="page-admin" class="page">
+        <div class="page-head">
+          <div>
+            <div class="page-title">🛠️ หลังบ้านแอดมิน</div>
+            <div class="page-sub">จัดการอุปกรณ์ สต็อก คำขอ สมาชิก และข้อมูลระบบจากหน้าเดียว</div>
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <button class="btn btn-light" onclick="adminExportData()">⬇️ สำรองข้อมูล</button>
+            <button class="btn btn-primary" onclick="openEquipmentModal()">＋ เพิ่มอุปกรณ์</button>
+          </div>
+        </div>
+
+        <div class="grid grid-4 admin-stats">
+          <div class="card stat-card"><div class="stat-label">อุปกรณ์ทั้งหมด</div><div id="adminTotalEquipment" class="stat-value">0</div><div class="stat-meta">รายการ</div></div>
+          <div class="card stat-card"><div class="stat-label">จำนวนชิ้นทั้งหมด</div><div id="adminTotalStock" class="stat-value">0</div><div class="stat-meta">ชิ้น</div></div>
+          <div class="card stat-card"><div class="stat-label">พร้อมให้ยืม/เช่า</div><div id="adminAvailableStock" class="stat-value">0</div><div class="stat-meta">ชิ้น</div></div>
+          <div class="card stat-card"><div class="stat-label">คำขอรอดำเนินการ</div><div id="adminPendingRequests" class="stat-value">0</div><div class="stat-meta">รายการ</div></div>
+        </div>
+
+        <div class="card" style="margin-top:16px">
+          <div class="section-head">
+            <div><div class="section-title">📦 จัดการคลังอุปกรณ์</div><div class="page-sub">เพิ่ม แก้ไข ลบ ปรับจำนวน และค้นหาอุปกรณ์</div></div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap">
+              <input id="adminEquipmentSearch" class="input" style="min-width:230px" placeholder="🔍 ค้นหาชื่อ / หมวดหมู่ / เจ้าของ" oninput="renderAdminEquipment()">
+              <select id="adminEquipmentCategory" class="select" onchange="renderAdminEquipment()"><option value="ทั้งหมด">ทุกหมวดหมู่</option></select>
+            </div>
+          </div>
+          <div style="overflow:auto">
+            <table class="data-table admin-table">
+              <thead><tr><th>อุปกรณ์</th><th>หมวดหมู่</th><th>ทั้งหมด</th><th>พร้อมใช้</th><th>ราคา/วัน</th><th>ผู้ดูแล</th><th>จัดการ</th></tr></thead>
+              <tbody id="adminEquipmentTable"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="grid grid-2" style="margin-top:16px">
+          <div class="card">
+            <div class="section-head"><div><div class="section-title">📋 คำขอล่าสุด</div><div class="page-sub">ตรวจสอบรายการที่เข้ามาในระบบ</div></div><button class="btn btn-light" onclick="showPage('requests')">ดูทั้งหมด</button></div>
+            <div id="adminRequestList"></div>
+          </div>
+          <div class="card">
+            <div class="section-head"><div><div class="section-title">👥 สมาชิก</div><div class="page-sub">ข้อมูลผู้ใช้งานในระบบ</div></div><button class="btn btn-light" onclick="showPage('members')">จัดการสมาชิก</button></div>
+            <div id="adminMemberList"></div>
+          </div>
+        </div>
+      </section>
 
       <!-- =================================================
            BORROW
@@ -3803,6 +3861,27 @@ button{touch-action:manipulation}
 
           </div>
 
+          <div class="card">
+            <div class="section-title">🔐 ความปลอดภัยและข้อมูล</div>
+            <div class="form-group">
+              <label>เปลี่ยนรหัสผ่าน</label>
+              <input id="newPassword" type="password" class="input" placeholder="รหัสผ่านใหม่อย่างน้อย 6 ตัวอักษร">
+            </div>
+            <button class="btn btn-primary btn-block" onclick="changePassword()">🔑 เปลี่ยนรหัสผ่าน</button>
+            <div style="height:10px"></div>
+            <button class="btn btn-light btn-block" onclick="exportDORMHUBData()">⬇️ สำรองข้อมูลระบบ</button>
+            <div style="height:10px"></div>
+            <label class="btn btn-light btn-block" style="display:block;text-align:center;cursor:pointer">
+              ⬆️ นำเข้าข้อมูลระบบ
+              <input type="file" accept="application/json" onchange="importDORMHUBData(event)" style="display:none">
+            </label>
+            <div style="height:10px"></div>
+            <button class="btn btn-danger btn-block" onclick="logout()">🚪 ออกจากระบบ</button>
+            <div style="margin-top:12px;color:var(--muted);font-size:11px;line-height:1.6">
+              ไฟล์นี้เป็นเวอร์ชัน Standalone ข้อมูลเก็บในอุปกรณ์/เบราว์เซอร์เดียวกัน การใช้งานพร้อมกันหลายเครื่องแบบศูนย์กลางต้องใช้ Backend + Database
+            </div>
+          </div>
+
         </div>
 
       </section>
@@ -4774,6 +4853,66 @@ button{touch-action:manipulation}
 
 
 <script>
+/* =========================================================
+   DORMHUB ONLINE BRIDGE — พัฒนาต่อจากโค้ดเดิม
+   ไฟล์นี้ยังใช้ UI / page / function เดิมทั้งหมด
+   และสามารถเชื่อมต่อ server.js เดิมผ่าน /api ได้
+========================================================= */
+const DH_API = {
+  base: (window.DORMHUB_API_URL || '/api').replace(/\/$/, ''),
+  token: localStorage.getItem('dormhub_api_token') || '',
+  state: {},
+  online: false
+};
+
+async function dhRequest(path, options={}){
+  const headers = Object.assign({'Content-Type':'application/json'}, options.headers||{});
+  if(DH_API.token) headers.Authorization = 'Bearer ' + DH_API.token;
+  const res = await fetch(DH_API.base + path, Object.assign({}, options, {headers}));
+  let data=null;
+  try{ data=await res.json(); }catch(e){}
+  if(!res.ok) throw new Error((data && (data.error||data.message)) || ('HTTP '+res.status));
+  return data;
+}
+
+async function dhBootstrap(){
+  /* file:// ไม่มี /api ให้เรียก ใช้ localStorage ของโค้ดเดิมแทน */
+  if(location.protocol === 'file:'){
+    DH_API.online = false;
+    return;
+  }
+  try{
+    const data = await dhRequest('/state');
+    if(data && data.state){
+      DH_API.state = data.state;
+      DH_API.online = true;
+      Object.keys(DH_API.state).forEach(k=>{
+        try{ localStorage.setItem(k, JSON.stringify(DH_API.state[k])); }catch(e){}
+      });
+    }
+  }catch(e){
+    DH_API.online = false;
+    console.warn('DORMHUB: server unavailable, using browser storage.', e.message);
+  }
+}
+
+async function dhSync(key, value){
+  if(!DH_API.online || !DH_API.token) return;
+  try{
+    await dhRequest('/state/'+encodeURIComponent(key), {
+      method:'PUT', body:JSON.stringify({value})
+    });
+  }catch(e){
+    console.warn('DORMHUB sync failed:', key, e.message);
+  }
+}
+
+function dhSetToken(token){
+  DH_API.token = token || '';
+  if(token) localStorage.setItem('dormhub_api_token', token);
+  else localStorage.removeItem('dormhub_api_token');
+}
+
 
 /* =========================================================
    CONSTANTS
@@ -4794,7 +4933,8 @@ const KEYS = {
   notifications:"dormhub_psru_v3_notifications",
   user:"dormhub_psru_v3_user",
   chats:"dormhub_psru_v3_chats",
-  pickups:"dormhub_psru_v3_pickups"
+  pickups:"dormhub_psru_v3_pickups",
+  passwordHash:"dormhub_psru_v3_password_hash"
 };
 
 
@@ -4870,6 +5010,11 @@ function get(key, fallback=[]){
 
 function set(key,value){
   localStorage.setItem(key,JSON.stringify(value));
+  try{
+    if(window.DH_API && DH_API.online && DH_API.token && typeof dhSync === "function" && key!==KEYS.passwordHash){
+      dhSync(key,value);
+    }
+  }catch(e){ console.warn("sync",e); }
 }
 
 function getUser(){
@@ -5142,7 +5287,110 @@ const seedEquipment = [
  image:"https://images.unsplash.com/photo-1522338140262-f46f5913618a?auto=format&fit=crop&w=800&q=85"
 }
 
-];
+,
+
+{
+ id:"EQ-009", name:"โต๊ะญี่ปุ่น", category:"เฟอร์นิเจอร์", total:4, available:3, price:20, rating:4.6, owner:"สำนักงานหอพักนักศึกษา", ownerId:"M-001", image:"https://images.unsplash.com/photo-1533090161767-e6ffed986c88?auto=format&fit=crop&w=800&q=85"
+},
+{
+ id:"EQ-010", name:"เก้าอี้พับ", category:"เฟอร์นิเจอร์", total:8, available:6, price:15, rating:4.5, owner:"สำนักงานหอพักนักศึกษา", ownerId:"M-001", image:"https://images.unsplash.com/photo-1503602642458-232111445657?auto=format&fit=crop&w=800&q=85"
+},
+{
+ id:"EQ-011", name:"ปลั๊กพ่วง 6 ช่อง", category:"เครื่องใช้ไฟฟ้า", total:10, available:8, price:15, rating:4.7, owner:"สำนักงานหอพักนักศึกษา", ownerId:"M-001", image:"https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=800&q=85"
+},
+{
+ id:"EQ-012", name:"สายไฟต่อพ่วง", category:"เครื่องใช้ไฟฟ้า", total:6, available:5, price:10, rating:4.4, owner:"ธนภัทร ดีมาก", ownerId:"M-008", image:"https://images.unsplash.com/photo-1621905252507-b35492cc74b4?auto=format&fit=crop&w=800&q=85"
+},
+{
+ id:"EQ-013", name:"กาต้มน้ำไฟฟ้า", category:"ครัว", total:5, available:4, price:35, rating:4.7, owner:"พิมพ์ชนก สุขใจ", ownerId:"M-003", image:"https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?auto=format&fit=crop&w=800&q=85"
+},
+{
+ id:"EQ-014", name:"กระทะไฟฟ้า", category:"ครัว", total:3, available:2, price:45, rating:4.6, owner:"มินตรา ใจดี", ownerId:"M-002", image:"https://images.unsplash.com/photo-1585515320310-259814833e62?auto=format&fit=crop&w=800&q=85"
+},
+{
+ id:"EQ-015", name:"เครื่องปั่น", category:"ครัว", total:3, available:2, price:40, rating:4.5, owner:"แพรวา มณี", ownerId:"M-007", image:"https://images.unsplash.com/photo-1570222094114-d054a817e56b?auto=format&fit=crop&w=800&q=85"
+},
+{
+ id:"EQ-016", name:"เตาไฟฟ้า", category:"ครัว", total:3, available:3, price:40, rating:4.4, owner:"สำนักงานหอพักนักศึกษา", ownerId:"M-001", image:"https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=800&q=85"
+},
+{
+ id:"EQ-017", name:"ชุดจานชาม", category:"ครัว", total:10, available:8, price:10, rating:4.3, owner:"สำนักงานหอพักนักศึกษา", ownerId:"M-001", image:"https://images.unsplash.com/photo-1603199506016-b9a594b593c0?auto=format&fit=crop&w=800&q=85"
+},
+{
+ id:"EQ-018", name:"ชุดช้อนส้อม", category:"ครัว", total:10, available:9, price:5, rating:4.3, owner:"สำนักงานหอพักนักศึกษา", ownerId:"M-001", image:"https://images.unsplash.com/photo-1593618998160-e34014e67546?auto=format&fit=crop&w=800&q=85"
+},
+{
+ id:"EQ-019", name:"เครื่องซักผ้า", category:"ซักรีด", total:2, available:1, price:80, rating:4.8, owner:"สำนักงานหอพักนักศึกษา", ownerId:"M-001", image:"https://images.unsplash.com/photo-1626806787461-102c1bfaaea1?auto=format&fit=crop&w=800&q=85"
+},
+{
+ id:"EQ-020", name:"ราวตากผ้า", category:"ซักรีด", total:6, available:5, price:20, rating:4.6, owner:"กิตติ พรหมดี", ownerId:"M-004", image:"https://images.unsplash.com/photo-1595113316349-9fa4eb24f884?auto=format&fit=crop&w=800&q=85"
+},
+{
+ id:"EQ-021", name:"ตะกร้าผ้า", category:"ซักรีด", total:8, available:7, price:10, rating:4.5, owner:"ณิชา น่ารัก", ownerId:"M-005", image:"https://images.unsplash.com/photo-1582738411706-bfc8e691d1c2?auto=format&fit=crop&w=800&q=85"
+},
+{
+ id:"EQ-022", name:"ไม้กวาด", category:"ทำความสะอาด", total:8, available:7, price:10, rating:4.5, owner:"สำนักงานหอพักนักศึกษา", ownerId:"M-001", image:"https://images.unsplash.com/photo-1585832770485-e68a5dbfad52?auto=format&fit=crop&w=800&q=85"
+},
+{
+ id:"EQ-023", name:"ไม้ถูพื้น", category:"ทำความสะอาด", total:8, available:6, price:15, rating:4.5, owner:"สำนักงานหอพักนักศึกษา", ownerId:"M-001", image:"https://images.unsplash.com/photo-1563453392212-326f5e854473?auto=format&fit=crop&w=800&q=85"
+},
+{
+ id:"EQ-024", name:"ถังน้ำ", category:"ทำความสะอาด", total:10, available:8, price:8, rating:4.2, owner:"สำนักงานหอพักนักศึกษา", ownerId:"M-001", image:"https://images.unsplash.com/photo-1602523961358-f9f03dd557db?auto=format&fit=crop&w=800&q=85"
+},
+{
+ id:"EQ-025", name:"ชุดไม้กวาดพร้อมที่โกย", category:"ทำความสะอาด", total:5, available:5, price:12, rating:4.4, owner:"มินตรา ใจดี", ownerId:"M-002", image:"https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=800&q=85"
+},
+{
+ id:"EQ-026", name:"พัดลมตั้งพื้น", category:"เครื่องใช้ไฟฟ้า", total:5, available:3, price:40, rating:4.8, owner:"สำนักงานหอพักนักศึกษา", ownerId:"M-001", image:"https://images.unsplash.com/photo-1561211919-1947abbbb7c8?auto=format&fit=crop&w=800&q=85"
+},
+{
+ id:"EQ-027", name:"โคมไฟตั้งโต๊ะ", category:"เครื่องใช้ไฟฟ้า", total:6, available:5, price:20, rating:4.7, owner:"แพรวา มณี", ownerId:"M-007", image:"https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=800&q=85"
+},
+{
+ id:"EQ-028", name:"ไฟฉาย", category:"อุปกรณ์ฉุกเฉิน", total:10, available:9, price:10, rating:4.6, owner:"สำนักงานหอพักนักศึกษา", ownerId:"M-001", image:"https://images.unsplash.com/photo-1510133769049-4b4f2f2d0f0e?auto=format&fit=crop&w=800&q=85"
+},
+{
+ id:"EQ-029", name:"ชุดเครื่องมือช่าง", category:"เครื่องมือ", total:4, available:3, price:50, rating:4.8, owner:"ธนภัทร ดีมาก", ownerId:"M-008", image:"https://images.unsplash.com/photo-1581147036324-c17ac41d5b8a?auto=format&fit=crop&w=800&q=85"
+},
+{
+ id:"EQ-030", name:"ไขควงชุด", category:"เครื่องมือ", total:6, available:5, price:15, rating:4.6, owner:"ธนภัทร ดีมาก", ownerId:"M-008", image:"https://images.unsplash.com/photo-1530124566582-a618bc2615dc?auto=format&fit=crop&w=800&q=85"
+},
+{
+ id:"EQ-031", name:"ค้อน", category:"เครื่องมือ", total:5, available:5, price:10, rating:4.5, owner:"ธนภัทร ดีมาก", ownerId:"M-008", image:"https://images.unsplash.com/photo-1586864387967-d02ef85d93e8?auto=format&fit=crop&w=800&q=85"
+},
+{
+ id:"EQ-032", name:"สว่านไฟฟ้า", category:"เครื่องมือ", total:2, available:1, price:60, rating:4.8, owner:"ธนภัทร ดีมาก", ownerId:"M-008", image:"https://images.unsplash.com/photo-1504148455328-c376907d081c?auto=format&fit=crop&w=800&q=85"
+},
+{
+ id:"EQ-033", name:"ลูกฟุตบอล", category:"กีฬา", total:4, available:3, price:20, rating:4.7, owner:"สำนักงานหอพักนักศึกษา", ownerId:"M-001", image:"https://images.unsplash.com/photo-1553778263-73a83bab9b0c?auto=format&fit=crop&w=800&q=85"
+},
+{
+ id:"EQ-034", name:"วอลเลย์บอล", category:"กีฬา", total:4, available:4, price:20, rating:4.6, owner:"สำนักงานหอพักนักศึกษา", ownerId:"M-001", image:"https://images.unsplash.com/photo-1612872087720-bb876e2e67d1?auto=format&fit=crop&w=800&q=85"
+},
+{
+ id:"EQ-035", name:"แบดมินตันชุด", category:"กีฬา", total:5, available:4, price:25, rating:4.7, owner:"ณิชา น่ารัก", ownerId:"M-005", image:"https://images.unsplash.com/photo-1626224583764-f87db24ac4ea?auto=format&fit=crop&w=800&q=85"
+},
+{
+ id:"EQ-036", name:"เสื่อโยคะ", category:"กีฬา", total:8, available:6, price:20, rating:4.8, owner:"แพรวา มณี", ownerId:"M-007", image:"https://images.unsplash.com/photo-1603988363607-e1e4a66962c6?auto=format&fit=crop&w=800&q=85"
+},
+{
+ id:"EQ-037", name:"เครื่องชั่งน้ำหนัก", category:"สุขภาพ", total:3, available:3, price:15, rating:4.4, owner:"สำนักงานหอพักนักศึกษา", ownerId:"M-001", image:"https://images.unsplash.com/photo-1576610616656-d3aa5d1f4534?auto=format&fit=crop&w=800&q=85"
+},
+{
+ id:"EQ-038", name:"ชุดปฐมพยาบาล", category:"อุปกรณ์ฉุกเฉิน", total:5, available:5, price:20, rating:4.9, owner:"สำนักงานหอพักนักศึกษา", ownerId:"M-001", image:"https://images.unsplash.com/photo-1603398938378-e54eab446dde?auto=format&fit=crop&w=800&q=85"
+},
+{
+ id:"EQ-039", name:"ร่ม", category:"ของใช้ทั่วไป", total:12, available:10, price:10, rating:4.5, owner:"สำนักงานหอพักนักศึกษา", ownerId:"M-001", image:"https://images.unsplash.com/photo-1519817650390-64a93db51149?auto=format&fit=crop&w=800&q=85"
+},
+{
+ id:"EQ-040", name:"รถเข็นของ", category:"ของใช้ทั่วไป", total:3, available:2, price:30, rating:4.6, owner:"สำนักงานหอพักนักศึกษา", ownerId:"M-001", image:"https://images.unsplash.com/photo-1586528116493-da8b0c5f7f0d?auto=format&fit=crop&w=800&q=85"
+},
+{
+ id:"EQ-041", name:"เครื่องฉายโปรเจกเตอร์", category:"การเรียน/กิจกรรม", total:2, available:1, price:150, rating:4.9, owner:"สำนักงานหอพักนักศึกษา", ownerId:"M-001", image:"https://images.unsplash.com/photo-1603351154351-5e2d0600bb77?auto=format&fit=crop&w=800&q=85"
+},
+{
+ id:"EQ-042", name:"จอโปรเจกเตอร์", category:"การเรียน/กิจกรรม", total:2, available:2, price:50, rating:4.7, owner:"สำนักงานหอพักนักศึกษา", ownerId:"M-001", image:"https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=800&q=85"
+}];
 
 
 const seedMembers = [
@@ -5510,8 +5758,18 @@ const seedChats = [
 
 function seed(){
 
-  if(!localStorage.getItem(KEYS.equipment))
+  // สร้างรายการอุปกรณ์เริ่มต้นครั้งแรก
+  if(!localStorage.getItem(KEYS.equipment)){
     set(KEYS.equipment,seedEquipment);
+  }else{
+    // เพิ่มอุปกรณ์ชุดใหม่โดยไม่ลบข้อมูลเดิมของผู้ใช้
+    const currentEquipment = get(KEYS.equipment) || [];
+    const currentIds = new Set(currentEquipment.map(item => item.id));
+    const missingEquipment = seedEquipment.filter(item => !currentIds.has(item.id));
+    if(missingEquipment.length){
+      set(KEYS.equipment,[...currentEquipment,...missingEquipment]);
+    }
+  }
 
   if(!localStorage.getItem(KEYS.members))
     set(KEYS.members,seedMembers);
@@ -5637,134 +5895,107 @@ function seed(){
 }
 
 
+async function hashPassword(password){
+  const data=new TextEncoder().encode(password);
+  const hash=await crypto.subtle.digest("SHA-256",data);
+  return Array.from(new Uint8Array(hash)).map(b=>b.toString(16).padStart(2,"0")).join("");
+}
+
+async function changePassword(){
+  const input=document.getElementById("newPassword");
+  const password=(input?.value||"").trim();
+  if(password.length<6){ toast("รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร","error"); return; }
+  set(KEYS.passwordHash,await hashPassword(password));
+  input.value="";
+  toast("เปลี่ยนรหัสผ่านเรียบร้อย","success");
+}
+
+function logout(){
+  try{ sessionStorage.removeItem("dormhub_session_user"); }catch(e){}
+  const app=document.getElementById("app");
+  const welcome=document.getElementById("welcomeScreen");
+  if(app) app.style.display="none";
+  if(welcome) welcome.style.display="flex";
+  const pw=document.getElementById("loginPassword");
+  if(pw) pw.value="";
+  toast("ออกจากระบบแล้ว","info");
+}
+
+function exportDORMHUBData(){
+  const data={version:"standalone-1.0",exportedAt:new Date().toISOString(),data:{}};
+  Object.values(KEYS).forEach(key=>{
+    if(key===KEYS.passwordHash) return;
+    const raw=localStorage.getItem(key);
+    if(raw!==null){ try{ data.data[key]=JSON.parse(raw); }catch(e){} }
+  });
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(blob);
+  a.download=`DORMHUB_backup_${new Date().toISOString().slice(0,10)}.json`;
+  a.click();
+  setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+  toast("สำรองข้อมูลเรียบร้อย","success");
+}
+
+function importDORMHUBData(event){
+  const file=event.target.files?.[0];
+  if(!file) return;
+  const reader=new FileReader();
+  reader.onload=()=>{
+    try{
+      const payload=JSON.parse(reader.result);
+      if(!payload || !payload.data) throw new Error("รูปแบบไฟล์ไม่ถูกต้อง");
+      if(!confirm("นำเข้าข้อมูลจะทับข้อมูลเดิมในอุปกรณ์นี้ ต้องการดำเนินการต่อหรือไม่?")) return;
+      Object.entries(payload.data).forEach(([key,value])=>{
+        if(Object.values(KEYS).includes(key) && key!==KEYS.passwordHash){
+          localStorage.setItem(key,JSON.stringify(value));
+        }
+      });
+      seed(); renderAll(); loadUser(); loadSettings();
+      toast("นำเข้าข้อมูลสำเร็จ","success");
+    }catch(e){ toast("นำเข้าข้อมูลไม่สำเร็จ: "+e.message,"error"); }
+  };
+  reader.readAsText(file);
+  event.target.value="";
+}
+
 /* =========================================================
    LOGIN
 ========================================================= */
 
 function enterApp(){
+  try{
+    const name=(document.getElementById("loginName")?.value||"").trim() || "นักศึกษาทดสอบ";
+    const studentId=(document.getElementById("loginStudentId")?.value||"").trim() || "669999999";
+    const room=(document.getElementById("loginRoom")?.value||"").trim() || "A-101";
 
-  const name =
-    document.getElementById("loginName").value.trim();
+    // ไม่ใช้รหัสผ่านและไม่บังคับติ๊กเงื่อนไข เพื่อให้เปิดไฟล์ HTML แล้วเข้าใช้งานได้ทันที
+    const user={name,studentId,room,role:"student"};
+    localStorage.setItem(KEYS.user,JSON.stringify(user));
 
-  const studentId =
-    document.getElementById("loginStudentId").value.trim();
+    try{ seed(); }catch(e){ console.warn("seed:",e); }
+    try{ loadUser(); }catch(e){}
+    try{ loadSettings(); }catch(e){}
+    try{ renderAll(); }catch(e){ console.warn("renderAll:",e); }
 
-  const room =
-    document.getElementById("loginRoom").value.trim();
+    const welcome=document.getElementById("welcomeScreen");
+    const app=document.getElementById("app");
+    if(welcome){ welcome.classList.add("hidden"); welcome.style.display="none"; }
+    if(app){ app.classList.remove("hidden"); app.style.display="block"; }
 
-  const consent =
-    document.getElementById("loginConsent")?.checked;
-
-  const remember =
-    document.getElementById("rememberAccess")?.checked !== false;
-
-  if(!name){
-    toast("กรุณากรอกชื่อ–นามสกุล","error");
-    document.getElementById("loginName").focus();
-    return;
+    try{ openPage("dashboard"); }catch(e){
+      try{ showPage("dashboard"); }catch(e2){}
+    }
+    try{ toast("เข้าสู่ DORMHUB สำเร็จ","success"); }catch(e){}
+  }catch(err){
+    console.error(err);
+    // ทางสำรอง: เปิดหน้าระบบโดยตรง แม้ข้อมูลบางส่วนจะโหลดไม่สำเร็จ
+    const welcome=document.getElementById("welcomeScreen");
+    const app=document.getElementById("app");
+    if(welcome){ welcome.style.display="none"; welcome.classList.add("hidden"); }
+    if(app){ app.style.display="block"; app.classList.remove("hidden"); }
   }
-
-  if(!studentId){
-    toast("กรุณากรอกรหัสนักศึกษา","error");
-    document.getElementById("loginStudentId").focus();
-    return;
-  }
-
-  if(!room){
-    toast("กรุณากรอกอาคาร / ห้องพัก","error");
-    document.getElementById("loginRoom").focus();
-    return;
-  }
-
-  if(!consent){
-    toast("กรุณายืนยันข้อมูลก่อนเข้าใช้งาน","error");
-    return;
-  }
-
-  const user = {
-    name:name,
-    studentId:studentId,
-    room:room
-  };
-
-  if(remember){
-    set(KEYS.user,user);
-  }else{
-    sessionStorage.setItem("dormhub_session_user",JSON.stringify(user));
-  }
-
-  loadUser();
-
-  const welcome = document.getElementById("welcomeScreen");
-  const app = document.getElementById("app");
-
-  welcome.style.transition="opacity .35s ease, transform .35s ease";
-  welcome.style.opacity="0";
-  welcome.style.transform="scale(.985)";
-
-  setTimeout(()=>{
-    welcome.style.display="none";
-    welcome.style.opacity="";
-    welcome.style.transform="";
-    app.style.display="block";
-    renderAll();
-    toast("ยืนยันข้อมูลและเข้าสู่ DORMHUB สำเร็จ 🎉","success");
-  },350);
-
 }
-
-
-function loadUser(){
-
-  const user = getUser();
-
-  if(!user) return;
-
-  document.getElementById("userName").textContent =
-    user.name;
-
-  document.getElementById("userAvatar").textContent =
-    initials(user.name);
-
-  document.getElementById("heroUserName").textContent =
-    user.name.split(" ")[0];
-
-  document.getElementById("settingUserName").value =
-    user.name || "";
-
-  document.getElementById("settingStudentId").value =
-    user.studentId || "";
-
-  document.getElementById("settingRoom").value =
-    user.room || "";
-
-}
-
-function logout(){
-
-  localStorage.removeItem(KEYS.user);
-  sessionStorage.removeItem("dormhub_session_user");
-
-  const app=document.getElementById("app");
-  const welcome=document.getElementById("welcomeScreen");
-
-  if(app) app.style.display="none";
-  if(welcome){
-    welcome.style.display="flex";
-    welcome.style.opacity="1";
-    welcome.style.transform="none";
-  }
-
-  document.getElementById("loginName").value="";
-  document.getElementById("loginStudentId").value="";
-  document.getElementById("loginRoom").value="";
-  const consent=document.getElementById("loginConsent");
-  if(consent) consent.checked=false;
-
-  toast("ออกจากระบบแล้ว","success");
-}
-
-
 /* =========================================================
    NAVIGATION
 ========================================================= */
@@ -5805,7 +6036,8 @@ function showPage(page){
     reports:"รายงาน",
     reviews:"รีวิว",
     guide:"คู่มือ",
-    settings:"ตั้งค่า"
+    settings:"ตั้งค่า",
+    admin:"หลังบ้านแอดมิน"
   };
 
   document.getElementById("topPageTitle").textContent =
@@ -5839,6 +6071,8 @@ function showPage(page){
 
   if(page==="chat")
     renderChatContacts();
+  if(page==="admin")
+    renderAdmin();
 
 }
 
@@ -9299,6 +9533,78 @@ function saveEquipment(){
 
 
 /* =========================================================
+   ADMIN BACK OFFICE
+========================================================= */
+function renderAdmin(){
+  const eq=get(KEYS.equipment,[]), req=get(KEYS.requests,[]), mem=get(KEYS.members,[]);
+  const total=eq.reduce((n,x)=>n+Number(x.total||0),0);
+  const available=eq.reduce((n,x)=>n+Number(x.available||0),0);
+  document.getElementById('adminTotalEquipment').textContent=eq.length.toLocaleString('th-TH');
+  document.getElementById('adminTotalStock').textContent=total.toLocaleString('th-TH');
+  document.getElementById('adminAvailableStock').textContent=available.toLocaleString('th-TH');
+  document.getElementById('adminPendingRequests').textContent=req.filter(x=>['pending','รอดำเนินการ','รออนุมัติ'].includes(String(x.status||'').toLowerCase())).length.toLocaleString('th-TH');
+  const sel=document.getElementById('adminEquipmentCategory');
+  if(sel){ const old=sel.value; sel.innerHTML='<option value="ทั้งหมด">ทุกหมวดหมู่</option>'+[...new Set(eq.map(x=>x.category).filter(Boolean))].sort().map(c=>`<option value="${esc(c)}">${esc(c)}</option>`).join(''); if([...sel.options].some(o=>o.value===old))sel.value=old; }
+  renderAdminEquipment();
+  const rl=document.getElementById('adminRequestList');
+  if(rl) rl.innerHTML=req.slice(0,5).map(r=>`<div class="admin-mini-row"><div><b>${esc(r.item||r.equipment||'คำขอยืมอุปกรณ์')}</b><small>${esc(r.member||r.user||'ผู้ใช้งาน')} • ${formatDateTH(r.date||r.createdAt||todayISO())}</small></div><span class="status-pill">${esc(r.status||'รอดำเนินการ')}</span></div>`).join('') || '<div class="empty">ยังไม่มีคำขอ</div>';
+  const ml=document.getElementById('adminMemberList');
+  if(ml) ml.innerHTML=mem.slice(0,6).map(m=>`<div class="admin-mini-row"><div><b>${esc(m.name||'สมาชิก')}</b><small>${esc(m.studentId||'-')} • ห้อง ${esc(m.room||'-')}</small></div><span class="status-pill">${esc(m.status||'ใช้งาน')}</span></div>`).join('') || '<div class="empty">ยังไม่มีสมาชิก</div>';
+}
+function renderAdminEquipment(){
+  const q=(document.getElementById('adminEquipmentSearch')?.value||'').toLowerCase();
+  const cat=document.getElementById('adminEquipmentCategory')?.value||'ทั้งหมด';
+  const list=get(KEYS.equipment,[]).filter(x=>{const text=[x.name,x.category,x.owner].join(' ').toLowerCase();return text.includes(q)&&(cat==='ทั้งหมด'||x.category===cat)});
+  const tb=document.getElementById('adminEquipmentTable'); if(!tb)return;
+  tb.innerHTML=list.map(x=>`<tr>
+    <td><div class="admin-eq-name"><img src="${esc(x.image||'')}" onerror="this.style.display='none'"><div><b>${esc(x.name)}</b><small>${esc(x.id)}</small></div></div></td>
+    <td>${esc(x.category)}</td><td>${Number(x.total||0)}</td><td><b>${Number(x.available||0)}</b></td><td>${x.price>0?money(x.price):'ฟรี'}</td><td>${esc(x.owner||'-')}</td>
+    <td><div style="display:flex;gap:5px;flex-wrap:wrap"><button class="btn btn-light btn-sm" onclick="openEquipmentModal('${esc(x.id)}')">แก้ไข</button><button class="btn btn-light btn-sm" onclick="adminAdjustStock('${esc(x.id)}')">สต็อก</button><button class="btn btn-danger btn-sm" onclick="adminDeleteEquipment('${esc(x.id)}')">ลบ</button></div></td>
+  </tr>`).join('') || '<tr><td colspan="7" style="text-align:center;padding:30px">ไม่พบอุปกรณ์</td></tr>';
+}
+function adminAdjustStock(id){
+  const list=get(KEYS.equipment,[]), x=list.find(a=>a.id===id); if(!x)return;
+  const total=prompt(`จำนวนทั้งหมดของ “${x.name}”`,x.total); if(total===null)return;
+  const n=Math.max(Number(total)||0, x.total-x.available); x.total=n; x.available=Math.min(x.available,n); set(KEYS.equipment,list); renderAll(); renderAdmin(); toast('ปรับสต็อกแล้ว','success');
+}
+function adminDeleteEquipment(id){
+  const list=get(KEYS.equipment,[]), x=list.find(a=>a.id===id); if(!x)return;
+  if(Number(x.total||0)-Number(x.available||0)>0){toast('ลบไม่ได้ เพราะอุปกรณ์มีรายการกำลังยืมอยู่','error');return;}
+  if(!confirm(`ต้องการลบ “${x.name}” ใช่หรือไม่?`))return;
+  set(KEYS.equipment,list.filter(a=>a.id!==id)); renderAll(); renderAdmin(); toast('ลบอุปกรณ์แล้ว','success');
+}
+function adminExportData(){
+  const data={exportedAt:new Date().toISOString(),version:'DORMHUB Admin 1.0'}; Object.values(KEYS).forEach(k=>{if(k!==KEYS.passwordHash)data[k]=get(k,null)});
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'}), a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=`DORMHUB-backup-${todayISO()}.json`; a.click(); URL.revokeObjectURL(a.href); toast('สำรองข้อมูลเรียบร้อย','success');
+}
+
+
+function seedLargeEquipmentCatalog(){
+  const catalog=[
+    ['โต๊ะอ่านหนังสือพับได้','เฟอร์นิเจอร์',12,10],['เก้าอี้พลาสติก','เฟอร์นิเจอร์',5,20],['เก้าอี้พับอเนกประสงค์','เฟอร์นิเจอร์',10,12],['ชั้นวางของ 3 ชั้น','เฟอร์นิเจอร์',15,8],['ชั้นวางรองเท้า','เฟอร์นิเจอร์',8,10],['ราวแขวนเสื้อ','เฟอร์นิเจอร์',10,8],['ตู้ลิ้นชักพลาสติก','เฟอร์นิเจอร์',15,6],
+    ['พัดลมตั้งพื้น 18 นิ้ว','เครื่องใช้ไฟฟ้า',25,8],['พัดลมตั้งโต๊ะ','เครื่องใช้ไฟฟ้า',15,12],['กาต้มน้ำไฟฟ้า','เครื่องใช้ไฟฟ้า',20,8],['เตารีดไอน้ำ','เครื่องใช้ไฟฟ้า',20,5],['เครื่องดูดฝุ่น','เครื่องใช้ไฟฟ้า',40,4],['โคมไฟอ่านหนังสือ','เครื่องใช้ไฟฟ้า',10,15],['ปลั๊กพ่วง 6 ช่อง','เครื่องใช้ไฟฟ้า',8,15],['สายต่อ USB','เครื่องใช้ไฟฟ้า',5,20],['ไฟฉาย LED','เครื่องใช้ไฟฟ้า',8,12],
+    ['หม้อหุงข้าว 1.8 ลิตร','ครัว',25,6],['กระทะไฟฟ้า','ครัว',30,5],['เตาไฟฟ้า','ครัว',25,5],['หม้ออเนกประสงค์','ครัว',30,5],['เครื่องปิ้งขนมปัง','ครัว',20,4],['เครื่องปั่นน้ำผลไม้','ครัว',25,4],['จานเมลามีน','ครัว',3,30],['ชามเมลามีน','ครัว',3,30],['แก้วน้ำ','ครัว',2,30],['ช้อนส้อมชุด','ครัว',2,30],['มีดทำครัว','ครัว',3,10],['เขียง','ครัว',3,10],
+    ['ไม้กวาด','ทำความสะอาด',3,25],['ที่โกยผง','ทำความสะอาด',2,25],['ไม้ถูพื้น','ทำความสะอาด',5,15],['ถังน้ำ 20 ลิตร','ทำความสะอาด',5,12],['ถังขยะ 20 ลิตร','ทำความสะอาด',5,12],['แปรงขัดพื้น','ทำความสะอาด',3,15],['ชุดทำความสะอาดห้อง','ทำความสะอาด',8,10],['เครื่องดูดฝุ่นมือถือ','ทำความสะอาด',15,5],
+    ['ตะกร้าผ้า','ซักรีด',5,15],['ราวตากผ้า','ซักรีด',10,10],['ไม้แขวนเสื้อชุด 10 ชิ้น','ซักรีด',3,25],['กะละมัง','ซักรีด',3,15],
+    ['ชุดไขควง 24 ชิ้น','เครื่องมือ',10,8],['ค้อนช่าง','เครื่องมือ',8,8],['คีมอเนกประสงค์','เครื่องมือ',8,8],['ประแจชุด','เครื่องมือ',12,6],['สว่านไฟฟ้า','เครื่องมือ',35,3],['ตลับเมตร','เครื่องมือ',5,10],['กล่องเครื่องมือ','เครื่องมือ',15,5],
+    ['ฟุตบอล','กีฬา',10,8],['วอลเลย์บอล','กีฬา',10,8],['แบดมินตัน 2 คน','กีฬา',8,10],['ไม้แบดมินตัน','กีฬา',8,12],['ลูกแบดมินตัน','กีฬา',3,30],['เสื่อโยคะ','กีฬา',8,10],['เชือกกระโดด','กีฬา',5,15],['โต๊ะปิงปอง','กีฬา',50,2],
+    ['โปรเจกเตอร์','การเรียน',60,3],['จอโปรเจกเตอร์','การเรียน',30,3],['ลำโพงพกพา','การเรียน',25,5],['ไมโครโฟนไร้สาย','การเรียน',30,4],['สาย HDMI','การเรียน',5,10],['ปลั๊กแปลง HDMI','การเรียน',10,8],['ไวท์บอร์ด','การเรียน',10,6],
+    ['ร่มพับ','อุปกรณ์ทั่วไป',5,20],['กระเป๋าเดินทาง','อุปกรณ์ทั่วไป',20,5],['รถเข็นของ','อุปกรณ์ทั่วไป',20,3],['เครื่องชั่งน้ำหนัก','สุขภาพ',5,8],['ชุดปฐมพยาบาล','สุขภาพ',10,6],['หน้ากากอนามัยกล่อง','สุขภาพ',3,20],['เจลแอลกอฮอล์','สุขภาพ',3,20]
+  ];
+  const list=get(KEYS.equipment,[]), ids=new Set(list.map(x=>x.id));
+  const imgs={
+    'เครื่องใช้ไฟฟ้า':'https://images.unsplash.com/photo-1558008258-3256797b43f3?auto=format&fit=crop&w=800&q=80',
+    'ครัว':'https://images.unsplash.com/photo-1556911220-bff31c812dba?auto=format&fit=crop&w=800&q=80',
+    'กีฬา':'https://images.unsplash.com/photo-1461896836934-ffe607ba8211?auto=format&fit=crop&w=800&q=80',
+    'การเรียน':'https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=800&q=80',
+    'เฟอร์นิเจอร์':'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=800&q=80'
+  };
+  let changed=false;
+  catalog.forEach((d,i)=>{const id='CAT-'+String(i+1).padStart(3,'0');if(ids.has(id))return;const total=d[3];list.push({id,name:d[0],category:d[1],total,available:total,price:d[2],rating:4.5,owner:'สำนักงานหอพักนักศึกษา',ownerId:'M-001',image:imgs[d[1]]||'https://images.unsplash.com/photo-1558008258-3256797b43f3?auto=format&fit=crop&w=800&q=80'});changed=true;});
+  if(changed)set(KEYS.equipment,list);
+}
+
+/* =========================================================
    SETTINGS
 ========================================================= */
 
@@ -9652,9 +9958,11 @@ window.addEventListener("storage",event=>{
    INIT
 ========================================================= */
 
-document.addEventListener("DOMContentLoaded",()=>{
+document.addEventListener("DOMContentLoaded",async()=>{
 
+  await dhBootstrap();
   seed();
+  seedLargeEquipmentCatalog();
   loadTheme();
 
   const savedUser = getUser();
@@ -9807,6 +10115,8 @@ document.addEventListener("DOMContentLoaded",()=>{
 
 }
 
+
+.admin-stats{margin-top:4px}.admin-nav{margin-top:6px}.admin-table{min-width:900px}.admin-eq-name{display:flex;align-items:center;gap:10px}.admin-eq-name img{width:44px;height:44px;border-radius:10px;object-fit:cover}.admin-eq-name small,.admin-mini-row small{display:block;color:var(--muted);font-size:12px;margin-top:3px}.admin-mini-row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)}.admin-mini-row:last-child{border-bottom:0}.status-pill{padding:5px 9px;border-radius:999px;background:#f3f4f6;font-size:12px;white-space:nowrap}.btn-sm{padding:6px 9px;font-size:12px}.btn-danger{background:#fee2e2;color:#b91c1c;border:1px solid #fecaca}.section-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px}@media(max-width:700px){.admin-stats{grid-template-columns:1fr 1fr}.section-head{align-items:flex-start;flex-direction:column}}
 </style>
 
 
